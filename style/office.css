@@ -1,0 +1,896 @@
+
+@import 'spectre.css';
+@import 'spectre-exp.css';
+@import 'animate.min.css';
+@import 'common.css';
+@import 'spectre-icons.css';
+
+.ma {
+    margin: auto !important;
+}
+
+.mla {
+    margin-left: auto !important;
+}
+
+.mra {
+    margin-right: auto !important;
+}
+
+.mta {
+    margin-top: auto !important;
+}
+
+.mba {
+    margin-bottom: auto !important;
+}
+
+.mxa {
+    margin: 0 auto !important;
+}
+
+.mya {
+    margin: auto 0 !important;
+}
+
+.wfc {
+    width: fit-content;
+}
+
+.w100 {
+    width: 100% !important;
+}
+
+.pos-lt {
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+.pos-rt {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+
+.pos-lb {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+}
+
+.pos-rb {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.c-vert-move {
+    cursor: sw-resize;
+}
+
+.textarea {
+    min-width: 100% !important;
+    max-height: 390px !important;
+    min-height: 200px !important;
+}
+
+.noArrows::-webkit-outer-spin-button,
+.noArrows::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0
+}
+
+.phone-number {
+    border: none;
+    margin-bottom: 1px;
+}
+
+.phone-number:focus{
+    outline: none;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #a5a5a5;
+}
+
+.overflow-modal {
+    overflow-y: auto;
+    position: relative;
+    max-height: 600px;
+    padding-right: 10px;
+}
+
+.modal.modal-lg .modal-container{
+    max-height: 930px;
+}
+
+#lids .title:empty::before {
+    content: "Без названия";
+    color: lightgray;
+}
+
+#lids .contact .name:empty::before {
+    content: "Инкогнито";
+    color: lightgray;
+}
+
+#users .fio:empty::before {
+    content: "Инкогнито";
+    color: lightgray;
+}
+
+#users .login:empty::before {
+    content: "Без почты";
+    color: lightgray;
+}
+
+#users .priv:empty::before {
+    content: "Без профиля";
+    color: lightgray;
+}
+
+.t-edit {
+    background: inherit !important;
+}
+
+.access {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#pipe {
+    justify-content: center;
+    width: 100%;
+}
+
+#pipe .stages {
+    background-color: #fcfcfc;
+    width: 14rem;
+    border: 1px black solid
+}
+
+.pipe-header {
+    border-bottom: 1px solid black;
+}
+
+#pipe .lid-container {
+    border: 1px solid black;
+    /* padding: 15px 15px; */
+    max-height: 3rem;
+    margin: 10px;
+    /* width: 1rem; */
+}
+
+.navbar-brand small {
+    line-height: .6rem;
+    font-size: .5rem;
+    letter-spacing: .03rem;
+    display: block;
+}
+
+.navbar-brand a {
+    color: #3b4351;
+    font-weight: 200;
+    font-size: .75rem;
+}
+
+.navbar-brand:hover a {
+    text-decoration: none;
+    color: orange;
+    fill: orange;
+    cursor: pointer;
+}
+
+.navbar-brand a span {
+    font-weight: 300;
+    line-height: .2rem;
+    letter-spacing: .03rem;
+}
+
+.navbar-brand svg {
+    width: 2.4rem;
+    height: 2.4rem;
+    fill: #3b4351;
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+    transition: all 1s ease-in-out;
+}
+
+.navbar-brand:hover svg {
+    cursor: pointer;
+    -webkit-transform: rotate(90deg);
+    transform: rotate(90deg);
+}
+
+.navbar small {
+    color: #9c9c9c;
+}
+
+.navbar-brand .tile-content {
+    padding-bottom: .5rem;
+}
+
+#vis {
+    min-height: 400px
+}
+
+#stepsHolder {
+    height: fit-content;
+    width: 100%;
+}
+
+#stepsHolder .input-group{
+    height: fit-content;
+}
+
+.form-switch {
+    width: fit-content;
+    margin: 0 !important;
+}
+
+.loading {
+    margin: auto;
+}
+
+#kanbanSteps .label {
+    margin-left: 10px;
+}
+
+#kanbanStepsHolder {
+    overflow: -webkit-paged-y;
+}
+
+.steps {
+    display: flex;
+}
+
+.steps .step {
+    min-width: 350px;
+    margin: 0 .05rem;
+    background: #f7f8f9;
+    border: none;
+}
+
+#kanbanList {
+    padding-top: .5rem;
+    padding-bottom: .5rem
+}
+
+#kanbanList .input-group {
+    display: initial
+}
+
+#kanbanList:empty::before {
+    content: "Канбанов нет";
+    color: gray;
+}
+
+#kanbanTitleChangeInput {
+    text-align: center
+}
+
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.steps {
+    cursor: grab;
+}
+
+.grabbing {
+    cursor: grabbing !important;
+}
+
+.step-title {   
+    height: 30px !important;
+    overflow: hidden;
+}
+
+.lid {
+    cursor: default;
+    min-height: 4.5rem;
+    border: none;
+    border-radius: 0;
+    border: 1px solid #ddd;
+    font-size: 11px;
+    position: relative;
+}
+
+.lid .h6 {
+    width: fit-content;
+    display: contents;
+}
+
+.lid img {
+    height: 70%;
+    width: 70%;
+    margin: 3px;
+}
+
+.lid:hover button {
+    display: inherit !important;
+}
+
+.lid .lid-header {
+    padding: 0 4px;
+}
+
+.lid .lid-header h6 {
+    margin: 0
+}
+
+.lid .lid-header h6:empty::before {
+    content: "Без названия"
+}
+
+.lid > i.icon.icon-menu {
+    margin: 11px;
+    cursor: move;
+    position: absolute;
+    right: 0;
+}
+
+.lid textarea {
+    width: -webkit-fill-available !important;
+    min-height: 100px !important;
+}
+
+.lid .lid-body {
+    padding: 4px;
+    min-height: 2rem;
+}
+
+.lid .lid-body > div {
+    display: flex;
+    width: 100%;
+}
+
+.lid .lid-footer {
+    margin-top: auto;
+    background-color: #ddd;
+    font-size: 10px;
+    padding-right: 4px;
+}
+
+.lid .expand {
+    margin-left: auto;
+}
+
+.lid .tab-item {
+    cursor: pointer;
+}
+
+.lid .lid-menu {
+    background-color: #fff;
+    border-top: 1px #ddd solid;
+}
+
+.lid .lid-menu .menu-tab {
+    overflow: hidden;
+}
+
+.lid .lid-menu .menu-tab:empty::before {
+    content: "Эта вкладка пока что пустая :)";
+    text-align: center;
+    color: black;
+    display: flex;
+    font-size: 12px;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.lid .lid-menu .menu-tab dl {
+    margin: 0;
+    padding-left: 10px;
+}
+
+.lid .taskDraggerHolder {
+    padding-top: 8px;
+    padding-right: 6px;
+    cursor: s-resize;
+}
+
+.lid .lid-menu dl:empty::before {
+    content: "Задач нет";
+    text-align: center;
+    color: black;
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.lid .lid-menu .menu-tab dl dd {
+    margin: 0;
+    position: relative;
+    display: flex;
+}
+
+.lid .lid-menu .story.menu-tab dl dd {
+    padding-bottom: 5px;
+}
+
+.lid .lid-menu .story .timeline-content:empty::before {
+    content: "Эта история не обрабатывается";
+    color: gray;
+}
+
+.lid .lid-menu .story .timeline-item audio{
+    height: 33px;
+    position: absolute;
+    top: -2rem;
+    left: 1rem;
+}
+
+.lid .lid-menu .story .timeline-item:first-child audio{
+    top: 1rem;
+}
+
+
+.lid .lid-menu .menu-tab dl dd:hover img  {
+    display: unset
+}
+
+.lid .lid-menu .menu-tab dl dd .editTask {
+    display: none;
+    cursor: pointer;
+    margin: 0;
+}
+
+.lid .lid-menu .menu-tab dl dd .editTask {
+    display: none;
+    width: 18px;
+    height: 18px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    float: right;
+}
+
+.lid .lid-menu .menu-tab dl [name="titleHolder"] {
+    width: 92%;
+}
+
+.lid .lid-menu .menu-tab dl [name="calendar"] ,[name="time"] {
+    display: inline-block;
+    font-size: 10.5px;
+    padding: 0;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+.lid .lid-menu .menu-tab dl [name="title"] {
+    display: inline-block;
+    cursor: pointer;
+}
+
+.lid .lid-menu .menu-tab dl [name="title"]:empty::before {
+    content: "Без названия";
+    color: gray
+}
+
+.lid .form-checkbox {
+    width: 100%
+}
+
+.lid .story .timeline:empty::before {
+    content: "Исторя пуста";
+    text-align: center;
+    color: #bbb;
+    display: flex;
+    font-size: 12px;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.lid .lid-menu .menu-tab dl input[type="checkbox"]:checked ~[name="titleHolder"] [name="title"] {
+    text-decoration: line-through;
+}
+
+.lid.grabbingLid {
+    background: #e8f1f6 !important;
+}
+
+.lid .tasks {
+    height: 100%;
+}
+
+.lid .card-footer {
+    margin-top: auto;
+    padding: 5px !important; 
+    width: 100%
+}
+
+.lid .tasks .avatar {
+    float: right;
+    position: absolute;
+    top: 7%;
+    right: 2.5%;
+    cursor: pointer;
+}
+
+.flip {
+    transform: rotate(180deg);
+    transition: .5s
+}
+
+.flip-back {
+    transform: rotate(180deg);
+    transform: rotate(0deg);
+    transition: .5s;
+}
+
+.lid .timeline-content {
+    padding-left: 0 !important;
+    flex: unset;
+    padding-right: 10px !important;
+}
+
+.lid .timeline-content [name="time"] {
+    color: #a5a5a5;
+    float: right;
+    cursor: default;
+    font-weight: 100;
+    margin-left: 5px;
+}
+
+.lid .timeline-item {
+    margin-bottom: 10px;
+}
+
+.lid .timeline-item::before {
+    height: 110%;
+    top: 0.8rem;
+}
+
+.lid .timeline-icon.icon-lg {
+    height: .8rem;
+    width: .8rem;
+    margin: .2rem;
+    font-size: .4rem;
+}
+
+.lid .timeline-item.icon-lg::before{
+    top: 1rem;
+}
+
+.lid .timeline-item:last-child::before {
+    background: transparent;
+}
+
+.lid .timeline-content, .lid [name="title"] {
+    word-break: break-word;
+}
+
+.step-content {
+    min-height: 100px;
+}
+
+.step-content:empty::before {
+    content: "Этот шаг пуст";
+    text-align: center;
+    color: #ccc;
+    display: flex;
+    justify-content: center;
+    padding-top: 20px;
+}
+
+.lid .about {
+    padding: 0 10px;
+}
+
+.lid .about dd {
+    justify-content: space-between;
+}
+
+.lid .about dd:last-child {
+    margin-bottom: 0
+}
+
+.lid .about dd input {
+    border: none;
+    margin-bottom: 1px;
+    width: 50%;
+}
+
+.lid .about dd input:focus {
+    outline: none;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #a5a5a5;
+}
+
+.lid .about dd .title {
+    padding-right: 10px;
+}
+
+.dhx_calendar, .dhx_widget {
+    position: absolute;
+    box-shadow: 0px 0px 20px 20px rgba(0,0,0,0.05);
+}
+
+.dhx_widget {
+    position: relative;
+}
+
+#vis.full-screen {
+    position: absolute;
+    z-index: 400;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#exitFullScreen {
+    bottom: 1rem;
+    right: 1rem;
+    z-index: 401;
+}
+
+#visHolder button.full-screen, div.full-screen {
+    z-index: 500;
+    position: absolute;
+    bottom: 1rem;
+}
+
+#reloadVisBtn.full-screen {
+    left: 1rem;
+}
+
+#strictBtnHolder.full-screen {
+    left: 6rem;
+}
+
+#saveStepsVis.full-screen {
+    left: 13rem;
+}
+
+.lidCard {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 101%;
+    background-color: #fff;
+    z-index: 101;
+}
+
+.lidCard-bg {
+    background-color: #ccc;
+    opacity: .5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 101%;
+    z-index: 100;
+}
+
+#kanbanStepsHolder {
+    cursor: grab;
+    overflow: hidden;
+}
+
+.lid .avatar.contact {
+    float: right;
+    position: relative;
+    top: unset;
+    right: unset;
+    margin-right: 20px
+}
+
+.lid .contact input {
+    border: none;
+    outline: none;
+    width: 70px;
+}
+
+.lid .contact input[name="searchCompany"] {
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+}
+
+.lid .contact input::-webkit-outer-spin-button,
+.lid .contact input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0
+}
+
+.seven-prefix {
+    width: 90px;
+}
+
+.seven-prefix.error {
+    outline: auto red;
+    transition: 500ms;
+}
+
+.seven-prefix::before {
+    content: "+7"
+}
+
+.low-access {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    max-width: 300px;
+}
+
+.noAccess {
+    top: 35vh;
+    position: relative;
+}
+
+#usersListModal .user:hover {
+    background-color: rgba(0,0,0,0.05); 
+}
+
+#usersListModal .user.active {
+    background-color: rgba(0,0,0,0.1);
+}
+
+#found {
+    max-height: 100px;
+    overflow: auto;
+}
+
+#found:empty::before {
+    content: "Ничего не найдено";
+    text-align: center;
+    color: #ccc;
+    display: flex;
+    justify-content: center;
+}
+
+.no-select {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+
+.emptyLidTitle:empty::before {
+    content: "Без названия";
+    color: gray;
+}
+
+.dhx_timepicker__button-close {
+    display: hide;
+}
+
+#tasks:empty::before , #tasks.emptyTasks::before  {
+    content: "Ничего не найдено";
+    color: gray;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.filter-item {
+    font-size: 14px;
+}
+
+.filter-item input {
+    font-size: .7rem;
+    height: 1.4rem;
+    padding: .05rem 0;
+}
+
+.filter-item [name="taskTitle"], .filter-item [name="taskTitle"].active {
+    border: none;
+    min-height: 25px;
+    overflow: hidden;
+    margin-bottom: 1px;
+    box-sizing: content-box;
+    outline: none;
+}
+
+.filter-item [name="taskTitle"]:hover {
+    margin-bottom: 0;
+    border-bottom: 1px solid black;
+    cursor: text;
+    user-select: text;
+}
+
+.dhx_calendar-day--selected:before, .dhx_calendar-month--selected:before, .dhx_calendar-year--selected:before, .dhx_slider__range, .dhx_slider__thumb, .dhx_button--view_flat.dhx_button--color_primary {
+    background-color: #000 !important;
+    color: #fff !important;
+}
+
+.dhx_button--view_flat.dhx_button--color_primary.dhx_button--active, .dhx_button--view_flat.dhx_button--color_primary:focus, .dhx_button--view_flat.dhx_button--color_primary:hover {
+    background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.user-tile.active {
+    background-color: rgba(128, 128, 128, 0.25);
+}
+
+.user-tile {
+    margin-bottom: 1px;
+}
+
+.user-tile:hover {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.5);
+    margin-bottom: 0px;
+}
+
+.markedDay::after {
+    border: 1px solid black !important;
+    border-radius: 50% !important;
+    opacity: 1 !important;
+    background: transparent !important;
+}
+
+.c-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.navbar .badge[data-badge]::after, .badge:not([data-badge])::after {
+    background: #ffb700 !important;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: black;
+}
+
+.badge.btn::after {
+    transform: translate(25%, 0%)
+}
+
+.lid .form-autocomplete [name="suggestion"]:empty::before, .empty-search:empty::before, #newSubContactSuggestion:empty::before {
+    content: "Ничего не найдено";
+    color: gray;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.lid .form-autocomplete .menu {
+    transform: none !important;
+    -webkit-transform: none;
+    top: unset;
+    bottom: 100%;
+    left: 0;
+}
+
+.lid .form-autocomplete .menu > .tile {
+    margin-bottom: 1px;
+}
+
+.lid .form-autocomplete .menu > .tile:hover {
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15)
+}
+
+.t-editContact:hover, .t-editContact{
+    background-color: transparent !important; 
+}
+
+.t-editContact .seven-prefix {
+    width: unset;
+}
+
+.t-editContact .seven-prefix input {
+    border: none;
+    margin-bottom: 1px;
+}
+
+.t-editContact .seven-prefix input:focus {
+    outline: none;
+    margin-bottom: 0px;
+    border-bottom: 1px solid #a5a5a5;
+}
+
+#newSubContactSuggestion {
+    margin: 0 !important;
+}
+
+#newSubContactSuggestion dd {
+    margin: 0;
+    margin-bottom: 1px !important;
+}
+
+#newSubContactSuggestion dd:hover {
+    margin-bottom: 0 !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+*::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
+*::-webkit-scrollbar {width: 6px;height: 6px;}
+*::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}

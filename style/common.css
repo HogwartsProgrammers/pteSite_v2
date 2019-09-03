@@ -1,0 +1,45 @@
+@import 'colors.css';
+
+* {
+  font-family: 'Montserrat', sans-serif !important;
+}
+
+.f-dark {
+  fill: var(--color-dark);
+}
+
+.f-white {
+  fill: var(--color-white);
+}
+
+.f-orange {
+  fill: var(--color-orange);
+}
+
+.f-ligh-dark {
+  fill: var(--color-light-dark);
+}
+
+.s-white {
+  stroke: var(--color-white);
+}
+
+.s-dark {
+  stroke: var(--color-dark);
+}
+
+.s-orange {
+  stroke: var(--color-orange);
+}
+
+.tab-item.active svg{
+  fill: var(--color-orange);
+}
+
+.tab-item svg{
+  fill: var(--color-light-dark);
+}
+
+.tab-item a {
+  border-bottom-width: 5px;
+}
