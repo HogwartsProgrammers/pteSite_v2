@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        base(href=path)
+        title #{pageTitle}
+        <meta name="description" content="#{pageDescription}" />
+        <meta name="keywords" content="#{pageKeywords}" />
+        link(rel="shortcut icon" href="images/favicon.png" type="image/png")
+        link(rel="stylesheet", href="./css/mainBundle.css")
+        block styles
+    body#app_body
+        .off-canvas
+            .off-canvas-sidebar
+            .off-canvas-overlay
+            .off-canvas-content
+                header
+                    nav.docs-navbar
+                        a.off-canvas-toggle.btn.btn-link.btn-action.js-open-sidebar
+                            i.icon.icon-menu
+                        .page-title
+                        .header-tel
+                            button.btn.btn-sm.btn-error.btn-callback.text-bold.text-uppercase Заказать
+                            a.btn.btn-link(href="tel:+78002226580") 8 800 222 65 80
+                            .phone-note Заказать обратный звонок
+                    block logo
+                    .offer
+                        block offer
+                    .discription
+                        block discription
+                main
+                footer
+        #all_icons.d-hide 
+            block svg
+        <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style>
+        //- include ./callmodal-layout.pug    
+        script(src="js/mainBundle.js")

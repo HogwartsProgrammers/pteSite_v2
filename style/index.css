@@ -4,3 +4,118 @@
 @import 'spectre-exp.css';
 @import 'spectre-icons.css';
 @import 'timeline.css';
+
+.docs-navbar {
+    background: rgba(255, 255, 255, 0.95) ;
+    transition: 250ms;
+    height: 3.8rem;
+    position: fixed;
+    z-index: 1002;
+    width: 100%;
+    max-width: 976px;
+}
+
+.docs-navbar .header-tel {
+    position: absolute;
+    right: 0.7rem;
+    top: 0.35rem;
+}
+
+.docs-navbar .header-tel a {
+    font-size: 1rem
+}
+
+.docs-navbar .header-tel .phone-note {
+    position: relative;
+    font-size: 0.58rem;
+    width: fit-content;
+    bottom: 0.5rem;
+    left: 4.9rem;
+}
+
+.off-canvas {
+    max-width: 976px;
+    margin: 0 auto;
+}
+
+.off-canvas .off-canvas-toggle {
+    font-size: 1rem;
+    left: 1.5rem;
+    position: absolute;
+    top: 1rem
+}
+
+.off-canvas .off-canvas-content {
+    padding: 0;
+}
+
+#logo {
+   height: 16.5rem; 
+}
+
+#background_logo {
+    height: 16.5rem;
+}
+
+#big_logo {
+    width: 270px;
+    height: 270px;
+    position: relative;
+    margin: 0 auto;
+    bottom: 16rem;
+    border: 1px solid;
+    padding: 2px;
+    border-radius: 50%;
+}
+
+.offer {
+    background-color: #444;
+    height: 8.3rem;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    padding-top: 0.7rem;
+    border-top: 1px solid #fff;
+}
+
+h1 {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    color: #f5a623;
+    font-size: 1.66rem;
+    margin-top: 0.3rem;
+}
+
+h1 span {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    color: #fff;
+}
+
+#offer_text {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    color: #f5a623;
+    position: relative;
+    bottom: 0.6rem;
+}
+
+#offer_text::before {
+    content: '';
+    position: absolute;
+    top: 0.55rem;
+    left: 6.2rem;
+    display: block;
+    border-top: 2px solid #f5a623;
+    width: 5.5rem;
+}
+
+#offer_text::after {
+    content: '';
+    position: absolute;
+    top: 0.55rem;
+    left: 37.1rem;
+    display: block;
+    border-top: 2px solid #f5a623;
+    width: 5.5rem;
+}
+#offer_text span {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    color: #fff;
+}

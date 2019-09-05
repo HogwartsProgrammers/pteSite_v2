@@ -10,467 +10,467 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
     // подключаем svgjs код
     require ('../svg.js').svgjs()
     // Добавляем на location "/" , кнопке в баре класс bt_callback
-    document.querySelectorAll('.bg-metal button').forEach(el => el.classList.add('bt_callback'))
+    // document.querySelectorAll('.bg-metal button').forEach(el => el.classList.add('bt_callback'))
 
-    inView('.svgHolder').on('enter', el => {
-        if (!el.childElementCount) {
-            el.classList.add('animated', 'fadeIn')
-            el.innerHTML = `<img class="svgObjHolder" src="${el.dataset.src}">`
-        }
-    })
+    // inView('.svgHolder').on('enter', el => {
+    //     if (!el.childElementCount) {
+    //         el.classList.add('animated', 'fadeIn')
+    //         el.innerHTML = `<img class="svgObjHolder" src="${el.dataset.src}">`
+    //     }
+    // })
+}
+//     const tags = document.querySelectorAll('a[name]')
 
-    const tags = document.querySelectorAll('a[name]')
+//     const check = () => {
+//         try {
+//             const title = document.querySelector('.pageTitle')
+//             if (window.innerWidth <= 1024 && (title.offsetWidth > 550 || title.offsetWidth == 0)) {
+//                 title.classList.add('d-hide')
+//             } else {
+//                 title.classList.remove('d-hide')
+//             }
+//         } catch {}
+//     }
 
-    const check = () => {
-        try {
-            const title = document.querySelector('.pageTitle')
-            if (window.innerWidth <= 1024 && (title.offsetWidth > 550 || title.offsetWidth == 0)) {
-                title.classList.add('d-hide')
-            } else {
-                title.classList.remove('d-hide')
-            }
-        } catch {}
-    }
+//     check()
 
-    check()
+//     window.addEventListener('scroll', event => {
+//         if (!document.querySelector('.pageTitle')) return
+//         let last
+//         tags.forEach(el => {
+//             if (el.getBoundingClientRect().y < 0) {
+//                 last = el
+//             }
+//         })
+//         document.querySelector('.pageTitle').classList.remove('d-hide')
+//         if (last) document.getElementById('navTitle').innerText = last.parentElement.querySelector('h4').childNodes[0].wholeText
+//         else document.getElementById('navTitle').innerText = ''
 
-    window.addEventListener('scroll', event => {
-        if (!document.querySelector('.pageTitle')) return
-        let last
-        tags.forEach(el => {
-            if (el.getBoundingClientRect().y < 0) {
-                last = el
-            }
-        })
-        document.querySelector('.pageTitle').classList.remove('d-hide')
-        if (last) document.getElementById('navTitle').innerText = last.parentElement.querySelector('h4').childNodes[0].wholeText
-        else document.getElementById('navTitle').innerText = ''
-
-        check()
-    })
+//         check()
+//     })
     
-    //костыль для лого лендинга
-    const paddingFix = () => {
-        document.body.clientWidth <= 1024 ?
-        document.querySelector('.first-screen').style.paddingTop = '3.2' + 'rem'
-        : document.querySelector('.first-screen').style.paddingTop = 'unset'
-    }
-    paddingFix()
-    window.addEventListener('resize', () => {
-        paddingFix()
-    })
-}
+//     //костыль для лого лендинга
+//     const paddingFix = () => {
+//         document.body.clientWidth <= 1024 ?
+//         document.querySelector('.first-screen').style.paddingTop = '3.2' + 'rem'
+//         : document.querySelector('.first-screen').style.paddingTop = 'unset'
+//     }
+//     paddingFix()
+//     window.addEventListener('resize', () => {
+//         paddingFix()
+//     })
+// }
 
-if (location.pathname.toLocaleLowerCase() === '/sclady') {
-    document.getElementById('navTitle').innerText = ''
-    require('../historyScroll').slider()
+// if (location.pathname.toLocaleLowerCase() === '/sclady') {
+//     document.getElementById('navTitle').innerText = ''
+//     require('../historyScroll').slider()
     
-    document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
-        document.getElementById('scladSquare').classList.remove('d-hide')
-    })
-}
+//     document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
+//         document.getElementById('scladSquare').classList.remove('d-hide')
+//     })
+// }
 
-const polyStyleFix = () => {
-    if (location.pathname.toLocaleLowerCase() != '/poly') return
-    document.querySelector('.first-screen').style.height = document.querySelector('.first-screen img').getBoundingClientRect().height + (document.body.clientWidth >= 1024 ? -3 : document.body.clientWidth > 425 ? -7 : 7) + 'px'
-} 
+// const polyStyleFix = () => {
+//     if (location.pathname.toLocaleLowerCase() != '/poly') return
+//     document.querySelector('.first-screen').style.height = document.querySelector('.first-screen img').getBoundingClientRect().height + (document.body.clientWidth >= 1024 ? -3 : document.body.clientWidth > 425 ? -7 : 7) + 'px'
+// } 
 
-if (location.pathname.toLocaleLowerCase() === '/poly') {
+// if (location.pathname.toLocaleLowerCase() === '/poly') {
 
-    document.getElementById('logo_txt').style.width = '60%'
-    // document.getElementById('navTitle').innerText = 'ПРОМЫШЛЕННЫЕ ПОЛЫ'
-    require('../circlesScript').circlesScript()
-    require('../historyScroll').slider()
-    const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
+//     document.getElementById('logo_txt').style.width = '60%'
+//     // document.getElementById('navTitle').innerText = 'ПРОМЫШЛЕННЫЕ ПОЛЫ'
+//     require('../circlesScript').circlesScript()
+//     require('../historyScroll').slider()
+//     const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
 
-    //показывать параметры пола
-    document.querySelector('.bg-metal').classList.add('barPoly')
-    document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
-        document.querySelector('.bg-metal').scrollIntoView({behavior: 'smooth'})
-    })
+//     //показывать параметры пола
+//     document.querySelector('.bg-metal').classList.add('barPoly')
+//     document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
+//         document.querySelector('.bg-metal').scrollIntoView({behavior: 'smooth'})
+//     })
 
-    //отправка параметров пола лида
-    floorBtns.forEach(el => {
-        el.onclick = () => {
-            if (!el.classList.contains('active')) {
-                el.classList.add('active')
-            } else {
-                el.classList.remove('active')
-            }
-        }
-    })
-    console.log(a.length)
-}
+//     //отправка параметров пола лида
+//     floorBtns.forEach(el => {
+//         el.onclick = () => {
+//             if (!el.classList.contains('active')) {
+//                 el.classList.add('active')
+//             } else {
+//                 el.classList.remove('active')
+//             }
+//         }
+//     })
+//     console.log(a.length)
+// }
 
-// Костыль для навбара и btnCallback
-const navPositionFix = () => {
-    if (!document.querySelector('.docs-navbar')) return
-    const btCallback = document.querySelector('.callback_phone_button')
-    let widthCont = window.getComputedStyle(document.getElementById('content')).marginLeft
-    document.querySelector('.docs-navbar').style.left = Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
-    if (document.body.clientWidth > 1440) {
-    btCallback.style.left = 976 + Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
-    } else {
-        btCallback.style.left = 1173 + 'px'
-        if (document.body.clientWidth < 1325) {
-            btCallback.style.left = document.body.clientWidth - btCallback.getBoundingClientRect().width - 50 + 'px'
-        }
-    } 
-}
-navPositionFix()
+// // Костыль для навбара и btnCallback
+// const navPositionFix = () => {
+//     if (!document.querySelector('.docs-navbar')) return
+//     const btCallback = document.querySelector('.callback_phone_button')
+//     let widthCont = window.getComputedStyle(document.getElementById('content')).marginLeft
+//     document.querySelector('.docs-navbar').style.left = Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
+//     if (document.body.clientWidth > 1440) {
+//     btCallback.style.left = 976 + Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
+//     } else {
+//         btCallback.style.left = 1173 + 'px'
+//         if (document.body.clientWidth < 1325) {
+//             btCallback.style.left = document.body.clientWidth - btCallback.getBoundingClientRect().width - 50 + 'px'
+//         }
+//     } 
+// }
+// navPositionFix()
  
-//функционал svg sidebar'a
-document.querySelectorAll('#SideBar > g').forEach((el,i,a) => {
-    el.onclick = event => {
-        a.forEach(el => {
-            el.querySelector('#sideRect').setAttribute('fill', '#E6E7E8') 
-            el.querySelector('text').setAttribute('fill', '#000')
-        })
-        el.querySelector('#sideRect').setAttribute('fill', '#000') 
-        el.querySelector('text').setAttribute('fill', '#fff')
-    }
-})
+// //функционал svg sidebar'a
+// document.querySelectorAll('#SideBar > g').forEach((el,i,a) => {
+//     el.onclick = event => {
+//         a.forEach(el => {
+//             el.querySelector('#sideRect').setAttribute('fill', '#E6E7E8') 
+//             el.querySelector('text').setAttribute('fill', '#000')
+//         })
+//         el.querySelector('#sideRect').setAttribute('fill', '#000') 
+//         el.querySelector('text').setAttribute('fill', '#fff')
+//     }
+// })
 
-// костыль для шестерней
-function gearChange() {
-    document.body.clientWidth <= 1024 ?
-        use.forEach(el => {
-            el.setAttribute('x', '11')
-            el.setAttribute('y', '11')
-        })
-        : use.forEach(el => {
-            el.setAttribute('x', '13')
-            el.setAttribute('y', '13')
-        })
-}
-const use = document.querySelectorAll('.bg-metal use')
-gearChange()
+// // костыль для шестерней
+// function gearChange() {
+//     document.body.clientWidth <= 1024 ?
+//         use.forEach(el => {
+//             el.setAttribute('x', '11')
+//             el.setAttribute('y', '11')
+//         })
+//         : use.forEach(el => {
+//             el.setAttribute('x', '13')
+//             el.setAttribute('y', '13')
+//         })
+// }
+// const use = document.querySelectorAll('.bg-metal use')
+// gearChange()
 
-//скролл сайдбара
-require('../scrollSidebar').scrollSidebar()
+// //скролл сайдбара
+// require('../scrollSidebar').scrollSidebar()
 
-// меняем тайтлы и кнопоки плашек рассчетов
-document.querySelectorAll('.bt_callback').forEach(el => {
-    el.onclick = () => {
-        if ((el.dataset.title || el.dataset.cta) && (!el.dataset.title == '' || !el.dataset.cta == '')) {
-            document.getElementById('callback_modal').querySelector('.h4').textContent = el.dataset.title
-            document.getElementById('callbackBtn').textContent = el.dataset.cta
-        } else {
-            document.getElementById('callback_modal').querySelector('.h4').textContent = "ОБРАТНЫЙ ЗВОНОК"
-            document.getElementById('callbackBtn').textContent = "Жду звонка"
-            return
-        }
-    }
-})
+// // меняем тайтлы и кнопоки плашек рассчетов
+// document.querySelectorAll('.bt_callback').forEach(el => {
+//     el.onclick = () => {
+//         if ((el.dataset.title || el.dataset.cta) && (!el.dataset.title == '' || !el.dataset.cta == '')) {
+//             document.getElementById('callback_modal').querySelector('.h4').textContent = el.dataset.title
+//             document.getElementById('callbackBtn').textContent = el.dataset.cta
+//         } else {
+//             document.getElementById('callback_modal').querySelector('.h4').textContent = "ОБРАТНЫЙ ЗВОНОК"
+//             document.getElementById('callbackBtn').textContent = "Жду звонка"
+//             return
+//         }
+//     }
+// })
 
-// Рассчет элемента по оси y для смены фона навбара  
-const nav = document.querySelector('.docs-navbar')
-function getCoords(elem) {
-    if (!elem) return
-    let box = elem.getBoundingClientRect()
+// // Рассчет элемента по оси y для смены фона навбара  
+// const nav = document.querySelector('.docs-navbar')
+// function getCoords(elem) {
+//     if (!elem) return
+//     let box = elem.getBoundingClientRect()
   
-    return {
-      top: box.top + pageYOffset,
-    //   left: box.left + pageXOffset
-    }
-  }
-window.onscroll = () => {
-    if (!nav) return
-    let coords = getCoords(nav)
-    if (coords.top === 0) nav.classList.add('visableNav')
-    else nav.classList.remove('visableNav')
-}
+//     return {
+//       top: box.top + pageYOffset,
+//     //   left: box.left + pageXOffset
+//     }
+//   }
+// window.onscroll = () => {
+//     if (!nav) return
+//     let coords = getCoords(nav)
+//     if (coords.top === 0) nav.classList.add('visableNav')
+//     else nav.classList.remove('visableNav')
+// }
 
-// Сайдбар
+// // Сайдбар
 
-const body = document.querySelector('body')
+// const body = document.querySelector('body')
 
-body.addEventListener('animationend', () => body.classList.remove('fadeIn'))
+// body.addEventListener('animationend', () => body.classList.remove('fadeIn'))
 
-inView('.container .content > .bg-metal').on('enter', () => {
-    if (document.body.clientWidth > 960) {  
-        body.classList.add('fadeIn')
-        sidebar.classList.add('d-hide')
-    } else return
-})
-.on('exit', () => {
-    if (document.body.clientWidth > 960) {
-        if (sidebar.classList.contains('d-hide')) {
-            body.classList.add('fadeIn')
-            sidebar.classList.remove('d-hide')
-        }
-    }
-    else return
-})
+// inView('.container .content > .bg-metal').on('enter', () => {
+//     if (document.body.clientWidth > 960) {  
+//         body.classList.add('fadeIn')
+//         sidebar.classList.add('d-hide')
+//     } else return
+// })
+// .on('exit', () => {
+//     if (document.body.clientWidth > 960) {
+//         if (sidebar.classList.contains('d-hide')) {
+//             body.classList.add('fadeIn')
+//             sidebar.classList.remove('d-hide')
+//         }
+//     }
+//     else return
+// })
 
-const setNormal = () => {
-    if (location.pathname == '/') {
-        document.querySelector('.first-screen').style.height = null
-        document.querySelector('.first-screen-bg').style.height = null
-        document.querySelector('h1').removeAttribute('style')
-        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-    }
+// const setNormal = () => {
+//     if (location.pathname == '/') {
+//         document.querySelector('.first-screen').style.height = null
+//         document.querySelector('.first-screen-bg').style.height = null
+//         document.querySelector('h1').removeAttribute('style')
+//         document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
+//         document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
+//     }
 
-    if (location.pathname == '/poly') {
-        document.querySelector('.first-screen').style.height = '279px'
-        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-    }
-}
+//     if (location.pathname == '/poly') {
+//         document.querySelector('.first-screen').style.height = '279px'
+//         document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
+//         document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
+//     }
+// }
 
-inView('.docs-sidebar').on('enter', el => {
-    if (document.body.clientWidth > 960) {
-        document.querySelector('.js-openSidebar').style.display = 'none'
-        if (location.pathname == '/') {
-            document.querySelector('.first-screen').style.height = 267 + 'px'
-            document.querySelector('.first-screen-bg').style.height = 249 + 'px'
-            document.querySelector('h1').style.fontSize = 1.7 + 'rem'
-            document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-            document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-        }
-        if (location.pathname == '/poly') {
-            if (document.body.clientWidth > 960) {
-                document.querySelector('.first-screen').style.height = 210 + 'px'
-                document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-                document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-                document.querySelector('h2').style.fontSize = '2.1rem'
-                document.querySelector('h2 small').style.fontSize = '1.2rem'
-            }
-        }
-    }
-})
-.on('exit', el => {
-    setNormal()
-    document.querySelector('.js-openSidebar').style.display = 'unset'
-})
-
-
-if (!!document.querySelector('.container .content > .bg-metal') && !inView.is(document.querySelector('.container .content > .bg-metal'))) sidebar.classList.remove('d-hide')
-
-if (!!document.getElementById('sidebar') && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
-
-window.addEventListener('resize', event => {
-    navPositionFix()
-    gearChange()
-    sidebar.classList.remove('sidebar-active')
-    document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
-    if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
-    else {
-        sidebar.classList.add('d-hide')
-    }
-    if (!inView.is(document.querySelector('.container .content > .bg-metal'))) {
-        sidebar.classList.remove('d-hide')
-    }
-    polyStyleFix()
-})
-
-if (document.body.clientWidth < 1024) polyStyleFix() 
-if (!!document.querySelector('.js-openSidebar')) {
-    document.querySelector('.js-openSidebar').addEventListener('click', event => {
-        if (document.body.clientWidth > 960) {
-            body.classList.add('fadeIn')
-            sidebar.classList.remove('d-hide')
-        } else {
-            event.preventDefault()
-            sidebar.classList.add('sidebar-active')
-            document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
-        }
-    })
-}
-document.querySelector('.js-closeSidebar').addEventListener('click', ()=> {
-    document.getElementById('sidebar').classList.remove('sidebar-active')
-    document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
-})
-
-const phoneCleave = new Cleave('#callback_modal .form-input', {
-    numericOnly: true,
-    prefix: '+7',
-    blocks: [2, 3, 3, 2, 2],
-    delimiters: ['(', ')', '-', '-']
-})
-
-// Отключаем кнопку отправки формы изначально
-if (document.querySelector('form[data-name="mailFieldCheck"]')) {
-    document.querySelectorAll('form button[type="submit"]').forEach(button => button.disabled = 'disabled')
-    // Список всех проверок
-    const checkList = { email: false, password: false, passwordCheck: false }
-
-    // Элементы паролей
-    const passwordEl = document.querySelector('input[name="password"]')
-    const passwordCheckEl = document.querySelector('input[name="password-check"]')
-
-    // Переключение кнопки в соответсвии со списком
-    const buttonToggle = () => {
-        const button = document.querySelector('form button[type="submit"]')
-        if (checkList.email && checkList.password && (checkList.passwordCheck || !passwordCheckEl)) {
-            button.disabled = null
-        } else {
-            button.disabled = 'disabled'
-        }
-    }
+// inView('.docs-sidebar').on('enter', el => {
+//     if (document.body.clientWidth > 960) {
+//         document.querySelector('.js-openSidebar').style.display = 'none'
+//         if (location.pathname == '/') {
+//             document.querySelector('.first-screen').style.height = 267 + 'px'
+//             document.querySelector('.first-screen-bg').style.height = 249 + 'px'
+//             document.querySelector('h1').style.fontSize = 1.7 + 'rem'
+//             document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
+//             document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
+//         }
+//         if (location.pathname == '/poly') {
+//             if (document.body.clientWidth > 960) {
+//                 document.querySelector('.first-screen').style.height = 210 + 'px'
+//                 document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
+//                 document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
+//                 document.querySelector('h2').style.fontSize = '2.1rem'
+//                 document.querySelector('h2 small').style.fontSize = '1.2rem'
+//             }
+//         }
+//     }
+// })
+// .on('exit', el => {
+//     setNormal()
+//     document.querySelector('.js-openSidebar').style.display = 'unset'
+// })
 
 
-    // Проверить изначальные данные полей
-    buttonToggle()
+// if (!!document.querySelector('.container .content > .bg-metal') && !inView.is(document.querySelector('.container .content > .bg-metal'))) sidebar.classList.remove('d-hide')
 
-    // Проверка email
-    document.querySelector('input[name="login"]').addEventListener('input', event => {
-        const mailReg = /^[-0-9a-z_\.]+@[-0-9a-z_^\.]+\.[a-z]{2,6}$/i
-        if (mailReg.test(event.target.value)) {
-            checkList.email = true
-            event.target.classList.remove('is-error')
-            event.target.classList.add('is-success')
-            buttonToggle()
-        } else {
-            checkList.email = false
-            event.target.classList.remove('is-success')
-            event.target.classList.add('is-error')
-            buttonToggle()
-        }
-    })
+// if (!!document.getElementById('sidebar') && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
 
-    // Проверка паролей
-    passwordEl.addEventListener('input', event => {
-        if (event.target.value.length >= 8) {
-            checkList.password = true
-            event.target.classList.remove('is-error')
-            event.target.classList.add('is-success')
-            buttonToggle()
-        } else {
-            checkList.password = false
-            event.target.classList.remove('is-success')
-            event.target.classList.add('is-error')
-            buttonToggle()
-        }
-    })
+// window.addEventListener('resize', event => {
+//     navPositionFix()
+//     gearChange()
+//     sidebar.classList.remove('sidebar-active')
+//     document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+//     if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
+//     else {
+//         sidebar.classList.add('d-hide')
+//     }
+//     if (!inView.is(document.querySelector('.container .content > .bg-metal'))) {
+//         sidebar.classList.remove('d-hide')
+//     }
+//     polyStyleFix()
+// })
 
-    if (!!passwordCheckEl) passwordCheckEl.addEventListener('input', event => {
-        if (event.target.value === passwordEl.value && !!event.target.value) {
-            checkList.passwordCheck = true
-            event.target.classList.remove('is-error')
-            event.target.classList.add('is-success')
-            buttonToggle()
-        } else {
-            checkList.passwordCheck = false
-            event.target.classList.remove('is-success')
-            event.target.classList.add('is-error')
-            buttonToggle()
-        }
-    })
-}
+// if (document.body.clientWidth < 1024) polyStyleFix() 
+// if (!!document.querySelector('.js-openSidebar')) {
+//     document.querySelector('.js-openSidebar').addEventListener('click', event => {
+//         if (document.body.clientWidth > 960) {
+//             body.classList.add('fadeIn')
+//             sidebar.classList.remove('d-hide')
+//         } else {
+//             event.preventDefault()
+//             sidebar.classList.add('sidebar-active')
+//             document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
+//         }
+//     })
+// }
+// document.querySelector('.js-closeSidebar').addEventListener('click', ()=> {
+//     document.getElementById('sidebar').classList.remove('sidebar-active')
+//     document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+// })
 
-//Модальное окно обратного звонка
-const buttonCall = document.querySelector('.callback_phone_button')
+// const phoneCleave = new Cleave('#callback_modal .form-input', {
+//     numericOnly: true,
+//     prefix: '+7',
+//     blocks: [2, 3, 3, 2, 2],
+//     delimiters: ['(', ')', '-', '-']
+// })
 
-export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
-        if (!btn.classList.contains('callback_phone_button')) {
-            btn.addEventListener('click', () => {
-                new Cleave('#callback_modal .form-input', {
-                    numericOnly: true,
-                    prefix: '+7',
-                    blocks: [2, 3, 3, 2, 2],
-                    delimiters: ['(', ')', '-', '-']
-                })
-                callbackModal.classList.add('active')
-                callbackInput.focus()
-                if (!!buttonCall) buttonCall.classList.add('d-hide')
-            })
-        }
-    })
-}
-initCallbackBtns()
+// // Отключаем кнопку отправки формы изначально
+// if (document.querySelector('form[data-name="mailFieldCheck"]')) {
+//     document.querySelectorAll('form button[type="submit"]').forEach(button => button.disabled = 'disabled')
+//     // Список всех проверок
+//     const checkList = { email: false, password: false, passwordCheck: false }
 
-// Закрытие окна авторизации
-document.querySelectorAll('.btn-close-modal').forEach(btn => {
-    btn.addEventListener('click', () => {
-        callbackModal.classList.remove('active')
-        if (!!buttonCall) {
-            buttonCall.classList.remove('d-hide')
-            buttonCall.classList.remove('bounceOut')
-        }
-    })
-})
+//     // Элементы паролей
+//     const passwordEl = document.querySelector('input[name="password"]')
+//     const passwordCheckEl = document.querySelector('input[name="password-check"]')
 
-// Анимация кнопки телефона
-const callbackModal = document.getElementById('callback_modal')
-if (!!buttonCall) buttonCall.addEventListener('click', event => {
-    setTimeout(() => {
-        new Cleave('#callback_modal .form-input', {
-            numericOnly: true,
-            prefix: '+7',
-            blocks: [2, 3, 3, 2, 2],
-            delimiters: ['(', ')', '-', '-']
-        })
-        callbackModal.classList.add('active')
-        callbackInput.focus()
-        if (!!buttonCall) buttonCall.classList.add('d-hide')
-    }, 1000);
-    buttonCall.classList.add('bounceOut')
-})
+//     // Переключение кнопки в соответсвии со списком
+//     const buttonToggle = () => {
+//         const button = document.querySelector('form button[type="submit"]')
+//         if (checkList.email && checkList.password && (checkList.passwordCheck || !passwordCheckEl)) {
+//             button.disabled = null
+//         } else {
+//             button.disabled = 'disabled'
+//         }
+//     }
 
-const checkboxHolder = document.getElementById('checkboxCallback')
-const inputCheck = document.getElementById('inpLegalCallback')
-const callbackInput = document.getElementById('inpCallback')
-const callbackBtn = document.getElementById('callbackBtn')
-const inpHiddenRaw = callbackModal.querySelector('input[name="phoneRaw"]')
 
-checkboxHolder.style.cursor = 'pointer'
-// Отправка формы доступна если checkbox нажат и введен номер телефона
-checkboxHolder.addEventListener('click', callbackFormReady)
-callbackInput.addEventListener('input', callbackFormReady)
-function callbackFormReady() {
-    console.log(callbackInput.value)
-    if (callbackInput.value.length === 16 && inputCheck.checked) {
-        callbackBtn.disabled = false
-        inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
-        return true    
-    } else {
-        callbackBtn.disabled = true
-        return false
-    }
-}
+//     // Проверить изначальные данные полей
+//     buttonToggle()
 
-callbackBtn.addEventListener('click', event => {
-    callbackInput.value = ''
-    if (document.getElementById('inpCallback').value.length === 0) callbackBtn.disabled = true
-    const lid_data = {}
-    const decoded = decodeURI(location.search.substring(1))
-    if (decoded) decoded.split('&').forEach(utm => {
-        const vals = utm.split('=')
-        if (vals[0].substring(0, 3) === 'utm') lid_data[vals[0].substring(4)] = vals[1]
-    })
+//     // Проверка email
+//     document.querySelector('input[name="login"]').addEventListener('input', event => {
+//         const mailReg = /^[-0-9a-z_\.]+@[-0-9a-z_^\.]+\.[a-z]{2,6}$/i
+//         if (mailReg.test(event.target.value)) {
+//             checkList.email = true
+//             event.target.classList.remove('is-error')
+//             event.target.classList.add('is-success')
+//             buttonToggle()
+//         } else {
+//             checkList.email = false
+//             event.target.classList.remove('is-success')
+//             event.target.classList.add('is-error')
+//             buttonToggle()
+//         }
+//     })
+
+//     // Проверка паролей
+//     passwordEl.addEventListener('input', event => {
+//         if (event.target.value.length >= 8) {
+//             checkList.password = true
+//             event.target.classList.remove('is-error')
+//             event.target.classList.add('is-success')
+//             buttonToggle()
+//         } else {
+//             checkList.password = false
+//             event.target.classList.remove('is-success')
+//             event.target.classList.add('is-error')
+//             buttonToggle()
+//         }
+//     })
+
+//     if (!!passwordCheckEl) passwordCheckEl.addEventListener('input', event => {
+//         if (event.target.value === passwordEl.value && !!event.target.value) {
+//             checkList.passwordCheck = true
+//             event.target.classList.remove('is-error')
+//             event.target.classList.add('is-success')
+//             buttonToggle()
+//         } else {
+//             checkList.passwordCheck = false
+//             event.target.classList.remove('is-success')
+//             event.target.classList.add('is-error')
+//             buttonToggle()
+//         }
+//     })
+// }
+
+// //Модальное окно обратного звонка
+// const buttonCall = document.querySelector('.callback_phone_button')
+
+// export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
+//         if (!btn.classList.contains('callback_phone_button')) {
+//             btn.addEventListener('click', () => {
+//                 new Cleave('#callback_modal .form-input', {
+//                     numericOnly: true,
+//                     prefix: '+7',
+//                     blocks: [2, 3, 3, 2, 2],
+//                     delimiters: ['(', ')', '-', '-']
+//                 })
+//                 callbackModal.classList.add('active')
+//                 callbackInput.focus()
+//                 if (!!buttonCall) buttonCall.classList.add('d-hide')
+//             })
+//         }
+//     })
+// }
+// initCallbackBtns()
+
+// // Закрытие окна авторизации
+// document.querySelectorAll('.btn-close-modal').forEach(btn => {
+//     btn.addEventListener('click', () => {
+//         callbackModal.classList.remove('active')
+//         if (!!buttonCall) {
+//             buttonCall.classList.remove('d-hide')
+//             buttonCall.classList.remove('bounceOut')
+//         }
+//     })
+// })
+
+// // Анимация кнопки телефона
+// const callbackModal = document.getElementById('callback_modal')
+// if (!!buttonCall) buttonCall.addEventListener('click', event => {
+//     setTimeout(() => {
+//         new Cleave('#callback_modal .form-input', {
+//             numericOnly: true,
+//             prefix: '+7',
+//             blocks: [2, 3, 3, 2, 2],
+//             delimiters: ['(', ')', '-', '-']
+//         })
+//         callbackModal.classList.add('active')
+//         callbackInput.focus()
+//         if (!!buttonCall) buttonCall.classList.add('d-hide')
+//     }, 1000);
+//     buttonCall.classList.add('bounceOut')
+// })
+
+// const checkboxHolder = document.getElementById('checkboxCallback')
+// const inputCheck = document.getElementById('inpLegalCallback')
+// const callbackInput = document.getElementById('inpCallback')
+// const callbackBtn = document.getElementById('callbackBtn')
+// const inpHiddenRaw = callbackModal.querySelector('input[name="phoneRaw"]')
+
+// checkboxHolder.style.cursor = 'pointer'
+// // Отправка формы доступна если checkbox нажат и введен номер телефона
+// checkboxHolder.addEventListener('click', callbackFormReady)
+// callbackInput.addEventListener('input', callbackFormReady)
+// function callbackFormReady() {
+//     console.log(callbackInput.value)
+//     if (callbackInput.value.length === 16 && inputCheck.checked) {
+//         callbackBtn.disabled = false
+//         inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
+//         return true    
+//     } else {
+//         callbackBtn.disabled = true
+//         return false
+//     }
+// }
+
+// callbackBtn.addEventListener('click', event => {
+//     callbackInput.value = ''
+//     if (document.getElementById('inpCallback').value.length === 0) callbackBtn.disabled = true
+//     const lid_data = {}
+//     const decoded = decodeURI(location.search.substring(1))
+//     if (decoded) decoded.split('&').forEach(utm => {
+//         const vals = utm.split('=')
+//         if (vals[0].substring(0, 3) === 'utm') lid_data[vals[0].substring(4)] = vals[1]
+//     })
     
-    const floorParams = []
-    if (location.pathname.toLocaleLowerCase() === '/poly') {
-        floorParams.push(document.querySelector('.survey-value').value + ' -площадь пола')
-        const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
-        floorBtns.forEach(el => {
-            if(el.classList.contains('active')) floorParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
-        })
-    }
-    lid_data.comment = floorParams.join(', ')
+//     const floorParams = []
+//     if (location.pathname.toLocaleLowerCase() === '/poly') {
+//         floorParams.push(document.querySelector('.survey-value').value + ' -площадь пола')
+//         const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
+//         floorBtns.forEach(el => {
+//             if(el.classList.contains('active')) floorParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
+//         })
+//     }
+//     lid_data.comment = floorParams.join(', ')
 
-    fetch('/lids', {
-        method: 'POST',
-        body: JSON.stringify({
-            phoneRaw: inpHiddenRaw.value,
-            lid_data: lid_data,
-            _csrf: callbackModal.querySelector('input[name="_csrf"]').value
-        }), 
-        headers:{
-            "Content-Type": "application/json"
-        }
-    }).then(res => {
-        phoneCleave.destroy()
-        // return res
-    })
-    .catch(error => console.error(error))
+//     fetch('/lids', {
+//         method: 'POST',
+//         body: JSON.stringify({
+//             phoneRaw: inpHiddenRaw.value,
+//             lid_data: lid_data,
+//             _csrf: callbackModal.querySelector('input[name="_csrf"]').value
+//         }), 
+//         headers:{
+//             "Content-Type": "application/json"
+//         }
+//     }).then(res => {
+//         phoneCleave.destroy()
+//         // return res
+//     })
+//     .catch(error => console.error(error))
 
-    // console.log(callbackInput.value)
-    // phoneCleave.setRawValue('')
-    // document.getElementById('inpCallback').value = ''
-})
+//     // console.log(callbackInput.value)
+//     // phoneCleave.setRawValue('')
+//     // document.getElementById('inpCallback').value = ''
+// })
     
-//Показываем body после всего script
-document.querySelector('body').classList.add('fadeIn')
+// //Показываем body после всего script
+// document.querySelector('body').classList.add('fadeIn')
