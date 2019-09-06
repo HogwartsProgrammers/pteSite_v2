@@ -115,7 +115,49 @@ h1 span {
     border-top: 2px solid #f5a623;
     width: 5.5rem;
 }
+
 #offer_text span {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
     color: #fff;
+}
+
+.header-stages {
+    justify-content: center;
+}
+
+.header-stages li {
+    list-style: none;
+    margin: 0 0 0 2rem;
+}
+
+.header-plate {
+    position: relative;
+    bottom: 0.7rem;
+    height: 7rem;
+    width: 38rem;
+    border: 2px solid;
+    border-radius: 0.7rem;
+}
+
+.header-gear1 {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+}
+
+.header-gear2 {
+    position: absolute;
+    width: 85px;
+    height: 85px;
+}
+
+.header-plate-text {
+    margin: 0 auto;
+    width: 21rem;
+}
+
+.header-plate-text .h4{
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    font-size: 1.8em;
+    line-height: 1.7rem;
 }

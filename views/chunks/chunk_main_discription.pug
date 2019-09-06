@@ -1,11 +1,26 @@
 
-.header-stages.d-flex
-    include ../svg/icon_idea.pug 
-    include ../svg/icon_project.pug 
-    include ../svg/icon_coord.pug
-    include ../svg/icon_design.pug
-    include ../svg/icon_meeting.pug
-    include ../svg/icon_preps.pug
-    include ../svg/icon_build.pug
-    include ../svg/icon_greeting.pug
-.header-plate
+ul.header-stages.d-flex
+    li
+        include ../svg/icon_idea.pug 
+    li
+        include ../svg/icon_project.pug 
+    li
+        include ../svg/icon_coord.pug
+    li
+        include ../svg/icon_design.pug
+    li
+        include ../svg/icon_meeting.pug
+    li
+        include ../svg/icon_preps.pug
+    li
+        include ../svg/icon_build.pug
+    li
+        include ../svg/icon_greeting.pug
+.header-plate.p-centered
+    svg.header-gear1
+        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink")
+    .header-plate-text.text-center
+        .h4.text-uppercase.text-center Узнайте стоимость <br/>вашего проекта "под ключ"
+        button.btn.btn-error.text-bold.mt-2 УЗНАТЬ СТОИМОСТЬ
+    svg.header-gear2
+        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink")

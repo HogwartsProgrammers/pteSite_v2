@@ -22,7 +22,6 @@ module.exports = () => {
                 database: 'pte',
                 password: '26091940'
             }
-            break
             default: return {
                 host: 'fr79263q.beget.tech',
                 user: 'fr79263q_node',
