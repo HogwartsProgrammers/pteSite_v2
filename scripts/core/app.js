@@ -6,6 +6,39 @@ if (location.pathname === '/login' || location.pathname === '/signup') {
 }
 
 if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/login' || location.pathname === '/signup') {
+    //функционал верхних стадий
+    let scoreStages = 1
+    let stop = false
+
+    const stagesMove = () => {
+        document.querySelectorAll('.header-stages li').forEach((el, i, arr) => {
+            el.querySelector('g').classList.remove('active')
+        })
+        document.querySelectorAll('.header-stages li')[scoreStages].querySelector('g').classList.add('active')
+        const stagesTitle = document.querySelectorAll('.header-stages li')[scoreStages].dataset.title
+        document.getElementById('offer_text').innerHTML = `${stagesTitle}`
+    }
+
+    setInterval(() => {
+        if (stop) return 
+        stagesMove()
+        scoreStages++
+        if (scoreStages == document.querySelectorAll('.header-stages li').length) scoreStages = 0
+    },2000)
+
+    document.querySelectorAll('.header-stages li').forEach((el, i, arr) => {
+        el.onclick = () => {
+            stop = true
+            arr.forEach(el => {
+                el.querySelector('g').classList.remove('active')
+            })
+            el.querySelector('g').classList.add('active')
+            const stagesTitle = el.dataset.title
+            document.getElementById('offer_text').innerHTML = `${stagesTitle}`
+            scoreStages = i
+            setTimeout(stop = false, 3000)
+        }
+    })
     // document.querySelector('.first-screen').classList.add('ptFPage')
     // подключаем svgjs код
     require ('../svg.js').svgjs()
@@ -164,22 +197,22 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
 // })
 
 // // Рассчет элемента по оси y для смены фона навбара  
-// const nav = document.querySelector('.docs-navbar')
-// function getCoords(elem) {
-//     if (!elem) return
-//     let box = elem.getBoundingClientRect()
+const nav = document.querySelector('.docs-navbar')
+function getCoords(elem) {
+    if (!elem) return
+    let box = elem.getBoundingClientRect()
   
-//     return {
-//       top: box.top + pageYOffset,
-//     //   left: box.left + pageXOffset
-//     }
-//   }
-// window.onscroll = () => {
-//     if (!nav) return
-//     let coords = getCoords(nav)
-//     if (coords.top === 0) nav.classList.add('visableNav')
-//     else nav.classList.remove('visableNav')
-// }
+    return {
+      top: box.top + pageYOffset,
+    //   left: box.left + pageXOffset
+    }
+  }
+window.onscroll = () => {
+    if (!nav) return
+    let coords = getCoords(nav)
+    if (coords.top === 0) nav.classList.add('visable-nav')
+    else nav.classList.remove('visable-nav')
+}
 
 // // Сайдбар
 

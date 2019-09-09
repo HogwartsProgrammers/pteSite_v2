@@ -4749,7 +4749,12 @@ a.text-error:visited {
         opacity: 1;
         transform: translateX(-50%);
     }
-}.docs-navbar {
+}*::-webkit-scrollbar-track {border-radius: 4px;}
+*::-webkit-scrollbar {width: 4px;height: 4px;}
+*::-webkit-scrollbar-thumb {border-radius: 4px;background: #3b4351;}
+*:hover::-webkit-scrollbar {width: 6px;height: 6px;}
+
+.docs-navbar {
     background: rgba(255, 255, 255, 0.95) ;
     transition: 250ms;
     height: 3.8rem;
@@ -4766,7 +4771,8 @@ a.text-error:visited {
 }
 
 .docs-navbar .header-tel a {
-    font-size: 1rem
+    font-size: 1rem;
+    color: #3b4351;
 }
 
 .docs-navbar .header-tel .phone-note {
@@ -4866,12 +4872,17 @@ h1 span {
 }
 
 .header-stages {
-    justify-content: space-evenly;
+    margin-right: 2.5rem;
+    justify-content: center;
 }
 
 .header-stages li {
     list-style: none;
     margin: 0 0 0 2rem;
+}
+
+.header-stages li:hover{
+    cursor: pointer;
 }
 
 .header-plate {
@@ -4913,4 +4924,12 @@ h1 span {
 
 .header-plate-text button {
     margin-top: 0.6rem;
+}
+
+.visable-nav {
+    background: transparent !important;
+}
+
+.active {
+    fill: #000 
 }
