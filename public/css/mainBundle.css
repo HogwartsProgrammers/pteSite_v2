@@ -4866,7 +4866,7 @@ h1 span {
 }
 
 .header-stages {
-    justify-content: center;
+    justify-content: space-evenly;
 }
 
 .header-stages li {
@@ -4877,22 +4877,26 @@ h1 span {
 .header-plate {
     position: relative;
     bottom: 0.7rem;
-    height: 7rem;
-    width: 38rem;
+    height: 8rem;
+    width: 42rem;
     border: 2px solid;
     border-radius: 0.7rem;
 }
 
 .header-gear1 {
     position: absolute;
-    width: 85px;
-    height: 85px;
+    top: 45px;
+    left: 100px;
+    width: 90px;
+    height: 90px;
 }
 
 .header-gear2 {
     position: absolute;
-    width: 85px;
-    height: 85px;
+    top: 45px;
+    left: 667px;
+    width: 90px;
+    height: 90px;
 }
 
 .header-plate-text {
@@ -4900,8 +4904,13 @@ h1 span {
     width: 21rem;
 }
 
-.header-plate-text .h4{
+.header-plate-text .h4 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-    font-size: 1.8em;
+    font-size: 2em;
     line-height: 1.7rem;
+    margin-top: 1rem;
+}
+
+.header-plate-text button {
+    margin-top: 0.6rem;
 }
