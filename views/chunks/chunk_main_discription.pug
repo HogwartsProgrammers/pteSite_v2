@@ -1,26 +1,26 @@
 
 ul.header-stages.d-flex
-    li.active(data-title="<span>МЫ ПРОВЕДЕМ ВАС</span> С МОМЕНТА ЗАРОЖДЕНИЯ ВАШЕЙ ЗАМЕЧАТЕЛЬНОЙ ИДЕИ")
-        include ../svg/icon_idea.pug 
-    li(data-title="b")
-        include ../svg/icon_project.pug 
-    li(data-title="c")
-        include ../svg/icon_coord.pug
-    li(data-title="d")
-        include ../svg/icon_design.pug
-    li(data-title="e")
-        include ../svg/icon_meeting.pug
-    li(data-title="f")
-        include ../svg/icon_preps.pug
-    li(data-title="g")
-        include ../svg/icon_build.pug
-    li(data-title="h")
-        include ../svg/icon_greeting.pug
+    li#idea_holder.icon64.icon85(data-title="<span>МЫ ПРОВЕДЕМ ВАС</span> С МОМЕНТА ЗАРОЖДЕНИЯ ВАШЕЙ ЗАМЕЧАТЕЛЬНОЙ ИДЕИ")
+        include ../svg/icon_idea
+    li#project_holder.icon64(data-title="<span>ДО ЕЁ ВОПЛОЩЕНИЯ</span> В ПОНЯТНОМ ДИЗАЙН ПРОЕКТЕ")
+        include ../svg/icon_project
+    li#coord_holder.icon64(data-title="<span>ВЫПОЛНЕНИЯ</span> ПРЕДПРОЕКТНЫХ РАБОТ")
+        include ../svg/icon_coord
+    li#design_holder.icon64(data-title="<span>ПРОЕКТИРОВАНИЯ,</span> ВКЛЮЧАЯ РАБОЧИЙ ПРОЕКТ И ДОКУМЕНТАЦИЮ")
+        include ../svg/icon_design
+    li#meeting_holder.icon64(data-title="<span>СОГЛАСОВАНИЯ ПРОЕКТА</span> С ВАМИ И СО ВСЕМИ ИНСТАНЦИЯМИ")
+        include ../svg/icon_meeting
+    li#preps_holder.icon64(data-title="<span>БЫСТРОЙ</span> ПОДГОТОВКИ К НАЧАЛУ РАБОТ")
+        include ../svg/icon_preps
+    li#build_holder.icon64(data-title="<span>ПОСТРОИМ И ОСУЩЕСТВИМ</span> ПУСКО-НАЛАДОЧНЫЕ РАБОТЫ")
+        include ../svg/icon_build
+    li#greeting_holder.icon64(data-title="<span>БЫСТРО СДАДИМ</span> И ВВЕДЁМ В ЭКСПЛУАТАЦИЮ ВАШ ОБЪЕКТ")
+        include ../svg/icon_greeting
 .header-plate.p-centered
     svg.header-gear1
-        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink")
+        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="11", y="11")
     .header-plate-text.text-center
         .h4.text-uppercase.text-center Узнайте стоимость <br/>вашего проекта "под ключ"
         button.btn.btn-error.text-bold УЗНАТЬ СТОИМОСТЬ
     svg.header-gear2
-        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink")
+        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="11", y="11")

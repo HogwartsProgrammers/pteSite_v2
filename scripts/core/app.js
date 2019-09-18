@@ -1,49 +1,51 @@
 const Cleave = require('cleave.js')
 const inView = require('../in-view.min')
+require ('../svg.js').svgjs()
 
-if (location.pathname === '/login' || location.pathname === '/signup') {
-    document.querySelector('#content').classList.remove('d-flex')
-}
+if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleLowerCase() === '/login' || location.pathname.toLocaleLowerCase() === '/signup' || location.pathname.toLocaleLowerCase() === '/recovery') {
 
-if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/login' || location.pathname === '/signup') {
     //функционал верхних стадий
-    let scoreStages = 1
+    let Istages = 1
     let stop = false
+    const headerStages = document.querySelectorAll('.header-stages li')
 
     const stagesMove = () => {
-        document.querySelectorAll('.header-stages li').forEach((el, i, arr) => {
+        headerStages.forEach((el, i, arr) => {
+            el.classList.remove('icon85')
             el.querySelector('g').classList.remove('active')
         })
-        document.querySelectorAll('.header-stages li')[scoreStages].querySelector('g').classList.add('active')
-        const stagesTitle = document.querySelectorAll('.header-stages li')[scoreStages].dataset.title
+        headerStages[Istages].classList.add('icon85')
+        headerStages[Istages].querySelector('g').classList.add('active')
+        const stagesTitle = headerStages[Istages].dataset.title
         document.getElementById('offer_text').innerHTML = `${stagesTitle}`
     }
 
     setInterval(() => {
         if (stop) return 
         stagesMove()
-        scoreStages++
-        if (scoreStages == document.querySelectorAll('.header-stages li').length) scoreStages = 0
-    },2000)
+        Istages++
+        if (Istages == headerStages.length) Istages = 0
+    },3000)
 
-    document.querySelectorAll('.header-stages li').forEach((el, i, arr) => {
+    headerStages.forEach((el, i, arr) => {
         el.onclick = () => {
             stop = true
             arr.forEach(el => {
                 el.querySelector('g').classList.remove('active')
+                el.classList.remove('icon85')
             })
             el.querySelector('g').classList.add('active')
+            el.classList.add('icon85')
             const stagesTitle = el.dataset.title
             document.getElementById('offer_text').innerHTML = `${stagesTitle}`
-            scoreStages = i
+            Istages = i
             setTimeout(stop = false, 3000)
         }
     })
     // document.querySelector('.first-screen').classList.add('ptFPage')
     // подключаем svgjs код
-    require ('../svg.js').svgjs()
     // Добавляем на location "/" , кнопке в баре класс bt_callback
-    // document.querySelectorAll('.bg-metal button').forEach(el => el.classList.add('bt_callback'))
+    // document.querySelectorAll('.header-plate button').forEach(el => el.classList.add('bt_callback'))
 
     // inView('.svgHolder').on('enter', el => {
     //     if (!el.childElementCount) {
@@ -98,7 +100,7 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
 //     document.getElementById('navTitle').innerText = ''
 //     require('../historyScroll').slider()
     
-//     document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
+//     document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
 //         document.getElementById('scladSquare').classList.remove('d-hide')
 //     })
 // }
@@ -117,9 +119,9 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
 //     const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
 
 //     //показывать параметры пола
-//     document.querySelector('.bg-metal').classList.add('barPoly')
-//     document.querySelectorAll('.bg-metal button').forEach(el => el.onclick = () => {
-//         document.querySelector('.bg-metal').scrollIntoView({behavior: 'smooth'})
+//     document.querySelector('.header-plate').classList.add('barPoly')
+//     document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
+//         document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'})
 //     })
 
 //     //отправка параметров пола лида
@@ -134,23 +136,6 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
 //     })
 //     console.log(a.length)
 // }
-
-// // Костыль для навбара и btnCallback
-// const navPositionFix = () => {
-//     if (!document.querySelector('.docs-navbar')) return
-//     const btCallback = document.querySelector('.callback_phone_button')
-//     let widthCont = window.getComputedStyle(document.getElementById('content')).marginLeft
-//     document.querySelector('.docs-navbar').style.left = Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
-//     if (document.body.clientWidth > 1440) {
-//     btCallback.style.left = 976 + Number(widthCont.substr(-widthCont.length, widthCont.length - 2)) + 'px'
-//     } else {
-//         btCallback.style.left = 1173 + 'px'
-//         if (document.body.clientWidth < 1325) {
-//             btCallback.style.left = document.body.clientWidth - btCallback.getBoundingClientRect().width - 50 + 'px'
-//         }
-//     } 
-// }
-// navPositionFix()
  
 // //функционал svg sidebar'a
 // document.querySelectorAll('#SideBar > g').forEach((el,i,a) => {
@@ -176,7 +161,7 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname === '/log
 //             el.setAttribute('y', '13')
 //         })
 // }
-// const use = document.querySelectorAll('.bg-metal use')
+// const use = document.querySelectorAll('.header-plate use')
 // gearChange()
 
 // //скролл сайдбара
@@ -216,24 +201,33 @@ window.onscroll = () => {
 
 // // Сайдбар
 
-// const body = document.querySelector('body')
+const body = document.querySelector('body')
+const sidebar = document.getElementById('sidebar')
 
-// body.addEventListener('animationend', () => body.classList.remove('fadeIn'))
+body.addEventListener('animationend', () => body.classList.remove('fadeIn'))
 
-// inView('.container .content > .bg-metal').on('enter', () => {
-//     if (document.body.clientWidth > 960) {  
+// inView('.header-plate').on('enter', () => {
+//     if (document.body.clientWidth > 960) {
+//         // body.classList.remove('slow')
 //         body.classList.add('fadeIn')
 //         sidebar.classList.add('d-hide')
+//         console.log('привет')
 //     } else return
 // })
 // .on('exit', () => {
 //     if (document.body.clientWidth > 960) {
 //         if (sidebar.classList.contains('d-hide')) {
+//             console.log('привет')
 //             body.classList.add('fadeIn')
 //             sidebar.classList.remove('d-hide')
-//         }
-//     }
-//     else return
+//             sidebar.style.position = 'relative !important'
+            
+//         } else {
+//             console.log('привет1')
+//             body.classList.add('fadeIn')
+//             sidebar.style.position = 'relative !important'
+//             }
+//     } else return
 // })
 
 // const setNormal = () => {
@@ -252,69 +246,85 @@ window.onscroll = () => {
 //     }
 // }
 
-// inView('.docs-sidebar').on('enter', el => {
-//     if (document.body.clientWidth > 960) {
-//         document.querySelector('.js-openSidebar').style.display = 'none'
-//         if (location.pathname == '/') {
-//             document.querySelector('.first-screen').style.height = 267 + 'px'
-//             document.querySelector('.first-screen-bg').style.height = 249 + 'px'
-//             document.querySelector('h1').style.fontSize = 1.7 + 'rem'
-//             document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-//             document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-//         }
-//         if (location.pathname == '/poly') {
-//             if (document.body.clientWidth > 960) {
-//                 document.querySelector('.first-screen').style.height = 210 + 'px'
-//                 document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-//                 document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-//                 document.querySelector('h2').style.fontSize = '2.1rem'
-//                 document.querySelector('h2 small').style.fontSize = '1.2rem'
-//             }
-//         }
-//     }
-// })
-// .on('exit', el => {
-//     setNormal()
-//     document.querySelector('.js-openSidebar').style.display = 'unset'
-// })
+inView('.docs-sidebar').on('enter', el => {
+    if (document.body.clientWidth > 960) {
+        document.querySelector('.js-openSidebar').style.display = 'none'
+        if (location.pathname == '/') {
+            document.querySelector('.first-screen').style.height = 267 + 'px'
+            document.querySelector('.first-screen-bg').style.height = 249 + 'px'
+            document.querySelector('h1').style.fontSize = 1.7 + 'rem'
+            document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
+            document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
+        }
+        if (location.pathname == '/poly') {
+            if (document.body.clientWidth > 960) {
+                document.querySelector('.first-screen').style.height = 210 + 'px'
+                document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
+                document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
+                document.querySelector('h2').style.fontSize = '2.1rem'
+                document.querySelector('h2 small').style.fontSize = '1.2rem'
+            }
+        }
+    }
+})
+.on('exit', el => {
+    // setNormal()
+    document.querySelector('.js-openSidebar').style.display = 'unset'
+})
 
 
-// if (!!document.querySelector('.container .content > .bg-metal') && !inView.is(document.querySelector('.container .content > .bg-metal'))) sidebar.classList.remove('d-hide')
+if (!!document.querySelector('.header-plate') && !inView.is(document.querySelector('.header-plate'))) sidebar.classList.remove('d-hide')
 
-// if (!!document.getElementById('sidebar') && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
+if (!!sidebar && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
 
-// window.addEventListener('resize', event => {
-//     navPositionFix()
-//     gearChange()
-//     sidebar.classList.remove('sidebar-active')
-//     document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
-//     if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
-//     else {
-//         sidebar.classList.add('d-hide')
-//     }
-//     if (!inView.is(document.querySelector('.container .content > .bg-metal'))) {
-//         sidebar.classList.remove('d-hide')
-//     }
-//     polyStyleFix()
-// })
+window.addEventListener('resize', event => {
+    gearChange()
+    sidebar.classList.remove('sidebar-active')
+    document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+    if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
+    else {
+        sidebar.classList.add('d-hide')
+    }
+    if (!inView.is(document.querySelector('.container .content > .header-plate'))) {
+        sidebar.classList.remove('d-hide')
+    }
+    polyStyleFix()
+})
+console.log(sidebar)
 
-// if (document.body.clientWidth < 1024) polyStyleFix() 
-// if (!!document.querySelector('.js-openSidebar')) {
-//     document.querySelector('.js-openSidebar').addEventListener('click', event => {
-//         if (document.body.clientWidth > 960) {
-//             body.classList.add('fadeIn')
-//             sidebar.classList.remove('d-hide')
-//         } else {
-//             event.preventDefault()
-//             sidebar.classList.add('sidebar-active')
-//             document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
-//         }
-//     })
-// }
-// document.querySelector('.js-closeSidebar').addEventListener('click', ()=> {
-//     document.getElementById('sidebar').classList.remove('sidebar-active')
-//     document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
-// })
+const hideSideBar = () => sidebar.classList.add('d-hide')
+
+if (document.body.clientWidth < 1024) polyStyleFix() 
+if (!!document.querySelector('.js-openSidebar')) {
+    document.querySelector('.js-openSidebar').onclick = () => {
+        if (document.body.clientWidth > 960) {
+            sidebar.classList.remove('d-hide')
+            console.log('hello world')
+            sidebar.classList.add('sidebar-active')
+            document.querySelector('.js-closeSidebar').style.display = 'block'
+            document.querySelector('.js-closeSidebar').style.left = 'unset'
+            document.querySelector('.js-closeSidebar').style.right = 'unset'
+            document.querySelector('.js-closeSidebar').style.width = '48.8rem'
+
+        } else {
+            event.preventDefault()
+            // sidebar.classList.add('sidebar-active')
+            // document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
+        }
+    }
+}
+document.querySelector('.js-closeSidebar').onclick = () => {
+    if (document.body.clientWidth > 960) {
+        sidebar.classList.remove('sidebar-active')
+        document.querySelector('.js-closeSidebar').style.display = 'none'
+        document.querySelector('.js-closeSidebar').style.left = '0'
+        document.querySelector('.js-closeSidebar').style.right = '0'
+        document.querySelector('.js-closeSidebar').style.width = '100%'
+    } else {
+        document.getElementById('sidebar').classList.remove('sidebar-active')
+        document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+    }
+}
 
 // const phoneCleave = new Cleave('#callback_modal .form-input', {
 //     numericOnly: true,
