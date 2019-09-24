@@ -1,6 +1,6 @@
 const Cleave = require('cleave.js')
 const inView = require('../in-view.min')
-require ('../svg.js').svgjs()
+if (location.pathname.toLocaleLowerCase() != '/') require ('../svg.js').svgjs()
 
 if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleLowerCase() === '/login' || location.pathname.toLocaleLowerCase() === '/signup' || location.pathname.toLocaleLowerCase() === '/recovery') {
 
@@ -42,17 +42,24 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleL
             setTimeout(stop = false, 3000)
         }
     })
+    document.querySelectorAll('.cta-panel').forEach(el => {
+        let buttonT = el.dataset.btn
+        let cta = el.dataset.cta
+        console.log(buttonT,cta)
+        el.querySelector('.h5').innerHTML = cta
+        el.querySelector('button').innerText = buttonT
+    })
     // document.querySelector('.first-screen').classList.add('ptFPage')
     // подключаем svgjs код
     // Добавляем на location "/" , кнопке в баре класс bt_callback
     // document.querySelectorAll('.header-plate button').forEach(el => el.classList.add('bt_callback'))
 
-    // inView('.svgHolder').on('enter', el => {
-    //     if (!el.childElementCount) {
-    //         el.classList.add('animated', 'fadeIn')
-    //         el.innerHTML = `<img class="svgObjHolder" src="${el.dataset.src}">`
-    //     }
-    // })
+    inView('.svgHolder').on('enter', el => {
+        if (!el.childElementCount) {
+            el.classList.add('animated', 'fadeIn')
+            el.innerHTML = `<img class="svgObjHolder p-centered" src="${el.dataset.src}">`
+        }
+    })
 }
 //     const tags = document.querySelectorAll('a[name]')
 
@@ -201,50 +208,38 @@ window.onscroll = () => {
 
 // // Сайдбар
 
-const body = document.querySelector('body')
 const sidebar = document.getElementById('sidebar')
 
-body.addEventListener('animationend', () => body.classList.remove('fadeIn'))
 
-// inView('.header-plate').on('enter', () => {
-//     if (document.body.clientWidth > 960) {
-//         // body.classList.remove('slow')
-//         body.classList.add('fadeIn')
-//         sidebar.classList.add('d-hide')
-//         console.log('привет')
-//     } else return
-// })
-// .on('exit', () => {
-//     if (document.body.clientWidth > 960) {
-//         if (sidebar.classList.contains('d-hide')) {
-//             console.log('привет')
-//             body.classList.add('fadeIn')
-//             sidebar.classList.remove('d-hide')
-//             sidebar.style.position = 'relative !important'
-            
-//         } else {
-//             console.log('привет1')
-//             body.classList.add('fadeIn')
-//             sidebar.style.position = 'relative !important'
-//             }
-//     } else return
-// })
+inView('.offer').on('enter', () => {
+    if (document.body.clientWidth > 960) {
+        sidebar.classList.remove('sidebar-relative')
+        document.querySelector('.header-plate').classList.remove('header-plate-sm')
+        } else return
+})
+.on('exit', () => {
+    if (document.body.clientWidth > 960) {
+            sidebar.classList.add('sidebar-relative')
+            sidebar.classList.remove('sidebar-active')
+            document.querySelector('.header-plate').classList.add('header-plate-sm')
+    } else return
+})
 
-// const setNormal = () => {
-//     if (location.pathname == '/') {
-//         document.querySelector('.first-screen').style.height = null
-//         document.querySelector('.first-screen-bg').style.height = null
-//         document.querySelector('h1').removeAttribute('style')
-//         document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-//         document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-//     }
+const setNormal = () => {
+    if (location.pathname == '/') {
+        document.querySelector('.first-screen').style.height = null
+        document.querySelector('.first-screen-bg').style.height = null
+        document.querySelector('h1').removeAttribute('style')
+        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
+        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
+    }
 
-//     if (location.pathname == '/poly') {
-//         document.querySelector('.first-screen').style.height = '279px'
-//         document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-//         document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-//     }
-// }
+    if (location.pathname == '/poly') {
+        document.querySelector('.first-screen').style.height = '279px'
+        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
+        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
+    }
+}
 
 inView('.docs-sidebar').on('enter', el => {
     if (document.body.clientWidth > 960) {
@@ -273,7 +268,7 @@ inView('.docs-sidebar').on('enter', el => {
 })
 
 
-if (!!document.querySelector('.header-plate') && !inView.is(document.querySelector('.header-plate'))) sidebar.classList.remove('d-hide')
+if (!!document.querySelector('.offer') && !inView.is(document.querySelector('.offer'))) sidebar.classList.add('sidebar-relative')
 
 if (!!sidebar && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
 
@@ -285,41 +280,33 @@ window.addEventListener('resize', event => {
     else {
         sidebar.classList.add('d-hide')
     }
-    if (!inView.is(document.querySelector('.container .content > .header-plate'))) {
+    if (!inView.is(document.querySelector('.offer'))) {
         sidebar.classList.remove('d-hide')
     }
-    polyStyleFix()
+    // polyStyleFix()
 })
 console.log(sidebar)
 
 const hideSideBar = () => sidebar.classList.add('d-hide')
 
-if (document.body.clientWidth < 1024) polyStyleFix() 
+// if (document.body.clientWidth < 1024) polyStyleFix() 
 if (!!document.querySelector('.js-openSidebar')) {
     document.querySelector('.js-openSidebar').onclick = () => {
         if (document.body.clientWidth > 960) {
             sidebar.classList.remove('d-hide')
             console.log('hello world')
             sidebar.classList.add('sidebar-active')
-            document.querySelector('.js-closeSidebar').style.display = 'block'
-            document.querySelector('.js-closeSidebar').style.left = 'unset'
-            document.querySelector('.js-closeSidebar').style.right = 'unset'
-            document.querySelector('.js-closeSidebar').style.width = '48.8rem'
 
         } else {
             event.preventDefault()
-            // sidebar.classList.add('sidebar-active')
-            // document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
+            sidebar.classList.add('sidebar-active')
+            document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
         }
     }
 }
 document.querySelector('.js-closeSidebar').onclick = () => {
     if (document.body.clientWidth > 960) {
         sidebar.classList.remove('sidebar-active')
-        document.querySelector('.js-closeSidebar').style.display = 'none'
-        document.querySelector('.js-closeSidebar').style.left = '0'
-        document.querySelector('.js-closeSidebar').style.right = '0'
-        document.querySelector('.js-closeSidebar').style.width = '100%'
     } else {
         document.getElementById('sidebar').classList.remove('sidebar-active')
         document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
@@ -404,39 +391,39 @@ document.querySelector('.js-closeSidebar').onclick = () => {
 // }
 
 // //Модальное окно обратного звонка
-// const buttonCall = document.querySelector('.callback_phone_button')
+const buttonCall = document.querySelector('.callback_phone_button')
 
-// export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
-//         if (!btn.classList.contains('callback_phone_button')) {
-//             btn.addEventListener('click', () => {
-//                 new Cleave('#callback_modal .form-input', {
-//                     numericOnly: true,
-//                     prefix: '+7',
-//                     blocks: [2, 3, 3, 2, 2],
-//                     delimiters: ['(', ')', '-', '-']
-//                 })
-//                 callbackModal.classList.add('active')
-//                 callbackInput.focus()
-//                 if (!!buttonCall) buttonCall.classList.add('d-hide')
-//             })
-//         }
-//     })
-// }
-// initCallbackBtns()
+export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
+        if (!btn.classList.contains('callback_phone_button')) {
+            btn.addEventListener('click', () => {
+                new Cleave('#callback_modal .form-input', {
+                    numericOnly: true,
+                    prefix: '+7',
+                    blocks: [2, 3, 3, 2, 2],
+                    delimiters: ['(', ')', '-', '-']
+                })
+                callbackModal.classList.add('active')
+                callbackInput.focus()
+                if (!!buttonCall) buttonCall.classList.add('d-hide')
+            })
+        }
+    })
+}
+initCallbackBtns()
 
 // // Закрытие окна авторизации
-// document.querySelectorAll('.btn-close-modal').forEach(btn => {
-//     btn.addEventListener('click', () => {
-//         callbackModal.classList.remove('active')
-//         if (!!buttonCall) {
-//             buttonCall.classList.remove('d-hide')
-//             buttonCall.classList.remove('bounceOut')
-//         }
-//     })
-// })
+document.querySelectorAll('.btn-close-modal').forEach(btn => {
+    btn.addEventListener('click', () => {
+        callbackModal.classList.remove('active')
+        if (!!buttonCall) {
+            buttonCall.classList.remove('d-hide')
+            buttonCall.classList.remove('bounceOut')
+        }
+    })
+})
 
 // // Анимация кнопки телефона
-// const callbackModal = document.getElementById('callback_modal')
+const callbackModal = document.getElementById('callback_modal')
 // if (!!buttonCall) buttonCall.addEventListener('click', event => {
 //     setTimeout(() => {
 //         new Cleave('#callback_modal .form-input', {
@@ -454,25 +441,25 @@ document.querySelector('.js-closeSidebar').onclick = () => {
 
 // const checkboxHolder = document.getElementById('checkboxCallback')
 // const inputCheck = document.getElementById('inpLegalCallback')
-// const callbackInput = document.getElementById('inpCallback')
-// const callbackBtn = document.getElementById('callbackBtn')
+const callbackInput = document.getElementById('inpCallback')
+const callbackBtn = document.getElementById('callbackBtn')
 // const inpHiddenRaw = callbackModal.querySelector('input[name="phoneRaw"]')
 
-// checkboxHolder.style.cursor = 'pointer'
-// // Отправка формы доступна если checkbox нажат и введен номер телефона
-// checkboxHolder.addEventListener('click', callbackFormReady)
-// callbackInput.addEventListener('input', callbackFormReady)
-// function callbackFormReady() {
-//     console.log(callbackInput.value)
-//     if (callbackInput.value.length === 16 && inputCheck.checked) {
-//         callbackBtn.disabled = false
-//         inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
-//         return true    
-//     } else {
-//         callbackBtn.disabled = true
-//         return false
-//     }
-// }
+checkboxHolder.style.cursor = 'pointer'
+// Отправка формы доступна если checkbox нажат и введен номер телефона
+checkboxHolder.addEventListener('click', callbackFormReady)
+callbackInput.addEventListener('input', callbackFormReady)
+function callbackFormReady() {
+    console.log(callbackInput.value)
+    if (callbackInput.value.length === 16 && inputCheck.checked) {
+        callbackBtn.disabled = false
+        inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
+        return true    
+    } else {
+        callbackBtn.disabled = true
+        return false
+    }
+}
 
 // callbackBtn.addEventListener('click', event => {
 //     callbackInput.value = ''

@@ -11,22 +11,22 @@ html(lang="ru")
         link(rel="shortcut icon" href="images/favicon.png" type="image/png")
         link(rel="stylesheet", href="./css/mainBundle.css")
         block styles
-    body#app_body.animated.fadeIn
+    body#app_body.animated.fadeIn.slow
         .off-canvas
+            nav.docs-navbar.visable-nav
+                a.off-canvas-toggle.btn.btn-link.btn-action.js-openSidebar
+                    i.icon.icon-menu
+                .page-title
+                .header-tel
+                    button.btn.btn-sm.btn-error.btn-callback.text-bold.text-uppercase Заказать
+                    a.btn.btn-link.text-bold(href="tel:+78002226580") 8 800 222 65 80
+                    .phone-note Заказать обратный звонок
             #sidebar_head
-            #sidebar.off-canvas-sidebar.p-relative.sidebar-active
+            #sidebar.off-canvas-sidebar
                 block sidebar
             #sidebar-bg.off-canvas-overlay.js-closeSidebar
             .off-canvas-content
                 header
-                    nav.docs-navbar.visable-nav
-                        a.off-canvas-toggle.btn.btn-link.btn-action.js-openSidebar
-                            i.icon.icon-menu
-                        .page-title
-                        .header-tel
-                            button.btn.btn-sm.btn-error.btn-callback.text-bold.text-uppercase Заказать
-                            a.btn.btn-link.text-bold(href="tel:+78002226580") 8 800 222 65 80
-                            .phone-note Заказать обратный звонок
                     block logo
                     .offer
                         block offer
@@ -34,7 +34,8 @@ html(lang="ru")
                         block discription
                 main
                     block content 
-                footer
+                footer.container
+                    block footer
         #all_icons.d-hide 
             block svg
         //- <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style>

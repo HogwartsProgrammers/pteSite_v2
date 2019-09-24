@@ -38,31 +38,31 @@ export function svgjs() {
   whiteCog.animate(10000, '-').rotate(360).loop()
   blackCog.animate(10000, '-').rotate(-360).loop()
 
-    // if (!inView.is(document.querySelector('.first-screen'))) {
-    //     fsBGBack.pause()
-    //     fsBGBackClone.pause()
-    //     fsBGFront.pause()
-    //     fsBGFrontClone.pause()
-    //     logoBig.pause()
-    //     whiteCog.pause()
-    //     blackCog.pause()
-    // }
-    // inView('.first-screen').on('enter', el => {
-    //     fsBGBack.play()
-    //     fsBGBackClone.play()
-    //     fsBGFront.play()
-    //     fsBGFrontClone.play()
-    //     logoBig.play()
-    //     whiteCog.play()
-    //     blackCog.play()
-    //   })
-    // inView('.first-screen').on('exit', el => {
-    //     fsBGBack.pause()
-    //     fsBGBackClone.pause()
-    //     fsBGFront.pause()
-    //     fsBGFrontClone.pause()
-    //     logoBig.pause()
-    //     whiteCog.pause()
-    //     blackCog.pause()
-    //   })
+    if (!inView.is(document.querySelector('#logo'))) {
+        fsBGBack.pause()
+        fsBGBackClone.pause()
+        fsBGFront.pause()
+        fsBGFrontClone.pause()
+        logoBig.pause()
+        whiteCog.pause()
+        blackCog.pause()
+    }
+    inView('#logo').on('enter', el => {
+        fsBGBack.play()
+        fsBGBackClone.play()
+        fsBGFront.play()
+        fsBGFrontClone.play()
+        logoBig.play()
+        whiteCog.play()
+        blackCog.play()
+      })
+    inView('#logo').on('exit', el => {
+        fsBGBack.pause()
+        fsBGBackClone.pause()
+        fsBGFront.pause()
+        fsBGFrontClone.pause()
+        logoBig.pause()
+        whiteCog.pause()
+        blackCog.pause()
+      })
 }
