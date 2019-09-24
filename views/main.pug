@@ -1,11 +1,7 @@
 extends ./templates/tpl_main.pug
 
-//- block content
-    include 
 block sidebar
     include ./chunks/chunk_main_sidebar.pug
-block svg
-    include ./chunks/chunk_main_svg.pug
 block logo
     include ./chunks/chunk_main_logo.pug
 block offer 
@@ -16,5 +12,7 @@ block content
     include ./chunks/chunk_main_content.pug
 block footer
     include ./chunks/chunk_footer.pug
+block svg
+    include ./chunks/chunk_main_svg.pug
 
 

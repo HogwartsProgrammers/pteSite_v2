@@ -4754,6 +4754,10 @@ a.text-error:visited {
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #3b4351;}
 *:hover::-webkit-scrollbar {width: 6px;height: 6px;}
 
+.pt3 {
+    padding-top: 3rem;
+}
+
 .docs-navbar {
     background: rgba(255, 255, 255, 0.95) ;
     transition: 250ms;
@@ -4799,6 +4803,10 @@ a.text-error:visited {
     padding: 0;
     
     width: 38rem;
+}
+
+header img {
+    display: block;
 }
 
 #logo {
@@ -4943,7 +4951,7 @@ h1 span {
 
 .header-plate-text {
     margin: 0 auto;
-    width: 21rem;
+    width: 25rem;
 }
 
 .header-plate-text .h4 {
@@ -4994,6 +5002,7 @@ h1 span {
     -webkit-transform: translateX(-100%);
     transform: translateX(-100%);
     width: 12rem;
+    overflow: unset;
 }
 
 .sidebar-active {
@@ -5038,9 +5047,10 @@ h1 span {
 h2 {
     font-size: 1.1rem;
     border-bottom: 2px solid;
-    width: 93%;
+    width: 35.3rem;
     padding-bottom: 0.1rem;
     margin-bottom: 0;
+    margin-top: 1rem;
 }
 
 .obj-header .sub-title {
@@ -5073,7 +5083,7 @@ h2 {
     list-style: none;
 }
 
-.obj-body ul li::before {
+.obj-body ul:not(.survey_points) li::before {
     content: '';
     display: inline-block;
     width: 4px;
@@ -5083,6 +5093,10 @@ h2 {
     height: 4px;
     background-color: #000;
 
+}
+
+.obj-footer {
+    margin-top: 1rem;
 }
 
 .cta-panel {
@@ -5138,7 +5152,7 @@ section:not(.first-section) {
     position: fixed;
 }
 
-#homePageSidebar > li {
+#sidebar ul > li {
     font-size: 0.44rem;
     line-height: 0.3rem;
 }
@@ -5198,7 +5212,6 @@ section:not(.first-section) {
     flex: 0 0 auto;
     -webkit-transform: none;
     transform: none;
-    
     width: 12rem;
     z-index: 1004;
     transform: none !important;
@@ -5216,6 +5229,58 @@ footer p {
 
 .modal.acitve {
     z-index: 4000 !important;
+}
+
+#paramFloor ul,#reasonsFloor ul {
+    margin:unset;
+    width:100%;
+}
+
+#paramFloor ul li .tile-subtitle,#reasonsFloor ul li .tile-subtitle {
+    white-space: normal;
+    line-height: 0.9rem;
+}
+
+.tile-title {
+    font-size: 0.9rem;
+}
+
+#reasonsFloor .tile-subtitle {
+    margin-top: 1rem !important;
+}
+
+#reasonsFloor ul {
+    padding-left: 2rem;
+    margin-top: 1rem;
+}
+
+#reasonsFloor ul li {
+    margin: 0;
+}
+
+#reasonsFloor .tile {
+    margin-top: 1rem;
+}
+
+.reasons-description {
+    margin-top: 1rem;
+    border: 1px solid;
+    border-radius: 4px;
+    width: 29rem;
+    padding: 0.5rem 1rem 0.5rem 1rem;
+}
+
+.reasons-description p {
+    margin: 0;
+    font-size: 0.7rem;
+}
+
+.survey_points li {
+    margin-top: 1rem
+}
+
+.survey_points li .avatar {
+    margin-bottom: 0.5rem 
 }
 
 @media (max-width: 768px) {

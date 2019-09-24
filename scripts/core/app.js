@@ -1,6 +1,6 @@
 const Cleave = require('cleave.js')
 const inView = require('../in-view.min')
-if (location.pathname.toLocaleLowerCase() != '/') require ('../svg.js').svgjs()
+if (location.pathname.toLocaleLowerCase() == '/') require ('../svg.js').svgjs()
 
 if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleLowerCase() === '/login' || location.pathname.toLocaleLowerCase() === '/signup' || location.pathname.toLocaleLowerCase() === '/recovery') {
 
@@ -190,126 +190,62 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleL
 
 // // Рассчет элемента по оси y для смены фона навбара  
 const nav = document.querySelector('.docs-navbar')
+
 function getCoords(elem) {
     if (!elem) return
     let box = elem.getBoundingClientRect()
-  
     return {
-      top: box.top + pageYOffset,
-    //   left: box.left + pageXOffset
+      top: box.top + pageYOffset
     }
   }
-window.onscroll = () => {
+
+const visableNav = () => {
     if (!nav) return
     let coords = getCoords(nav)
     if (coords.top === 0) nav.classList.add('visable-nav')
     else nav.classList.remove('visable-nav')
 }
 
-// // Сайдбар
+window.onload = () => visableNav()
 
+window.onscroll = () => visableNav()
+
+// // Сайдбар
 const sidebar = document.getElementById('sidebar')
 
+if (document.body.clientWidth > 960) {
 
-inView('.offer').on('enter', () => {
-    if (document.body.clientWidth > 960) {
+    inView('.offer').on('enter', () => {
         sidebar.classList.remove('sidebar-relative')
+        sidebar.querySelector('.docs-nav').classList.remove('fadeIn')
         document.querySelector('.header-plate').classList.remove('header-plate-sm')
-        } else return
-})
-.on('exit', () => {
-    if (document.body.clientWidth > 960) {
-            sidebar.classList.add('sidebar-relative')
-            sidebar.classList.remove('sidebar-active')
-            document.querySelector('.header-plate').classList.add('header-plate-sm')
-    } else return
-})
-
-const setNormal = () => {
-    if (location.pathname == '/') {
-        document.querySelector('.first-screen').style.height = null
-        document.querySelector('.first-screen-bg').style.height = null
-        document.querySelector('h1').removeAttribute('style')
-        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-    }
-
-    if (location.pathname == '/poly') {
-        document.querySelector('.first-screen').style.height = '279px'
-        document.querySelectorAll('.discription').forEach(el => el.removeAttribute('style'))
-        document.querySelectorAll('.discription .h2').forEach(el => el.removeAttribute('style'))
-    }
+    })
+    .on('exit', () => {
+        sidebar.classList.add('sidebar-relative')
+        sidebar.classList.remove('sidebar-active')
+        sidebar.querySelector('.docs-nav').classList.add('fadeIn')
+        document.querySelector('.header-plate').classList.add('header-plate-sm')
+    })
 }
 
-inView('.docs-sidebar').on('enter', el => {
-    if (document.body.clientWidth > 960) {
-        document.querySelector('.js-openSidebar').style.display = 'none'
-        if (location.pathname == '/') {
-            document.querySelector('.first-screen').style.height = 267 + 'px'
-            document.querySelector('.first-screen-bg').style.height = 249 + 'px'
-            document.querySelector('h1').style.fontSize = 1.7 + 'rem'
-            document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-            document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-        }
-        if (location.pathname == '/poly') {
-            if (document.body.clientWidth > 960) {
-                document.querySelector('.first-screen').style.height = 210 + 'px'
-                document.querySelectorAll('.discription').forEach(el => el.style.margin = 0.5 + 'rem ' + 7 + 'rem')
-                document.querySelectorAll('.discription .h2').forEach(el => el.style.fontSize = 1.3 + 'rem')
-                document.querySelector('h2').style.fontSize = '2.1rem'
-                document.querySelector('h2 small').style.fontSize = '1.2rem'
-            }
-        }
-    }
-})
-.on('exit', el => {
-    // setNormal()
-    document.querySelector('.js-openSidebar').style.display = 'unset'
-})
-
-
-if (!!document.querySelector('.offer') && !inView.is(document.querySelector('.offer'))) sidebar.classList.add('sidebar-relative')
-
-if (!!sidebar && document.body.clientWidth < 960) sidebar.classList.remove('d-hide')
-
-window.addEventListener('resize', event => {
-    gearChange()
-    sidebar.classList.remove('sidebar-active')
-    document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
-    if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
-    else {
-        sidebar.classList.add('d-hide')
-    }
-    if (!inView.is(document.querySelector('.offer'))) {
-        sidebar.classList.remove('d-hide')
-    }
-    // polyStyleFix()
-})
-console.log(sidebar)
-
-const hideSideBar = () => sidebar.classList.add('d-hide')
-
-// if (document.body.clientWidth < 1024) polyStyleFix() 
-if (!!document.querySelector('.js-openSidebar')) {
-    document.querySelector('.js-openSidebar').onclick = () => {
-        if (document.body.clientWidth > 960) {
-            sidebar.classList.remove('d-hide')
-            console.log('hello world')
-            sidebar.classList.add('sidebar-active')
-
-        } else {
-            event.preventDefault()
-            sidebar.classList.add('sidebar-active')
-            document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
-        }
-    }
-}
 document.querySelector('.js-closeSidebar').onclick = () => {
     if (document.body.clientWidth > 960) {
         sidebar.classList.remove('sidebar-active')
     } else {
         document.getElementById('sidebar').classList.remove('sidebar-active')
         document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+    }
+}
+
+document.querySelector('.js-openSidebar').onclick = () => {
+    if (document.body.clientWidth > 960) {
+        sidebar.classList.remove('d-hide')
+        sidebar.classList.add('sidebar-active')
+
+    } else {
+        event.preventDefault()
+        sidebar.classList.add('sidebar-active')
+        document.getElementById('sidebar-bg').classList.add('sidebar-bg-active')
     }
 }
 
@@ -391,39 +327,39 @@ document.querySelector('.js-closeSidebar').onclick = () => {
 // }
 
 // //Модальное окно обратного звонка
-const buttonCall = document.querySelector('.callback_phone_button')
+// const buttonCall = document.querySelector('.callback_phone_button')
 
-export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
-        if (!btn.classList.contains('callback_phone_button')) {
-            btn.addEventListener('click', () => {
-                new Cleave('#callback_modal .form-input', {
-                    numericOnly: true,
-                    prefix: '+7',
-                    blocks: [2, 3, 3, 2, 2],
-                    delimiters: ['(', ')', '-', '-']
-                })
-                callbackModal.classList.add('active')
-                callbackInput.focus()
-                if (!!buttonCall) buttonCall.classList.add('d-hide')
-            })
-        }
-    })
-}
-initCallbackBtns()
+// export function initCallbackBtns() {document.querySelectorAll('.bt_callback').forEach(btn => {
+//         if (!btn.classList.contains('callback_phone_button')) {
+//             btn.addEventListener('click', () => {
+//                 new Cleave('#callback_modal .form-input', {
+//                     numericOnly: true,
+//                     prefix: '+7',
+//                     blocks: [2, 3, 3, 2, 2],
+//                     delimiters: ['(', ')', '-', '-']
+//                 })
+//                 callbackModal.classList.add('active')
+//                 callbackInput.focus()
+//                 if (!!buttonCall) buttonCall.classList.add('d-hide')
+//             })
+//         }
+//     })
+// }
+// initCallbackBtns()
 
 // // Закрытие окна авторизации
-document.querySelectorAll('.btn-close-modal').forEach(btn => {
-    btn.addEventListener('click', () => {
-        callbackModal.classList.remove('active')
-        if (!!buttonCall) {
-            buttonCall.classList.remove('d-hide')
-            buttonCall.classList.remove('bounceOut')
-        }
-    })
-})
+// document.querySelectorAll('.btn-close-modal').forEach(btn => {
+//     btn.addEventListener('click', () => {
+//         callbackModal.classList.remove('active')
+//         if (!!buttonCall) {
+//             buttonCall.classList.remove('d-hide')
+//             buttonCall.classList.remove('bounceOut')
+//         }
+//     })
+// })
 
 // // Анимация кнопки телефона
-const callbackModal = document.getElementById('callback_modal')
+// const callbackModal = document.getElementById('callback_modal')
 // if (!!buttonCall) buttonCall.addEventListener('click', event => {
 //     setTimeout(() => {
 //         new Cleave('#callback_modal .form-input', {
@@ -441,25 +377,25 @@ const callbackModal = document.getElementById('callback_modal')
 
 // const checkboxHolder = document.getElementById('checkboxCallback')
 // const inputCheck = document.getElementById('inpLegalCallback')
-const callbackInput = document.getElementById('inpCallback')
-const callbackBtn = document.getElementById('callbackBtn')
+// const callbackInput = document.getElementById('inpCallback')
+// const callbackBtn = document.getElementById('callbackBtn')
 // const inpHiddenRaw = callbackModal.querySelector('input[name="phoneRaw"]')
 
-checkboxHolder.style.cursor = 'pointer'
+// checkboxHolder.style.cursor = 'pointer'
 // Отправка формы доступна если checkbox нажат и введен номер телефона
-checkboxHolder.addEventListener('click', callbackFormReady)
-callbackInput.addEventListener('input', callbackFormReady)
-function callbackFormReady() {
-    console.log(callbackInput.value)
-    if (callbackInput.value.length === 16 && inputCheck.checked) {
-        callbackBtn.disabled = false
-        inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
-        return true    
-    } else {
-        callbackBtn.disabled = true
-        return false
-    }
-}
+// checkboxHolder.addEventListener('click', callbackFormReady)
+// callbackInput.addEventListener('input', callbackFormReady)
+// function callbackFormReady() {
+//     console.log(callbackInput.value)
+//     if (callbackInput.value.length === 16 && inputCheck.checked) {
+//         callbackBtn.disabled = false
+//         inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
+//         return true    
+//     } else {
+//         callbackBtn.disabled = true
+//         return false
+//     }
+// }
 
 // callbackBtn.addEventListener('click', event => {
 //     callbackInput.value = ''
@@ -501,6 +437,18 @@ function callbackFormReady() {
 //     // phoneCleave.setRawValue('')
 //     // document.getElementById('inpCallback').value = ''
 // })
+
+window.addEventListener('resize', event => {
+    sidebar.classList.remove('sidebar-active')
+    document.getElementById('sidebar-bg').classList.remove('sidebar-bg-active')
+    if (document.body.clientWidth < 960) {sidebar.classList.remove('d-hide'); document.querySelector('.js-openSidebar').style.display = 'unset'}
+    else {
+        sidebar.classList.add('d-hide')
+    }
+    if (!inView.is(document.querySelector('.offer'))) {
+        sidebar.classList.remove('d-hide')
+    }
+})
     
 // //Показываем body после всего script
 // document.querySelector('body').classList.add('fadeIn')
