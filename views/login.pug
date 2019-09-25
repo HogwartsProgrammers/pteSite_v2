@@ -10,7 +10,7 @@ block content
                         .card-header.text-center
                             h4.card-title ВВЕДИТЕ ВАШИ ДАННЫЕ
                             .card-subtitle ДЛЯ АВТОРИЗАЦИИ
-                            if process.env.ON_SERVER
+                            if false
                                 label.label.label-success НА ЛОКАЛЬНОЙ МАШИНЕ
                         form.card-body(action="/login", method="post", data-name="mailFieldCheck").col-9.col-xs-12.p-centered
                             input(type="hidden", name="_csrf", value=csrfToken)
