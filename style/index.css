@@ -10,6 +10,271 @@
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #3b4351;}
 *:hover::-webkit-scrollbar {width: 6px;height: 6px;}
 
+.callback_phone_button {
+    position: fixed;
+    bottom: calc(5% - 3.75px);
+    /* right: calc(3% - 2.25px); */
+    left: 63rem;
+    display: block;
+    height: 150px;
+    width: 150px;
+    margin-bottom: 25px;
+    margin-right: 25px;
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translateZ(0);
+    opacity: .8;
+    -webkit-transition: all .3s ease-in-out;
+    -moz-transition: all .3s ease-in-out;
+    -ms-transition: all .3s ease-in-out;
+    -o-transition: all .3s ease-in-out;
+    transition: all .3s ease-in-out;
+    z-index: 999990!important;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_button:hover {
+    opacity: 1
+}
+
+.callback_phone_fill {
+    height: 120px;
+    width: 120px;
+    background: #d95000;
+    border-radius: 50%;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 999991;
+    -webkit-animation: ringostat_pulse 2.5s infinite ease-in-out;
+    -moz-animation: ringostat_pulse 2.5s infinite ease-in-out;
+    -ms-animation: ringostat_pulse 2.5s infinite ease-in-out;
+    -o-animation: ringostat_pulse 2.5s infinite ease-in-out;
+    animation: ringostat_pulse 2.5s infinite ease-in-out;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_body {
+    height: 60px;
+    width: 60px;
+    position: absolute;
+    left: 70px;
+    top: 70px;
+    border-radius: 50%;
+    z-index: 999992;
+    box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    -webkit-box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    -moz-box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    -ms-box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    -o-box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    box-shadow: 0 0 0 15px rgba(250,173,56,0);
+    -webkit-transition: box-shadow .8s ease-in-out;
+    -moz-transition: box-shadow .8s ease-in-out;
+    -ms-transition: box-shadow .8s ease-in-out;
+    -o-transition: box-shadow .8s ease-in-out;
+    transition: box-shadow .8s ease-in-out;
+    background: #d95000;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_button:hover .callback_phone_body {
+    background: #d95000;
+    -webkit-box-shadow: 0 0 0 0 rgba(250,173,56,1);
+    -moz-box-shadow: 0 0 0 0 rgba(250,173,56,1);
+    -ms-box-shadow: 0 0 0 0 rgba(250,173,56,1);
+    -o-box-shadow: 0 0 0 0 rgba(250,173,56,1);
+    box-shadow: 0 0 0 0 rgba(250,173,56,1)
+}
+
+.callback_phone_circle {
+    background: #d95000;
+    height: 70px;
+    width: 70px;
+    position: absolute;
+    left: 65px;
+    top: 65px;
+    z-index: 999991;
+    border: 1px solid #d95000;
+    border-radius: 50%;
+    -webkit-animation: ringostat_pulse2 2.5s infinite ease-in-out;
+    -moz-animation: ringostat_pulse2 2.5s infinite ease-in-out;
+    -ms-animation: ringostat_pulse2 2.5s infinite ease-in-out;
+    -o-animation: ringostat_pulse2 2.5s infinite ease-in-out;
+    animation: ringostat_pulse2 2.5s infinite ease-in-out;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_circle2 {
+    background: #d95000;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_icon {
+    cursor: pointer;
+    width: 60px;
+    height: 60px;
+    top: 70px;
+    left: 70px;
+    position: absolute;
+    background-image: url(https://proftechpol.ru/assets/images/icons/phone_icon.png);
+    background-position: center center;
+    background-repeat: no-repeat;
+    z-index: 999993;
+    transform-origin: 50% 50% 0
+}
+
+.callback_phone_button:hover .callback_phone_icon {
+    -webkittext-shadow: 0 0 12px rgba(255,255,255,1);
+    -moz-text-shadow: 0 0 12px rgba(255,255,255,1);
+    -ms-text-shadow: 0 0 12px rgba(255,255,255,1);
+    -o-text-shadow: 0 0 12px rgba(255,255,255,1);
+    text-shadow: 0 0 12px rgba(255,255,255,1)
+}
+
+@-webkit-keyframes ringostat_pulse {
+    0% {
+        -webkit-transform: scale(0.5);
+        opacity: .3
+    }
+
+    50% {
+        -webkit-transform: scale(0.7);
+        opacity: .2
+    }
+
+    100% {
+        -webkit-transform: scale(0.5);
+        opacity: 0
+    }
+}
+
+@-moz-keyframes ringostat_pulse {
+    0% {
+        -moz-transform: scale(0.5);
+        opacity: .3
+    }
+
+    50% {
+        -moz-transform: scale(0.7);
+        opacity: .2
+    }
+
+    100% {
+        -moz-transform: scale(0.5);
+        opacity: 0
+    }
+}
+
+@-o-keyframes ringostat_pulse {
+    0% {
+        -o-transform: scale(0.5);
+        opacity: .3
+    }
+
+    50% {
+        -o-transform: scale(0.7);
+        opacity: .2
+    }
+
+    100% {
+        -o-transform: scale(0.5);
+        opacity: 0
+    }
+}
+
+@-ms-keyframes ringostat_pulse {
+    0% {
+        -ms-transform: scale(0.5);
+        opacity: .3
+    }
+
+    50% {
+        -ms-transform: scale(0.7);
+        opacity: .2
+    }
+
+    100% {
+        -ms-transform: scale(0.5);
+        opacity: 0
+    }
+}
+
+@keyframes ringostat_pulse {
+    0% {
+        transform: scale(0.5);
+        opacity: .3
+    }
+
+    50% {
+        transform: scale(0.7);
+        opacity: .2
+    }
+
+    100% {
+        transform: scale(0.5);
+        opacity: 0
+    }
+}
+
+@-webkit-keyframes ringostat_pulse2 {
+    0% {
+        -webkit-transform: scale(2);
+        opacity: 0
+    }
+
+    100% {
+        -webkit-transform: scale(0.6);
+        opacity: .8
+    }
+}
+
+@-moz-keyframes ringostat_pulse2 {
+    0% {
+        -moz-transform: scale(2);
+        opacity: 0
+    }
+
+    100% {
+        -moz-transform: scale(0.6);
+        opacity: .8
+    }
+}
+
+@-o-keyframes ringostat_pulse2 {
+    0% {
+        -o-transform: scale(2);
+        opacity: 0
+    }
+
+    100% {
+        -o-transform: scale(0.6);
+        opacity: .8
+    }
+}
+
+@-ms-keyframes ringostat_pulse2 {
+    0% {
+        -ms-transform: scale(2);
+        opacity: 0
+    }
+
+    100% {
+        -ms-transform: scale(0.6);
+        opacity: .8
+    }
+}
+
+@keyframes ringostat_pulse2 {
+    0% {
+        transform: scale(2);
+        opacity: 0
+    }
+
+    100% {
+        transform: scale(0.6);
+        opacity: .8
+    }
+}
+
 .pt3 {
     padding-top: 3rem;
 }
@@ -148,7 +413,7 @@ h1 span {
     margin: 0 0 0 2rem;
 }
 
-.header-stages li:hover{
+.header-stages li:hover {
     cursor: pointer;
 }
 
@@ -195,12 +460,12 @@ h1 span {
     height: 90px;
 }
 
-.header-plate:hover .header-gear1, .cta-panel:hover .gear1 {
+.header-plate:hover .header-gear1, .cta-panel:hover .gear1, .calc-panel:hover .gear1 {
     -webkit-transform: rotate(90deg);
     transform: rotate(90deg);
 }
 
-.header-plate:hover .header-gear2, .cta-panel:hover .gear2 {
+.header-plate:hover .header-gear2, .cta-panel:hover .gear2, .calc-panel:hover .gear2 {
     -webkit-transform: rotate(-90deg);
     transform: rotate(-90deg);
 }
@@ -210,15 +475,15 @@ h1 span {
     width: 25rem;
 }
 
-.header-plate-text .h4 {
+.header-plate-text h2 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
     font-size: 2em;
     line-height: 1.7rem;
     margin-top: 1rem;
 }
 
-.header-plate-text button {
-    margin-top: 0.6rem;
+.header-plate-text h2 span {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
 }
 
 .visable-nav {
@@ -272,6 +537,16 @@ h1 span {
     width: 48.8rem;
 }
 
+.nav .nav-item a:not(.li-side-header) {
+    padding: 0;
+    font-size: .54rem;
+}
+
+.nav .nav-item .li-side-header {
+    padding: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
 .js-closeSidebar {
     z-index: 2998;
 }
@@ -300,16 +575,16 @@ h1 span {
     transform: rotate(90deg);
 }
 
-h2 {
+.sub-title {
     font-size: 1.1rem;
     border-bottom: 2px solid;
     width: 35.3rem;
     padding-bottom: 0.1rem;
     margin-bottom: 0;
-    margin-top: 1rem;
+    margin-top: 3rem;
 }
 
-.obj-header .sub-title {
+.obj-header h3 {
     font-size: 1.8rem;
     max-width: 30rem;
 }
@@ -373,6 +648,10 @@ h2 {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
 }
 
+.cta-panel .h5 small {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
 .cta-panel button {
     margin-top: 0.4rem;
 }
@@ -409,8 +688,9 @@ section:not(.first-section) {
 }
 
 #sidebar ul > li {
-    font-size: 0.44rem;
-    line-height: 0.3rem;
+    font-size: 0.7rem;
+    line-height: 0.9rem;
+    margin: 0
 }
 
 .navbar-brand small {
@@ -474,13 +754,14 @@ section:not(.first-section) {
 }
 
 footer {
-    background-color: #303742;
-    color: #fff;
+    color: #000;
     padding-top: 0.3rem;
     padding-bottom: 2rem;
+    margin-top: 1rem;
 }
 footer p {
-    margin: 0
+    margin: 0;
+    font-size: 14px;
 }
 
 .modal.acitve {
@@ -502,7 +783,7 @@ footer p {
 }
 
 #reasonsFloor .tile-subtitle {
-    margin-top: 1rem !important;
+    margin-top: 0.5rem !important;
 }
 
 #reasonsFloor ul {
@@ -516,6 +797,10 @@ footer p {
 
 #reasonsFloor .tile {
     margin-top: 1rem;
+}
+
+#callback_modal {
+    z-index: 3000;
 }
 
 .reasons-description {
@@ -537,6 +822,71 @@ footer p {
 
 .survey_points li .avatar {
     margin-bottom: 0.5rem 
+}
+
+.header-stages-poly {
+    justify-content: space-evenly !important;
+}
+
+.calc-panel {
+    height: 6rem;
+    width: 35rem;
+    border: 2px solid;
+    border-radius: 0.7rem;
+}
+.calc-panel .header-plate-text {
+    padding-top: 0.6rem;
+    width: 31rem;
+}
+.calc-panel .h5 {
+    font-size: 0.9rem;
+}
+.calc-panel .input-group {
+    display: flex !important;
+    width: 21rem;
+    margin-top: 0.6rem;
+}
+.calc-panel button {
+    margin: 0
+}
+
+.sidebar-calculate {
+    top: 20rem;
+    background-color: #303742;
+    width: 12rem;
+    height: 9rem;
+}
+
+.sidebar-calculate a {
+    width: 10rem;
+    margin-top: 0.4rem;
+}
+
+.calc-title {
+    width: 10rem;
+    padding-top: 1.1rem;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    color: #fff;
+}
+
+.calc-title small {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    display: block;
+    color: #f5a623;
+}
+
+.sidebar-slider {
+    top: 29rem;
+    width: 12rem;
+    height: 12rem;
+}
+
+#poly_types .col-4 {
+    margin-bottom: 0.5rem;
+}
+
+#poly_types .col-4 .panel {
+    height: 100%;
 }
 
 @media (max-width: 768px) {

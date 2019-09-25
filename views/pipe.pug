@@ -1,0 +1,169 @@
+extends layouts/office-layout.pug
+block content
+    <script type="text/javascript" src="./js/suite.min.js"></script>
+    input#access(type="hidden", value= access)
+    .container
+        h1.text-center
+            span#pageTitle= pipe.title
+            button#pipeEditBtn(disabled= access == 'full' ? false : true).btn.btn-link
+                img(src="images/edit.svg", alt="Редактировать воронку")
+        .columns
+            #visHolder.col-12.p-centered.card.d-hide
+                .card-header    
+                    #hideVis.btn.btn-clear.float-right
+                .card-body
+                    #vis.card
+                        .loading.loading-lg
+                .card-footer
+                    button#reloadVisBtn.btn(disabled) Обновить
+                    #strictBtnHolder.btn.btn-link.tooltip(data-tooltip='Выстроить структуру с лева на право')
+                        label.form-switch
+                            input#strictBtn(type="checkbox", checked, disabled)
+                            i.form-icon </i> Выравнить
+                    button#saveStepsVis.btn.btn-primary.tooltip(disabled, data-tooltip='Для kanban`a нужно больше одного шага') Создать Kanban
+                    button#deleteStepsVis.btn.btn-error.float-right.tooltip(data-tooltip='Безвозвратно удалить всё', disabled= access == 'full' ? false : true) Очистить структуру
+                    button#visFullScreen.btn.btn-primary.ml-2 Полный экран
+            .col-12.p-absolute
+                button#showVis.btn.btn-link.float-right.d-flex
+                    img(src="images/structure.svg", alt="", width="24px", height="24px")
+                    span Структура
+            .col-12
+                .h2.text-center КАНБАНЫ
+                #kanbanList.empty
+                    .loading.loading-lg
+            #kanbanStepsList.modal
+                .modal-overlay
+                .card.modal-container
+                    .card-header
+                        .btn.btn-clear.float-right.modal-close
+                        .h2.text-center 
+                            span#kanbanTitle
+                            button#kanbanTitleChangeBtn.btn.btn-link
+                                img(src="images/edit.svg", alt="Редактировать канбан")
+                            input#kanbanTitleChangeInput.form-input.d-hide(type="text")
+                    #stepsHolder.card-body.columns
+                    .card-footer 
+                        button#deleteKanban.btn.btn-link.float-left.text-gray Удалить
+                        button#saveStepsBtn.btn.btn-primary.float-right Сохранить
+            .col-12
+                #kanbanTitleHolder.card-header.h2.text-center
+                #kanbanStepsHolder.card-body.steps.dragscroll 
+                //- button.btn(onclick="document.getElementById('kanbanStepsHolder').classlist.remove('dragscroll');dragscroll.reset()")
+    #pipeEditingModal.modal
+        .modal-overlay
+        .modal-container.card
+            .card-header    
+                .h5 Изменение воронки
+                    .btn.btn-clear.float-right.modal-close
+            .card-body.d-flex
+                input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+                input#pipeTitle.form-input(type="text", name="", value=`${pipe.title}`)
+                button#renamePipeBtn.btn.btn-primary Сохранить
+            .card-footer
+                button#pipeDeleteBtn.btn.btn-link.text-gray Удалить воронку
+
+    #nodeCreateModal.modal
+        .modal-overlay
+        .modal-container.card
+            .card-header
+                .h4.text-center Создание нового шага (узла)
+                    .btn.btn-clear.float-right.modal-close
+            .card-body.form-group
+                label.form-label Название шага
+                input#nodeCrateTitle.form-input(placeholder="Название шага", value="Новый шаг")
+                label.form-label Цвет рамки шага
+                input#nodeCreateColor.form-input(type="color")
+                label.form-label Форма шага
+                select#nodeCreateShape.form-select
+                    option(value="box") Рамка
+                    option(value="database") Цилиндр
+                    option(value="circle") Круг
+                    option(value="triangle") Треугольник 
+                    option(value="triangleDown") Треугольник перевёрнутый
+                    option(value="diamond") Ромб
+                    option(value="star") Звезда
+            .card-footer
+                button#rejectNodeCreate.btn.btn-link Отмена
+                button#confirmNodeCreate.btn.btn-primary.float-right Сохранить
+    button#exitFullScreen.btn.p-absolute.d-hide Выйти из полного экрана
+
+    #nodeEditingModal.modal
+        .modal-overlay
+        .modal-container.card
+            .card-header
+                .h4.text-center Редактирование шага (узла)
+                    .btn.btn-clear.float-right.modal-close
+            .card-body.form-group
+                label.form-label Название шага
+                input#nodeEditTitle.form-input(placeholder="Название шага")
+                label.form-label Цвет рамки шага
+                input#nodeEditColor.form-input(type="color")
+                label.form-label Форма шага
+                select#nodeEditShape.form-select
+                    option(value="box") Рамка
+                    option(value="database") Цилиндр
+                    option(value="circle") Круг
+                    option(value="triangle") Треугольник 
+                    option(value="triangleDown") Треугольник перевёрнутый
+                    option(value="diamond") Ромб
+                    option(value="star") Звезда
+            .card-footer
+                button#rejectNodeEdit.btn.btn-link Отмена
+                button#confirmNodeEdit.btn.btn-primary.float-right Сохранить
+
+    #usersListModal.modal.modal-sm
+        .modal-overlay.modal-close
+        .modal-container.card
+            .card-header
+                .h4.text-center Ответственный
+                    .btn.btn-clear.float-right.modal-close
+            #usersList.card-body
+            .card-footer
+                button#rejectUserSelect.btn.btn-link Отмена
+                button#confirmUserSelect.btn.btn-primary.float-right(disabled) Назначить
+    
+    #contactsSearcher.modal.modal-sm
+        .modal-overlay.modal-close
+        .modal-container.card
+            .card-header
+                .btn.btn-clear.float-right.modal-close
+            .card-body
+                .form-autocomplete
+                    .form-autocomplete-input.form-input.is-focused
+                        input#searchNewSubContact.form-input(placeholder="Поиск...")
+                dl#newSubContactSuggestion.py-2
+
+    #responsibleListModal.modal.modal-sm
+        .modal-overlay.modal-close
+        .modal-container.card
+            .card-header
+                .h4.text-center Ответственный
+                    .btn.btn-clear.float-right.modal-close
+            #responsibleList.card-body
+            .card-footer
+                button#rejectResponsibleSelect.btn.btn-link Отмена
+                button#confirmResponsibleSelect.btn.btn-primary.float-right(disabled) Назначить
+
+    //- WIP
+    .lidCard.animated.columns.faster.d-hide
+        .col-6
+            .card-heder.bg-dark.columns
+                
+                span.icon.icon-more-horiz.float-right
+                .h2.pl-2
+                    span.icon.icon-arrow-left
+                    span#lidCardTitle Lorem
+                .h5.pl-2
+                    span Step
+        .col-6.bg-secondary
+    .lidCard-bg.animated.faster.d-hide
+
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены
+
+
+            
+                        
+                    

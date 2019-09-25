@@ -1,0 +1,25 @@
+extends layouts/office-layout.pug
+block content
+    input#access(type="hidden", value= access)
+    #newPipe.container.col-12
+    #pipeTitle
+        if pipes[0]
+            h2.text-center= pipes[0].title
+    .col-5.col-md-8.col-sm-12.d-flex.p-centered
+        select#select.form-select
+            each pipe in pipes 
+                option(value=`${pipe.id}`)= pipe.title
+        input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+        .float-right
+            button#addPipeBtn.btn.btn-link(disabled= access == 'full' ? false : true)
+                i.icon.icon-plus.mr-1
+                | Добавить воронку
+            button#editPipeBtn.btn.btn-primary= access == 'full' ? 'Редактировать' : 'Смотреть'
+    .col-12
+        #pipe
+            #pipeStepsHolder.d-flex
+    
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

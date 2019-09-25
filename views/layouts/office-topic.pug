@@ -1,0 +1,16 @@
+.container.bg-dark
+    header.navbar.pb-2.pt-2
+        .navbar-section
+            a(href="/").navbar-brand.mr-2.text-secondary ProfTechEngineering
+            a(href="/office/lids").btn.btn-link.text-secondary Лиды
+            a(href="/office/pipes").btn.btn-link.text-secondary Воронки
+            a(href="/office/chanels").btn.btn-link.text-secondary Каналы
+            if tasks
+                a(href="/office/tasks", data-badge=tasks, title="Задач на сегодня - " + tasks).btn.btn-link.text-secondary.badge Задачи
+            else
+                a(href="/office/tasks").btn.btn-link.text-secondary Задачи
+            a(href="/office/contacts").btn.btn-link.text-secondary Контакты
+        .navbar-section
+            a(href="/office/privilages").btn.btn-link.text-secondary Доступы
+            a(href="/office/cabinet").btn.btn-link.text-secondary Кабинет
+            a(href="/logout").btn.btn-link.text-secondary Выйти

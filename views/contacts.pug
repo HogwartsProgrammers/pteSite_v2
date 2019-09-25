@@ -1,0 +1,40 @@
+extends layouts/office-layout.pug
+block content
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#access(type="hidden", value= access)
+
+    .col-11.mt-2.p-centered
+        .form-autocomplete
+            .form-autocomplete-input.form-input
+                input#searchInput.form-input(type="text", placeholder="Поиск...")
+            //- ul#searchContacts.menu
+        .form-group
+            label.form-checkbox.wfc.d-inline-block
+                input#filterContacts(type="checkbox", checked)
+                i.form-icon </i> Контакты
+
+            label.form-checkbox.wfc.d-inline-block
+                input#filterCompanies(type="checkbox", checked)
+                i.form-icon </i> Компании
+
+    .col-11.p-centered.mt-2
+        table#contacts.table.table-striped.table-hover
+            thead
+                tr
+                    th ID
+                    th Название
+                    th Номер
+                    th Компания
+            tbody#contactsList
+                each contact in contacts
+                    tr.c-hand(data-info= JSON.stringify(contact), data-phones= JSON.stringify(phones.filter(p => contact.id == p.parent ? p : false)), data-parent= JSON.stringify(contacts.find(c => contact.parent == c.id ? c : false)), data-email= JSON.stringify(email.filter(e => e.parent == contact.id ? e : false)[0]))
+                        td= contact.id
+                        td= contact.title
+                        td= phones.find(p => contact.id == p.parent ? p : false) ? '+7' +  phones.find(p => contact.id == p.parent ? p : false).phone : ''
+                        td= contacts.find(c => contact.parent == c.id ? true : false) ? contacts.find(c => contact.parent == c.id ? true : false).title : ''
+                        
+
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

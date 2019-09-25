@@ -1,0 +1,56 @@
+extends layouts/office-layout.pug
+block content
+    <script type="text/javascript" src="./js/suite.min.js"></script>
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#access(type="hidden", value= access)
+
+    .h1.text-center Задачи
+
+    .col-11.mt-2.p-centered
+        .filter
+            input#today.filter-tag(type="checkbox", name="filter-radio", hidden)
+            input#day.filter-tag(type="checkbox", name="filter-radio", hidden)
+            input#3days.filter-tag(type="checkbox", name="filter-radio", hidden)
+            input#week.filter-tag(type="checkbox", name="filter-radio", hidden)
+            input#mounth.filter-tag(type="checkbox", name="filter-radio", hidden)
+
+            input#showHidden.filter-tag(type="checkbox", hidden)
+
+            .form-group.mla.d-block.wfc
+                label.form-switch
+                    input#showHiddenSwitch(type="checkbox")
+                    i.form-icon </i> Показать выполненые
+                
+            #period.p-centered.wfc.text-gray Выбрана сегодняшняя дата
+
+            .filter-nav.no-select.mxa.py-2
+                #filters.p-centered.wfc
+                    label.chip.c-hand.active(for="today") Сегодня
+                    label.chip.c-hand(for="day") День
+                    label.chip.c-hand(for="3days") 3 дня
+                    label.chip.c-hand(for="week") Неделя
+                    label.chip.c-hand(for="mounth") Месяц
+
+            #tasks.filter-body
+    
+    #userSelectModal.modal.modal-sm
+        .modal-overlay.modal-close
+        .modal-container.card
+            .card-header.p-relative
+                .btn.btn-clear.float-right.modal-close.pos-rt.pt-2
+                .h4.text-center Выберите пользователя
+            .card-body.px-1
+                each user in users
+                    .tile.p-2.c-hand.user-tile(data-id= user.id)
+                        .tile-icon
+                            figure.avatar.avatar-sm(data-initial= user.fio ? user.fio.split(' ')[1] ? user.fio.slice(0,1) + user.fio.split(' ')[1].slice(0,1) : user.fio.slice(0,1) : '?', title= user.fio)
+                        .tile-content
+                            .tile-title= user.fio ? user.fio : user.login
+            .card-footer
+                button#rejectSelection.btn.btn-link.modal-close Отмена
+                button#confirmUser.btn.btn-primary.float-right.modal-close Назначить
+
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

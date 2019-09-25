@@ -18,7 +18,7 @@ html(lang="ru")
                     i.icon.icon-menu
                 .page-title
                 .header-tel
-                    button.btn.btn-sm.btn-error.btn-callback.text-bold.text-uppercase Заказать
+                    button.bt_callback.btn.btn-sm.btn-error.btn-callback.text-bold.text-uppercase Заказать
                     a.btn.btn-link.text-bold(href="tel:+78002226580") 8 800 222 65 80
                     .phone-note Заказать обратный звонок
             #sidebar_head
@@ -36,8 +36,9 @@ html(lang="ru")
                     block content 
                 footer.container
                     block footer
+            //- include ../chunks/chunk_callback_phone.pug
         #all_icons.d-hide 
             block svg
         //- <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style>
-        //- include ./callmodal-layout.pug    
+        include ../chunks/chunk_callmodal.pug    
         script(src="js/mainBundle.js")

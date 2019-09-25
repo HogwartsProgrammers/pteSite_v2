@@ -1,0 +1,41 @@
+extends layouts/office-layout.pug
+block content
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#userId(type="hidden", name="userId", value=id)
+    input#access(type="hidden", value= access)
+    .col-10.col-lg-11.p-centered.mt-2
+        .card-head 
+            .h1.text-center Личный кабинет
+        .card-body
+            .columns
+                .col-4.col-md-12.card
+                    .card-body
+                        label ФИО
+                        input#fio.form-input.mb-2(value=fio, placeholder="Инкогнито", data-old=fio)
+                        label Почта
+                        input#mail.form-input.mb-2(value=mail, placeholder="moyaPochata@pochta.ru", data-old=mail)
+                    .card-footer
+                        button#saveInfo.btn.btn-primary.d-block.mla(disabled) Сохранить
+                .col-4.col-md-12.card
+                    .card-header
+                        .h4 О вас
+                    .card-body
+                        label Ваш профиль  
+                        br 
+                        b= privilage.title
+                        br
+                        label Аккаунт был создан 
+                        br
+                        b=  new Date(created).toISOString().split('T')[0].split('-')[2] + '.' + new Date(created).toISOString().split('T')[0].split('-')[1] + '.' + new Date(created).toISOString().split('T')[0].split('-')[0] + ' ' + new Date(created).toISOString().split('T')[1].slice(0,5)
+                .col-4.col-md-12.card
+                    .card-body
+                        .h4.text-center Смена пароля
+                        label Старый пароль
+                        input#oldPass.form-input(placeholder="••••••••••" type="password")
+                        label Новый пароль
+                        input#newPass.form-input(placeholder="••••••••••" type="password")
+                        label Новый пароль ещё раз
+                        input#newPassRepeat.form-input(placeholder="••••••••••" type="password")
+                    .card-footer
+                        button#change.btn.btn-primary.d-block.mla(disabled) Сменить
+

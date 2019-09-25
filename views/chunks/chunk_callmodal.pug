@@ -1,0 +1,19 @@
+#callback_modal.modal.modal
+    .modal-overlay.bg-dark.btn-close-modal(style="opacity: .7;")
+    .modal-container(action="/lids" method="post", style="max-width: 480px;")
+      .modal-header.text-center
+        a.btn.btn-lg.btn-clear.float-right.bt_close_callback_modal.btn-close-modal(aria-label="Close")
+        .modal-title.h4 ОБРАТНЫЙ ЗВОНОК
+        .modal-subtitle.text-gray.d-none.hide МЫ ПЕРЕЗВОНИМ ВАМ ЗА 30 СЕКУНД
+      .modal-body
+        .content
+          .form-group
+            input(type="hidden", name="_csrf", value=csrfToken)
+            input#inpCallback.form-input.centered.p-centered.col-7.col-md-8.col-sm-10.col-xs-12(type="text", name="phone", placeholder="7(___) ___-__-__" maxlength="16")
+            input(type="hidden", name="phoneRaw")
+            label#checkboxCallback.form-checkbox.text-left.centered.p-centered.col-7.col-md-8.col-sm-10.col-xs-12(style="font-size: .5rem;")
+              input#inpLegalCallback(type="checkbox", checked)
+              i.form-icon </i> С 
+              a(href="152fz", target="_blank") политикой конфиденциальности</a> ознакомлен и согласен
+      .modal-footer.bg-gray(style="margin: 0 -.8rem;")
+        button#callbackBtn.btn.btn-lg.btn-error.bt_callback_modal.centered.p-centered.btn-close-modal(data-survey="", disabled) Жду звонка

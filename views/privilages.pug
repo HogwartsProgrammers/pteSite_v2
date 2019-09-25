@@ -1,0 +1,117 @@
+extends layouts/office-layout.pug
+block content
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#access(type="hidden", value= access)
+    #privilagesModal.modal.modal-lg
+        .modal-overlay
+        .modal-container
+            .card-head
+                .btn.btn-clear.modal-close.mla.d-block
+                .h1.text-center Профили
+            .card-body.d-flex
+                .col-4
+                    label Выберите профиль
+                    select#privilagesOption(value="new").form-select
+                        each priv in privs
+                            option(value=priv.id)= priv.title
+                        option.text-gray(value="new", selected) Новый профиль...
+                .col-7.mla.overflow-modal
+                    label Название 
+                    input#privilageTitle.form-input.mb-2(placeholder="Бухгалтер")
+                    label Старший профиль
+                    select#parentPrivilage.form-select
+                        each priv in privs
+                            option(value=priv.id)= priv.title
+                        option.text-gray(value="0", selected) Нет
+                    .divider.text-center(data-content="Доступы")
+                    .access
+                        #mainPageAccess.form-group.col-6
+                            label.form-label Главная страница 
+                            label.form-radio
+                                input(type="radio", name="office", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="office", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="office", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+                        #lidsAccess.form-group.col-6
+                            label.form-label Лиды 
+                            label.form-radio
+                                input(type="radio", name="lids", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="lids", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="lids", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+                        #pipesAccess.form-group.col-6
+                            label.form-label Воронки 
+                            label.form-radio
+                                input(type="radio", name="pipes", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="pipes", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="pipes", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+                        #chanelsAccess.form-group.col-6
+                            label.form-label Каналы 
+                            label.form-radio
+                                input(type="radio", name="chanels", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="chanels", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="chanels", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+                        #privilagesAccess.form-group.col-6
+                            label.form-label Доступы 
+                            label.form-radio
+                                input(type="radio", name="privilages", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="privilages", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="privilages", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+                        #tasksAccess.form-group.col-6
+                            label.form-label Задачи 
+                            label.form-radio
+                                input(type="radio", name="tasks", data-access="full", checked)
+                                <i class="form-icon"></i> Смотреть \ Редактировать
+                            label.form-radio
+                                input(type="radio", name="tasks", data-access="watch")
+                                <i class="form-icon"></i> Смотреть
+                            label.form-radio.is-error
+                                input(type="radio", name="tasks", data-access="none")
+                                <i class="form-icon"></i> Нет доступа
+            .card-footer
+                button#savePrivilage.btn.btn-primary.float-right Сохранить
+                button#deletePrivilage.btn.btn-link.text-gray.float-left Удалить
+    .col-11.p-centered.mt-2
+        button#privilagesOpenModal.btn.btn-primary.float-right Профили
+        table#users.table.table-striped.table-hover
+            thead
+                tr
+                    th ID
+                    th login
+                    th ФИО
+                    th Профиль
+            tbody
+                each user in res
+                    tr(data-data=user, title="Нажмите чтобы редактировать").c-hand
+                        td.id= user.id
+                        td.login= user.login
+                        td.fio= user.fio
+                        td.priv= privs.find(el => el.id == user.role ? true : false) ? privs.find(el => el.id == user.role ? true : false).title : ''
+    
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

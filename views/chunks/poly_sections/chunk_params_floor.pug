@@ -1,5 +1,5 @@
 .obj-header
-    .sub-title.text-center.p-centered ПРОМЫШЛЕННОГО ПОЛА
+    h3.text-center.p-centered ПРОМЫШЛЕННОГО ПОЛА
 .obj-body
     #paramFloor.column.col-12.animated.fadeIn.p-centered
         a(name="param")
@@ -95,12 +95,14 @@
                 .tile-action.hide-xs
                     button.btn.btn-warning.bt_importance.goal_item(data-goal="bt_sur_prochnost") Мне это важно
 .obj-footer
-    .cta-panel.p-centered.p-relative.text-uppercase(data-cta="Вам нужна консультация по <span class='d-block'>постройке общественных зданий?</span>", data-btn="УЗНАЙТЬ СТОИМОСТЬ")
+    .calc-panel.p-centered.p-relative.text-uppercase
         svg.gear1.p-absolute
             use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
         .header-plate-text.text-center
-            .h5.text-uppercase.text-center 
-        button.btn.btn-error.text-bold.p-centered  УЗНАТЬ СТОИМОСТЬ
+            .h5.text-uppercase.text-center УКАЖИТЕ ПЛОЩАДЬ ВАШЕГО ПОЛА ДЛЯ РАСЧЁТА ЕГО СТОИМОСТИ
+            .input-group.p-centered
+                input.form-input(type="text",  placeholder="")
+                button.bt_callback.btn.btn-error.input-group-btn.survey-value РАССЧИТАТЬ
         svg.gear2.p-absolute
             use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
 

@@ -1,0 +1,26 @@
+extends ./templates/tpl_main.pug
+block content
+    include layouts/topic-layout.pug
+    main.container
+        h2.site-block.text-center АВТОРИЗАЦИЯ В СЕРВИСЕ
+        .projects.mb-2.pb-2
+            .columns    
+                .column.col-6.col-md-8.col-sm-9.col-xs-12.p-centered
+                    .card
+                        .card-header.text-center
+                            h4.card-title ВВЕДИТЕ ВАШИ ДАННЫЕ
+                            .card-subtitle ДЛЯ АВТОРИЗАЦИИ
+                            if process.env.ON_SERVER
+                                label.label.label-success НА ЛОКАЛЬНОЙ МАШИНЕ
+                        form.card-body(action="/login", method="post", data-name="mailFieldCheck").col-9.col-xs-12.p-centered
+                            input(type="hidden", name="_csrf", value=csrfToken)
+                            .form-group
+                                label.form-label Ваш логин (емайл):
+                                input(type="text", name="login", placeholder="Введите ваш логин").form-input
+                                label.form-label Ваш пароль:
+                                input(type="password", name="password", placeholder="Введите ваш пароль").form-input
+                            br
+                            button(type="submit").btn.btn-lg.btn-primary.p-centered АВТОРИЗОВАТЬСЯ
+                        .card-footer
+                            a(href="signup").btn.btn-link.btn-sm.p-centered.text-gray ЗАРЕГИСТРИРОВАТЬСЯ
+                            a(href="recovery").btn.btn-link.btn-sm.p-centered.text-gray ВОССТАНОВИТЬ ПАРОЛЬ

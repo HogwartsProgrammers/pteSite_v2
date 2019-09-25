@@ -1,0 +1,82 @@
+extends layouts/office-layout.pug
+block content
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#access(type="hidden", value= access)
+    .col-11.p-centered.mt-2
+        table#lids.table.table-striped.table-hover
+            thead
+                tr
+                    th ID
+                    th Название
+                    th Создан
+                    th Вал
+                    th Контакт
+            tbody
+                each lid in lids.reverse().filter(lid => lid.active ? true : false)
+                    tr
+                        td.id.pl-2= lid.id 
+                        td.title= lid.title
+                        td.date= new Date(new Date(lid.created).setHours(new Date(lid.created).getHours() + 3)).toISOString().slice(8,10) + '.' + new Date(new Date(lid.created).setHours(new Date(lid.created).getHours() + 3)).toISOString().slice(5,7) + ' ' + new Date(new Date(lid.created).setHours(new Date(lid.created).getHours() + 3)).toISOString().slice(11,19)
+                        td.gi= lid.gi + ' р.'
+                        td.contact
+                            span.name= contacts.find(el => el.id == lid.holder ? true : false).title 
+                            if (phones.find(el => el.parent == lid.holder ? true : false))
+                                span.text-gray=" +7"+phones.find(el => el.parent == lid.holder ? true : false).phone
+                tr#addLidBtn.c-hand
+                    td(colspan="5")
+                        .d-block.mxa.wfc
+                            i.icon.icon-plus
+
+    #createLidModal.modal
+        .modal-overlay.modal-close
+        .modal-container
+            .modal-header.pb-1
+                .btn.btn-clear.float-right.modal-close
+                .h4.text-center Создание лида
+            .modal-body.pt-1.columns
+                .col-6.p-1
+                    .form-group
+                        label.form-label Название
+                        input#lidTitle.form-input(type="text", placeholder="Монолит")
+                        label.form-label В какой шаг добавить
+                        select#lidStep.form-select
+                            each step in steps
+                                option(value=step.id, data-pipe=step.pipe_id)= step.title
+                        label.form-label Вал
+                        input#lidGi.form-input.noArrows(type="number", min="0", placeholder="n р.", value="0")
+                        label.form-label Маржа
+                        input#lidCgi.form-input.noArrows(type="number", min="0", placeholder="n р.", value="0")
+                        label.form-label Предоплата
+                        input#lidPrepayment.form-input.noArrows(type="number", min="0", placeholder="n р.", value="0")
+                        label.form-label Доплата
+                        input#lidRestpayment.form-input.noArrows(type="number", min="0", placeholder="n р.", value="0")
+                .col-6.p-1
+                    .form-group
+                        label.form-label Комментарий
+                        textarea#lidComment.form-input.textarea(placeholder="Комментарий")
+                .col-12.p-1
+                    .divider.text-center(data-content="Контакт")
+                    .form-autocomplete
+                        input#lidHolderUser(type="text", placeholder="Поиск...").form-autocomplete-input.form-input
+                        ul#found.menu.d-hide
+                    #creatingContactHolder.d-hide
+                        label.form-label Имя / Название
+                        input#lidContactTitle.form-input(type="text", placeholder="Ивванов Иван Иванович")
+                        #lidContactType.form-group.mt-2.mb-1
+                            label.form-radio.form-inline
+                                input(type="radio", checked, name="contactType", value="person")
+                                i.form-icon </i> Контакт
+                            label.form-radio.form-inline
+                                input(type="radio", name="contactType", value="company")
+                                i.form-icon </i> Компания
+                        label.form-label.pt-0 Телефон
+                        .seven-prefix.w100
+                            input#newPhone.phone-number.noArrows.new(type="text", placeholder="(900) 800 50 60", pattern="/\d*/", maxlength="10")
+            .modal-footer
+                button#rejectCrateingLid.btn.btn-link.modal-close.float-left Отмена
+                button#confirmCreatingLid.btn.btn-primary Создать
+    
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

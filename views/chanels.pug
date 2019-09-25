@@ -1,0 +1,64 @@
+extends layouts/office-layout.pug
+block content
+    input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+    input#access(type="hidden", value= access)
+    .columns
+        #chanelAdding.modal
+            .modal-overlay
+            .modal-container.card    
+                .card-header
+                    .btn.btn-clear.float-right.modal-close
+                    .h2.text-center Создание канала
+                .card-body
+                    .form-group
+                        label.form-label Название
+                        input#newChanelTitle.form-input(type="text", placeholder="Название канала")
+                        label.form-label Шаг, в который будут идти лиды по этому каналу
+                        select#stepsSelect.form-select
+                            option(value="0") Без шага
+                        label.form-label Укажите абривиатуру источника лида
+                        input#newAbbrChanel.form-input(type="text", placeholder="Реклама приносящая клиентов")
+                        small.text-gray Введите номер телефона АТС без кода страны для работы со звонками
+                        br
+                        small.text-gray Введите "pure" чтобы принимать заявки без меток
+                .card-footer.pt-1
+                    button#createNewChanel.btn.btn-primary.float-right.mt-2.modal-close(type="submit", disabled) Создать
+        #chanelEditing.modal
+            .modal-overlay
+            .modal-container.card    
+                .card-header
+                    .btn.btn-clear.float-right.modal-close
+                    .h2.text-center Редактирование канала: 
+                        span#chanelEditingTitle
+                .card-body
+                    .form-group
+                        label.form-label Название
+                        input#chaneEditinglTitleInput.form-input(type="text", placeholder="Название канала")
+                        label.form-label Шаг, в который будут идти лиды по этому каналу
+                        select#stepsSelectEdit.form-select.mb-2
+                            option(value="0") Без шага
+                        label.form-label Укажите аббревиатуру канала
+                        input#editAbbrChanel.form-input(type="text", placeholder="Реклама приносящая клиентов")
+                        small.text-gray Введите номер телефона АТС без кода страны для работы со звонками
+                        br
+                        small.text-gray Введите "pure" чтобы принимать заявки без меток
+                .card-footer.pt-1
+                    button#deleteChanel.btn.btn-link.float-left.mt-2.text-gray(type="submit") Удалить
+                    button#editChanelBtn.btn.btn-primary.float-right.mt-2.modal-close(type="submit") Сохранить
+        .col-11.p-centered
+            .h2.text-center Список каналов
+            table.table.table-striped.table-hover.d-hide
+                thead
+                    tr
+                        th Название
+                        th Шаг
+                        th Аббревиатура
+                tbody#tableBody
+                tfoot
+                    button#openChanelAddingBtn.btn.btn-link.float-right.d-hide <i class="icon icon-plus"></i> Добавить канал  
+            .loading.loading-lg.m-2
+    
+    if access != 'full'
+        .toast.toast-warning.low-access.animated.slideInRight
+            button#closeLowAccessWarn.btn.btn-clear.float-right
+            span Важно! С вашим доступом некоторые функции были ограничены

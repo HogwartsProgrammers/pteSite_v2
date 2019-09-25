@@ -1,0 +1,10 @@
+extends layouts/office-layout.pug
+block content
+    .col-8.p-centered.mt-2
+        .toast.toast-warning.noAccess
+            .h1.text-center 
+                span У вас нет доступа к этой странице
+                br
+                .h5 Обратитесь к пользователю с доступом выше вашего
+            .card-footer
+                button.btn.btn-primary.p-centered.go-back Назад

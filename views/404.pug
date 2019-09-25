@@ -1,0 +1,13 @@
+extends ./templates/tpl_main.pug
+
+block content
+    include layouts/topic-layout.pug
+    main.container
+        .columns
+            .column.col-12
+                .hero.bg-secondary.mt-2.text-center
+                    h1
+                        span.text-error ОШИБКА 404</span>
+                    h3 – СТРАНИЦА НЕ НАЙДЕНА –
+                    br
+                    button.btn.btn-lg.p-centered(onclick="window.location='/'") НА ГЛАВНУЮ
