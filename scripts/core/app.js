@@ -163,19 +163,20 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 // })
 
 // // костыль для шестерней
-// function gearChange() {
-//     document.body.clientWidth <= 1024 ?
-//         use.forEach(el => {
-//             el.setAttribute('x', '11')
-//             el.setAttribute('y', '11')
-//         })
-//         : use.forEach(el => {
-//             el.setAttribute('x', '13')
-//             el.setAttribute('y', '13')
-//         })
-// }
-// const use = document.querySelectorAll('.header-plate use')
-// gearChange()
+const use = document.querySelectorAll('.header-plate use')
+
+function gearChange() {
+    document.body.clientWidth <= 425 ?
+        use.forEach(el => {
+            el.setAttribute('x', '6')
+            el.setAttribute('y', '6')
+        })
+        : use.forEach(el => {
+            el.setAttribute('x', '11')
+            el.setAttribute('y', '11')
+        })
+}
+gearChange()
 
 // //скролл сайдбара
 require('../scrollSidebar').scrollSidebar()

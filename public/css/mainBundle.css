@@ -4758,7 +4758,7 @@ a.text-error:visited {
     position: fixed;
     bottom: calc(5% - 3.75px);
     /* right: calc(3% - 2.25px); */
-    left: 63rem;
+    right: 0rem;
     display: block;
     height: 150px;
     width: 150px;
@@ -5036,7 +5036,7 @@ a.text-error:visited {
 .docs-navbar .header-tel {
     position: absolute;
     right: 0.7rem;
-    top: 0.35rem;
+    top: 1rem;
 }
 
 .docs-navbar .header-tel a {
@@ -5659,5 +5659,317 @@ footer p {
     
     .header-plate .header-gear2 {
         right: 0.4rem;
+    }
+    .sub-title {
+        margin-top: 2rem;
+    }
+    .header-plate {
+        bottom: 1.3rem;
+        width: 35rem;
+    }
+    .icon85 {
+        width: 78px;
+    }
+    .header-stages li {
+        margin: 0 0 0 1rem;
+        height: fit-content;
+    }
+}
+
+@media (max-width: 425px) {
+    #big_logo {
+        width: 150px;
+        height: 150px;
+        bottom: 13rem;
+    }
+    #logo {
+        height: 11.9rem;
+    }
+    .offer {
+        height: 4rem;
+        border-bottom-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        padding-top: 0.4rem;
+    }
+    h1 {
+        font-size: 0.73rem;
+        margin-top: 0.2rem;
+        margin-bottom: 0.13rem;
+    }
+    #offer_text {
+        bottom: 0rem;
+        font-size: 0.4rem;
+    }
+    #offer_text::before {
+        top: 0.25rem;
+        width: 2.7rem;
+    }
+    #offer_text::after {
+        top: 0.25rem;
+        width: 2.7rem;
+    }
+    .header-plate {
+        bottom: 1.3rem;
+        width: 18rem;
+        height: 4rem;
+        border-radius: 0.4rem;
+    }
+    .header-plate button {
+        font-size: 0.5rem;
+        padding: 0rem;
+        height: 1.2rem;
+        width: 6rem;
+    }
+    .header-plate-text {
+        width: 14rem;
+    }
+    .header-plate-text h2 {
+        font-size: 1em;
+        line-height: 1rem;
+        margin-top: 0.4rem;
+        margin-bottom: 0rem;
+    }
+    .header-gear1 {
+        left: 1rem;
+        top: 12px;    
+        width: 50px;
+        height: 50px;
+    }
+    .header-gear2 {
+        right: 1rem;
+        top: 12px;    
+        width: 50px;
+        height: 50px;
+    }
+    .header-stages {
+        min-height: 50px;
+    }
+    .header-stages {
+        min-height: 50px;
+        margin-right: 1.7rem;
+        margin-top: 0.5rem;
+    }
+    .header-stages li {
+        margin: 0 0 0 0.4rem;
+    }
+    .icon64 {
+        width: 32px;
+    }
+    .icon85 {
+        width: 41px;
+    }
+    .sub-title {
+        margin-top: 1rem;
+        font-size: 0.7rem;
+        width: 20rem;
+    }
+    .obj-header h3 {
+        font-size: 1.1rem;
+        margin-top: 0.2rem;
+        max-width: 100%;
+    }
+    .obj-header small {
+        font-size: 0.9rem;
+    }
+    .obj-header img {
+        width: 15rem;
+    }
+    .obj-body p {
+        width: 18rem;
+        margin-top: 0;
+    }
+    .obj-body ul {
+        width: 18rem;
+    }
+    .cta-panel {
+        height: 6rem;
+        width: 20rem;
+        border-radius: 0.6rem;
+    }
+    .gear1 {
+        top: 1rem;
+        left: 0rem;
+    }
+    .gear2 {
+        top: 1rem;
+        right: 0rem;
+    }
+    .cta-panel .h5 {
+        font-size: 0.8rem;
+        line-height: 1rem;
+        margin-top: 0.8rem;
+    }
+    .reasons-description {
+        width: 19rem;
+    }
+    .reasons-description p {
+        font-size: 0.6rem;
+    }
+    .calc-panel {
+        width: 19rem;
+        border-radius: 0.4rem;
+    }
+    .calc-panel .header-plate-text {
+        padding-top: 0.4rem;
+        width: 19rem;
+    }
+    .calc-panel .h5 {
+        font-size: 0.5rem;
+    }
+    .calc-panel .input-group {
+        width: 12rem;
+        margin-top: 1.1rem;
+    }
+    .calc-panel .gear1 {
+        top: 1.4rem;
+    }
+    .calc-panel .gear2 {
+        top: 1.4rem;
+    }
+    .tile.tile-centered .tile-title, .tile.tile-centered .tile-subtitle {
+        white-space: unset;
+    }
+    #paramFloor .tile-title {
+        text-align: center
+    }
+    #paramFloor .tile-subtitle {
+        text-align: center
+    }
+    #homePageSidebar ul > li {
+        line-height: 0.6rem;
+    }
+    #homePageSidebar .nav .nav-item a:not(.li-side-header) {
+        font-size: 0.45rem;
+    }
+}
+
+@media (max-width: 375px) {
+    #logo {
+        height: 11.5rem;
+    }
+    .header-stages li {
+        margin: 0 0 0 0.3rem;
+    }
+    .sub-title {
+        font-size: 0.6rem;
+        width: 18rem;
+    }
+    .cta-panel {
+        width: 18rem;
+    }
+    .cta-panel .h5 {
+        font-size: 0.7rem;
+    }
+    #offer_text::before {
+        display: none;
+        top: 0.25rem;
+        width: 2.7rem;
+    }
+    #offer_text::after {
+        display: none;
+        top: 0.25rem;
+        width: 2.7rem;
+    }
+    .calc-panel {
+        width: 18rem;
+    }
+    .calc-panel .header-plate-text {
+        width: 18rem;
+    }
+    .reasons-description {
+        width: 18rem;
+    }
+    #homePageSidebar ul > li {
+        line-height: 0.6rem;
+    }
+    #homePageSidebar .nav .nav-item a:not(.li-side-header) {
+        font-size: 0.45rem;
+    }
+}
+
+@media (max-width: 320px) {
+    #logo {
+        height: 11rem;
+    }
+    .header-stages li {
+        margin: 0 0 0 0.1rem;
+    }
+    .sub-title {
+        font-size: 0.5rem;
+        width: 15rem;
+    }
+    .cta-panel {
+        width: 15rem;
+    }
+    .cta-panel .h5 {
+        font-size: 0.7rem;
+    }
+    .header-plate {
+        width: 15rem;
+    }
+    .obj-body p {
+        width: 15rem;
+    }
+    .icon64 {
+        width: 30px;
+    }
+    .icon85 {
+        width: 39px;
+    }
+    .obj-body ul {
+        width: 15rem;
+    }
+    .header-plate .header-gear1 {
+        DISPLAY: NONE;
+    }
+    .header-plate .header-gear2 {
+        DISPLAY: NONE;
+    }
+    .gear1 {
+        DISPLAY: NONE;
+    }
+    .gear2 {
+        DISPLAY: NONE;
+    }
+    .cta-panel .h5 {
+        font-size: 0.8rem;
+    }
+    .cta-panel {
+        border-radius: 0.5rem;
+    }
+    .docs-navbar .header-tel .phone-note {
+        font-size: 0.54rem;
+        bottom: 0.7rem;
+    }
+    .docs-navbar .header-tel a {
+        font-size: 0.9rem;
+    }
+    #big_logo {
+        width: 130px;
+        height: 130px;
+    }
+    .calc-panel {
+        width: 15rem;
+    }
+    .calc-panel .header-plate-text {
+        width: 12rem;
+    }
+    .calc-panel .h5 {
+        font-size: 0.6rem;
+    }
+    .calc-panel .input-group {
+        margin-top: 0.6rem;
+    }
+    .reasons-description {
+        width: 15rem;
+    }
+    h3 {
+        font-size: 0.9rem;
+    }
+    #homePageSidebar ul > li {
+        line-height: 0.39rem;
+    }
+    #homePageSidebar .nav .nav-item a:not(.li-side-header) {
+        font-size: 0.40rem;
     }
 }

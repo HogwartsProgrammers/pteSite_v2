@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+html(lang="ru")
+    head
+        meta(charset="UTF-8")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        meta(http-equiv="X-UA-Compatible", content="ie=edge")
+        base(href=path)
+        title #{pageTitle}
+        <meta name="description" content="#{pageDescription}" />
+        <meta name="keywords" content="#{pageKeywords}" />
+        link(rel="shortcut icon" href="images/favicon.png" type="image/png")
+        link(rel="stylesheet", href="./css/mainBundle.css")
+        block styles
+    body#app_body.animated.fadeIn.slow
+        main
+            block content 
+        footer.container
+            block footer
+            //- include ../chunks/chunk_callback_phone.pug
+        <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style> 
+        script(src="js/mainBundle.js")
