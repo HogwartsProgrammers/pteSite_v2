@@ -1,12 +1,12 @@
 const os = require('os')
 
 module.exports = () => {
-    if (process.env.ON_SERVER) {
+    if (false) {
         console.log(os.hostname())
         switch(os.hostname()) {
             case 'MB-ASER': return {
                 host: 'localhost',
-                user: 'terminal_0',
+                user: 'root',
                 database: 'pte',
                 password: '26091940'
             }
@@ -35,7 +35,7 @@ module.exports = () => {
             host: 'localhost',
             user: 'v48534_pte_user',
             database: 'v48534_pte',
-            password: 'Q5ddhtSiwQ5t7Wg'
+            password: 'I3_4fG)Wi]8p'
         }
     }
 }

@@ -1,6 +1,6 @@
 module.exports = {
     path: () => {
-        if (process.env.ON_SERVER) {
+        if (false) {
             return 'http://localhost:3000/'
         } else {
             return 'https://proftechengineering.ru/'
