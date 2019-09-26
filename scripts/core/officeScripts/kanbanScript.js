@@ -760,6 +760,9 @@ export class KanbanScript {
 										const togglePlayer = html => {
 											const tagA = html.querySelector('a')
 											const audioPlayer = html.querySelector('audio')
+
+											if (!audioPlayer) return
+
 											tagA.onclick = () => {
 												if (audioPlayer.classList.contains('d-hide')) {
 													audioPlayer.pause()
