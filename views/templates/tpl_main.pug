@@ -11,6 +11,7 @@ html(lang="ru")
         link(rel="shortcut icon" href="images/favicon.png" type="image/png")
         link(rel="stylesheet", href="./css/mainBundle.css")
         block styles
+        <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style>
     body#app_body.animated.fadeIn.slow
         .off-canvas
             nav.docs-navbar
@@ -39,6 +40,5 @@ html(lang="ru")
             //- include ../chunks/chunk_callback_phone.pug
         #all_icons.d-hide 
             block svg
-        <style>@font-face {font-family: Impact;font-display: auto;src: url(./fonts/impact.ttf);}</style>
         include ../chunks/chunk_callmodal.pug    
         script(src="js/mainBundle.js")
