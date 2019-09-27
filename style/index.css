@@ -839,7 +839,7 @@ footer p {
     width: 31rem;
 }
 .calc-panel .h5 {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 .calc-panel .input-group {
     display: flex !important;
@@ -876,30 +876,35 @@ footer p {
 }
 
 .slider {
-    height: 7rem;
+    height: 6.8rem;
+    bottom: 0.4rem;
+    background-color: #000;
 }
 
 .slider img {
-    height: 7rem;
+    height: 6rem;
+    position: absolute;
+    top: 0.8rem;
 }
 
 .sidebar-slider {
     top: 29rem;
-    padding-top: 1rem;
+    padding-top: 0.7rem;
     width: 12rem;
-    height: 14rem;
+    height: 8.7rem;
 }
 
 .slider-description {
-    width: 10rem;
-    margin-top: 0.5rem;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
     font-size: 0.6rem;
+    bottom: 7.2rem;
+    color: #fff;
 }
 
 .sidebar-slider a {
-    margin-top: 0.5rem;
     width: 6rem;
+    bottom: 3.5rem;
+    left: 3rem;
 }
 
 .slider-title {
