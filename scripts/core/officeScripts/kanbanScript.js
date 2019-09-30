@@ -1020,7 +1020,8 @@ export class KanbanScript {
 								createDivider('Коментарий')
 
 								const comment = document.createElement('textarea')
-								comment.value = comment.dataset.old = lid.lid_data.commnet ? lid.lid_data.commnet : ''
+								comment.value = lid.lid_data.comment ? lid.lid_data.comment : ''	
+								comment.dataset.old = lid.lid_data.comment ? lid.lid_data.comment : ''
 								const sendComment = document.createElement('button')
 								sendComment.classList.add('btn', 'btn-sm')
 								sendComment.disabled = true
@@ -1028,7 +1029,7 @@ export class KanbanScript {
 								if (access == 'full') sendComment.onclick = event => { 
 									if (comment.value != comment.dataset.old) {
 										sendComment.disabled = true
-										lid.lid_data.commnet = comment.value
+										lid.lid_data.comment = comment.value
 										sendData({
 											type: 'editComment',
 											when: new Date().toISOString(),
