@@ -1,0 +1,79 @@
+.container
+    .projects.columns
+        #scladSquare.column.col-12.animated.fadeIn.d-hide
+            .empty.mt-2
+                .empty-title.h3 УКАЖИТЕ ПЛОЩАДЬ ВАШЕГО СКЛАДА
+                .empty-subtitle.h5 ДЛЯ РАСЧЁТА ЕГО СТОИМОСТИ
+                .empty-action.col-3.col-md-4.col-xl-4.col-sm-6.col-xs-10.p-centered
+                    .form-group
+                        input.form-input.text-center.survey-value(type="number", min="10", data-kind="ПЛОЩАДЬ ПОМЕЩЕНИЯ")
+                    .form-group.pt-2
+                        button.btn.btn-lg.btn-error.btn-block.bt_callback(data-title="УКАЖИТЕ НОМЕР", data-cta="ПОЛУЧИТЬ РАССЧЕТ") УКАЗАТЬ
+        h2.site-block.text-center ЭТАПЫ СТРОИТЕЛЬСТВА ПОЛОВ ПОД КЛЮЧ:
+        .column.col-12
+            #stages.timeline
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Планировка местности </b>
+                        figure
+                            img(src="./images/measuringMan.svg")
+                            figcaption.figure-caption.text-center Мы составляем чертеж участка, размещаем объекты, решаем, какие материалы лучше подойдут для хранения вашей продукции. Делаем вертикальную планировку - изменяем рельеф, что бы вода не скапливалась на участке.
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Заливка фундамента </b>
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Установка несущих металлоконструкций </b>
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Монтаж обшивки и кровли </b>
+                        figure
+                            img(src="./images/dvaSclady.svg")
+                            figcaption.figure-caption.text-center После составления плана строительства, преступаем к работе. Заливаем фундамент, устанавливаем каркас склада, утепляем или делаем его холодным.
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Обустройство полов </b>
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Подводка коммуникации </b>
+                        figure
+                            img(src="./images/polyLogo.svg")
+                            figcaption.figure-caption.text-center Мы сделаем пол без ям и неровностей, который может выдержать большую нагрузку. Покрываем полы антипыльным защитным слоем. Проводим электричество, устанавливаем все что нужно для пожарной безопасности и все что может потребоваться.
+                .timeline-item
+                    .timeline-left
+                        a.timeline-icon.icon-lg
+                            i.icon.icon-check
+                    .timeline-content
+                        h4 <b> Установка стелажей и другого складского оборудования </b>
+                        figure
+                            img(src="./images/stelaju.svg")
+                            figcaption.figure-caption.text-center Мы устанавливаем стеллажи того типа который нужен вам для удобного расположения товаров. И делаем их безопасными для производства.
+        .cta-panel.mt-2.p-centered.p-relative.text-uppercase(data-cta="Остались вопросы? <small class='d-block'>получите бесплатную консультацию</small>", data-btn="ПОЛУЧИТЬ")
+            svg.gear1.p-absolute
+                use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
+            .header-plate-text.text-center
+                .h5.text-uppercase.text-center 
+            button.bt_callback.btn.btn-error.text-bold.p-centered  УЗНАТЬ СТОИМОСТЬ
+            svg.gear2.p-absolute
+                use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
+        //- #timelineHistory.column.col-12
+            include timeline-layout.pug
+

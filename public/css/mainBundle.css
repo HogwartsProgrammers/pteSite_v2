@@ -5128,7 +5128,7 @@ h1 span {
     left: 6.2rem;
     display: block;
     border-top: 2px solid #f5a623;
-    width: 5.5rem;
+    width: 5rem;
 }
 
 #offer_text::after {
@@ -5138,7 +5138,7 @@ h1 span {
     right: 6.2rem;
     display: block;
     border-top: 2px solid #f5a623;
-    width: 5.5rem;
+    width: 5rem;
 }
 
 #offer_text span {

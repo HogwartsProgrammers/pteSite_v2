@@ -153,7 +153,10 @@ exports.postLids = (req, res, next) => {
                         null,
                         null,
                         null,
-                        contact.data.id
+                        contact.data.id,
+                        null,
+                        null,
+                        1
                     )
         
                     Lid.savePhone()
@@ -184,7 +187,10 @@ exports.postLids = (req, res, next) => {
                         null,
                         null,
                         null,
-                        contact.data.id
+                        contact.data.id,
+                        null,
+                        null,
+                        1
                     )
                     Lid.savePhone()
                     .then(result => {

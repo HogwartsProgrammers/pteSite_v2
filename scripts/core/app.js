@@ -96,14 +96,16 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleL
 //         check()
 //     })
 
-// if (location.pathname.toLocaleLowerCase() === '/sclady') {
-//     document.getElementById('navTitle').innerText = ''
-//     require('../historyScroll').slider()
+if (location.pathname.toLocaleLowerCase() === '/sclady') {
+    headerIcons()
+    // document.getElementById('navTitle').innerText = ''
+    // require('../historyScroll').slider()
     
-//     document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
-//         document.getElementById('scladSquare').classList.remove('d-hide')
-//     })
-// }
+    document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
+        document.getElementById('scladSquare').classList.remove('d-hide')
+        document.getElementById('scladSquare').addEventListener('animationend', () => document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'}))
+    })
+}
 
 // функция слайдера
 
@@ -123,7 +125,7 @@ const photoSlider = () => {
         {image: 'https://proftechpol.ru/assets/images/timeline/bask-front-1.jpg', title: 'СКЛАД КОМПАНИИ АО «БАСК»', url: 'https://proftechpol.ru/portfolio/msk-lefortovo-sklad'},
         {image: 'https://proftechpol.ru/assets/images/timeline/water-1-min.jpg', title: 'СКЛАДСКОЕ ПОМЕЩЕНИЕ ООО «ЗДОРОВАЯ ВОДА»', url: 'https://proftechpol.ru/portfolio/msk-filevskiy-park-sklad'},
         {image: 'https://proftechpol.ru/assets/images/timeline/avtek-1-min.jpg', title: 'ЦЕХ АО «АВТЭК»', url: 'https://proftechpol.ru/portfolio/pushino-avtoservis'},
-        {image: 'https://proftechpol.ru/assets/images/timeline/q-works-1-min.jpg', title: 'ПРОМЫШЛЕННЫЙ ПОЛ КОМПАНИИ ООО «КЬЮ-ВОРКС»', url: 'https://proftechpol.ru/portfolio/msk-presnenskiy-office'},
+        {image: 'https://proftechpol.ru/assets/images/timeline/q-works-1-min.jpg', title: 'ПРОМЫШЛЕННЫЙ ПОЛ ООО «КЬЮ-ВОРКС»', url: 'https://proftechpol.ru/portfolio/msk-presnenskiy-office'},
         {image: 'https://proftechpol.ru/assets/images/timeline/promproject-front-1.jpg', title: 'СКЛАД ООО «ПРОЕКТПРОМ 72»', url: 'https://proftechpol.ru/portfolio/schelkovo-sklad'},
         {image: 'https://proftechpol.ru/assets/images/timeline/lobnya.jpg', title: 'СКЛАДСКОЕ ПОМЕЩЕНИЕ В ЛОБНЕ', url: 'https://proftechpol.ru/portfolio/lobnya-tseh'},
         {image: 'https://proftechpol.ru/assets/images/timeline/nikolina-gora-1-min.jpg', title: 'ФОНД «ФОНД ВАЛЕРИЯ ГЕРГИЕВА»', url: 'https://proftechpol.ru/portfolio/nikolina-gora-odintsovo'},
@@ -166,14 +168,14 @@ const photoSlider = () => {
         {image: 'https://proftechpol.ru/assets/images/timeline/gromin.jpg', title: 'ООО «ГРОМИН» Г.МИНСК', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/mzbn.jpg', title: 'СКЛАД', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/prostor.jpg', title: 'ПАРКИНГ «ПРОСТОР»', url: ''},
-        {image: 'https://proftechpol.ru/assets/images/timeline/prilesye.jpg', title: 'ТРАНСПОРТНО-ЛОГИСТИЧЕСКИЙ ЦЕНТР «ПРИЛЕСЬЕ»', url: ''},
+        {image: 'https://proftechpol.ru/assets/images/timeline/prilesye.jpg', title: 'ТРАНСПОРТНО-ЛОГИСТИЧЕСКИЙ ЦЕНТР', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/peleng.jpg', title: 'ПРОИЗВОДСТВЕННОЕ ПОМЕЩЕНИЕ', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/mogilev-std.jpg', title: 'СТАДИОН МОГИЛЕВ', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/ganna.jpg', title: 'ПРОИЗВОДСТВЕННОЕ ПОМЕЩЕНИЕ', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/sanatoriy.jpg', title: 'ДЕТСКИЙ САНАТОРИЙ РУЖАНСКИЙ', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/bate.jpg', title: 'ОАО «БАТЭ»', url: ''},
         {image: 'https://proftechpol.ru/assets/images/timeline/frebor.jpg', title: 'ООО «ФРЕБОР» Г.БОРИСОВ', url: ''},
-        {image: 'https://proftechpol.ru/assets/images/timeline/logoysk.jpg', title: 'ПРОИЗВОДСТВО ПОЛИМЕРНОЙ УПАКОВКИ ЛОГОЙСК', url: ''},{image: 'https://proftechpol.ru/assets/images/timeline/minsk-obsh.jpg', title: 'ОБЩЕСТВЕННОЕ ЗДАНИЕ Г.МИНСКА', url: ''}
+        {image: 'https://proftechpol.ru/assets/images/timeline/logoysk.jpg', title: 'ПРОИЗВОДСТВО УПАКОВКИ ЛОГОЙСК', url: ''},{image: 'https://proftechpol.ru/assets/images/timeline/minsk-obsh.jpg', title: 'ОБЩЕСТВЕННОЕ ЗДАНИЕ Г.МИНСКА', url: ''}
     ]
     
     let i = 0
@@ -249,12 +251,6 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 //     require('../circlesScript').circlesScript()
 //     require('../historyScroll').slider()
     const floorBtns = document.querySelector('.survey_points').querySelectorAll('button')
-
-//     //показывать параметры пола
-    document.querySelector('.header-plate').classList.add('barPoly')
-    document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
-        document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'})
-    })
 
 //     //отправка параметров пола лида
     floorBtns.forEach(el => {
