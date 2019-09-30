@@ -44,7 +44,7 @@ module.exports = class Lids {
 
     savePhone() {
         return db.execute(
-            'INSERT INTO lids (phone, lid_data, step_id, tunnel_id, holder) VALUES (?, ?, ?, ?, ?)', [this.phone, this.lid_data, this.step_id, this.tunnel_id, this.holder]
+            'INSERT INTO lids (phone, lid_data, step_id, tunnel_id, holder, active) VALUES (?, ?, ?, ?, ?, ?)', [this.phone, this.lid_data, this.step_id, this.tunnel_id, this.holder, this.active]
         )
     }
 
