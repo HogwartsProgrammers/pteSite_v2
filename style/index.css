@@ -1006,6 +1006,9 @@ footer p {
         top: 0.25rem;
         width: 2.7rem;
     }
+    #sidebar ul > li {
+        height: 1.1rem;
+    }
     .header-plate {
         bottom: 1.3rem;
         width: 18rem;
