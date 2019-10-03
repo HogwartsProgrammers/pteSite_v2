@@ -177,8 +177,6 @@ export class KanbanScript {
 							els.content.classList.add('step-content')
 
 							const drawLid = lid => {
-                console.log(lid)
-
 								// Весь лид
 								const lidCard = document.createElement('div')
 								lidCard.classList.add('card', 'm-2', 'bg-secondary', 'lid', 'animated')
@@ -199,7 +197,7 @@ export class KanbanScript {
 								}).then(res => res.json()).then(data => {
 									lidHeader.querySelector('small').innerText = data.length && data[0].title ? data[0].title : 'Неизвестный'
 								})
-								lidHeader.innerHTML = '<small>?</small><h6 class="text-bold">'+lid.title+'</h6>'
+								lidHeader.innerHTML = '#'+lid.id+' <small>?</small><h6 class="text-bold">'+lid.title+'</h6>'
 								lidHeader.classList.add('lid-header')
 
 								// Кнопка перетаскивания лида
@@ -226,16 +224,17 @@ export class KanbanScript {
 										"Content-Type": "application/json"
 									}
 								}).then(res => res.json()).then(data => {
-									phone.innerHTML = data.length && data[0].phone ? '+7' + data[0].phone : 'Номера телефона нет'
+									phone.innerHTML = `<div>${data.length && data[0].phone ? '+7' + data[0].phone : 'Номера телефона нет'}</div>`
 								})
 								lidBody.insertAdjacentElement('beforeend', phone)
 								lidCard.insertAdjacentElement('beforeend', lidBody)
 								els.content.insertAdjacentElement('beforeend', lidCard)
 
+
 								// Футер лида
 								const lidFooter = document.createElement('div')
 								lidFooter.classList.add('lid-footer')
-								lidFooter.innerHTML = '<span class="label label-primary">'+accounting.formatMoney(lid.gi, '', 0, " ", ",")+' р.</span><div class="float-right">'+format(new Date(lid.created).getMonth())+'.'+format(new Date(lid.created).getDate())+'.'+new Date(lid.created).getFullYear()+' '+format(new Date(lid.created).getHours())+':'+format(new Date(lid.created).getMinutes())+'</div>'
+								lidFooter.innerHTML = '<span class="label label-primary">'+accounting.formatMoney(lid.gi, '', 0, " ", ",")+' р.</span><div class="float-right">'+format(new Date(lid.created).getDate())+'.'+format(new Date(lid.created).getMonth() + 1)+'.'+new Date(lid.created).getFullYear()+' '+format(new Date(lid.created).getHours())+':'+format(new Date(lid.created).getMinutes())+'</div>'
 
 								// Открытие меню лида
 								const expandLidBtn = document.createElement('button')
@@ -394,7 +393,6 @@ export class KanbanScript {
 											event.preventDefault()
 
 											calendar.events.on('change', date => {
-												console.log(calendar.getValue())
 												const oldDate = event.target.innerText
 
 												// dhx fix - потеря в 1 день ¯\_(ツ)_/¯
@@ -709,7 +707,6 @@ export class KanbanScript {
 									</label>
 								`
 								fullStorySwitch.querySelector('input').oninput = event => {
-									console.log(timeline.querySelectorAll('.timeline-left'))
 									timeline.querySelectorAll('.timeline-item').forEach(el => el.classList.contains('unnecessary') && !event.target.checked ? el.classList.add('d-hide') : el.classList.remove('d-hide'))
 								}
 
@@ -760,9 +757,7 @@ export class KanbanScript {
 										const togglePlayer = html => {
 											const tagA = html.querySelector('a')
 											const audioPlayer = html.querySelector('audio')
-
 											if (!audioPlayer) return
-
 											tagA.onclick = () => {
 												if (audioPlayer.classList.contains('d-hide')) {
 													audioPlayer.pause()
@@ -1020,8 +1015,7 @@ export class KanbanScript {
 								createDivider('Коментарий')
 
 								const comment = document.createElement('textarea')
-								comment.value = lid.lid_data.comment ? lid.lid_data.comment : ''	
-								comment.dataset.old = lid.lid_data.comment ? lid.lid_data.comment : ''
+								comment.value = comment.dataset.old = lid.lid_data.commnet ? lid.lid_data.commnet : ''
 								const sendComment = document.createElement('button')
 								sendComment.classList.add('btn', 'btn-sm')
 								sendComment.disabled = true
@@ -1029,7 +1023,7 @@ export class KanbanScript {
 								if (access == 'full') sendComment.onclick = event => { 
 									if (comment.value != comment.dataset.old) {
 										sendComment.disabled = true
-										lid.lid_data.comment = comment.value
+										lid.lid_data.commnet = comment.value
 										sendData({
 											type: 'editComment',
 											when: new Date().toISOString(),
@@ -1754,6 +1748,7 @@ export class KanbanScript {
 												}), 
 												headers:{ "Content-Type": "application/json" }
 											}).then(r => r.json()).then(data => {
+												if (lid.sub_holders)
                         lid.sub_holders.split(',').forEach(sub => data = data.filter(d => d.id != sub))
                         
 												newSubContactSuggestion.innerHTML = ''
@@ -2103,7 +2098,9 @@ export class KanbanScript {
 								}
 							}
 
-							step.lids.forEach(lid => drawLid(lid))
+							step.lids.forEach(lid => {
+								drawLid(lid)
+							})
 
 							if (access == 'full') new Sortable(els.content, {
 								group: 'steps',
