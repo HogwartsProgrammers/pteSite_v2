@@ -5878,10 +5878,20 @@ footer p {
         text-align: center
     }
     #homePageSidebar ul > li {
-        line-height: 0.6rem;
+        line-height: 0.9rem;
     }
     #homePageSidebar .nav .nav-item a:not(.li-side-header) {
-        font-size: 0.45rem;
+        font-size: 0.55rem;
+    }
+    .docs-nav {
+        position: relative !important;
+        width: 13rem;
+    }
+    .sidebar-calculate {
+        position: unset !important;
+    }
+    .sidebar-slider {
+        position: unset !important;
     }
     h3 {
         font-size: 1rem;
@@ -5939,12 +5949,6 @@ footer p {
     }
     .reasons-description {
         width: 18rem;
-    }
-    #homePageSidebar ul > li {
-        line-height: 0.6rem;
-    }
-    #homePageSidebar .nav .nav-item a:not(.li-side-header) {
-        font-size: 0.45rem;
     }
     .calc-panel .input-group {
         width: 15rem;
@@ -6042,12 +6046,6 @@ footer p {
     }
     h3 {
         font-size: 0.9rem;
-    }
-    #homePageSidebar ul > li {
-        line-height: 0.39rem;
-    }
-    #homePageSidebar .nav .nav-item a:not(.li-side-header) {
-        font-size: 0.40rem;
     }
     .calc-panel .input-group {
         width: 14rem;

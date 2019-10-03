@@ -264,7 +264,15 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     })
 }
  
-// //функционал svg sidebar'a
+//функционал svg sidebar'a
+if (document.body.clientWidth > 425) {
+    document.querySelectorAll('.accordion').forEach(el => {
+        el.classList.remove('accordion')
+        el.querySelector('.accordion-body')
+    })
+}
+
+
 // document.querySelectorAll('#SideBar > g').forEach((el,i,a) => {
 //     el.onclick = event => {
 //         a.forEach(el => {

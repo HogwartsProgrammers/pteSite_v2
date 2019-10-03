@@ -10,33 +10,43 @@
                     small.d-block ИНЖИНИРИНГОВАЯ КОМПАНИЯ<br>ПОЛНОГО ЦИКЛА
     ul#PolyPageSidebar.nav.sidebar-font
         li.nav-item.sidebar-not
-            a.li-side-header МЫ УСТАНАВЛИВАЕМ ЛЮБЫЕ<br/>ПРОМЫШЛЕННЫЕ ПОЛЫ:
-            ul.nav 
-                li.nav-item
-                    a(href="https://proftechpol.ru/topping-poly") Топпинг полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/polimernye-poly") Полимерные полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/remont") Ремонт промышленных полов
+            .accordion
+                input#prom_poly(type="checkbox", name="accordion-checkbox", hidden)
+                label.accordion-header(for="prom_poly")
+                    i.icon.icon-arrow-right.mr-1
+                    a.li-side-header МЫ УСТАНАВЛИВАЕМ ЛЮБЫЕ<br/>ПРОМЫШЛЕННЫЕ ПОЛЫ:
+                .accordion-body
+                    ul.nav 
+                        li.nav-item
+                            a(href="https://proftechpol.ru/topping-poly") Топпинг полы
+                        li.nav-item
+                            a(href="https://proftechpol.ru/polimernye-poly") Полимерные полы
+                        li.nav-item
+                            a(href="https://proftechpol.ru/remont") Ремонт промышленных полов
         li.nav-item.sidebar-not
-            a.li-side-header ДЛЯ ПОМЕЩЕНИЙ ЛЮБЫХ<br/>ВИДОВ НАЗНАЧЕНИЯ:
-            ul.nav 
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-sklada") Полы для склада
-                li.nav-item
-                    a(href="https://proftechpol.ru/proizvodstvenye-poly") Производственные полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-parkingov") Полы для паркинга
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-torgovyh-tsentrov") Полы для торговых центров
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-obschestvenih-i-administrativnih-zdaniy") и административных зданий
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-avtoservisov") Полы для автосервисов
-                li.nav-item
-                    a(href="https://proftechpol.ru/sportivnie-poly-i-pokrytiya") Спортивные полы и покрытия 
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-selskogo-hozyaistva") Полы для сельского хозяйства
+            .accordion
+                input#for_rooms(type="checkbox", name="accordion-checkbox", hidden)
+                label.accordion-header(for="for_rooms")
+                    i.icon.icon-arrow-right.mr-1
+                    a.li-side-header ДЛЯ ПОМЕЩЕНИЙ ЛЮБЫХ<br/>ВИДОВ НАЗНАЧЕНИЯ:
+                .accordion-body
+                    ul.nav 
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-sklada") Полы для склада
+                        li.nav-item
+                            a(href="https://proftechpol.ru/proizvodstvenye-poly") Производственные полы
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-parkingov") Полы для паркинга
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-torgovyh-tsentrov") Полы для торговых центров
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-obschestvenih-i-administrativnih-zdaniy") и административных зданий
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-avtoservisov") Полы для автосервисов
+                        li.nav-item
+                            a(href="https://proftechpol.ru/sportivnie-poly-i-pokrytiya") Спортивные полы и покрытия 
+                        li.nav-item
+                            a(href="https://proftechpol.ru/poly-dlya-selskogo-hozyaistva") Полы для сельского хозяйства
 .sidebar-calculate.p-fixed
     .calc-title.p-centered КАЛЬКУЛЯТОР<br/>ПРОМЫШЛЕННОГО ПОЛА
         small.d-block РАССЧИТАЕМ СТОИМОСТЬ ВАШЕГО<br/> ПРОМЫШЛЕННОГО ПОЛА ЗА 5 МИНУТ
