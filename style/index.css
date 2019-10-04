@@ -3,7 +3,7 @@
 @import 'common.css';
 @import 'spectre-exp.css';
 @import 'spectre-icons.css';
-@import 'timeline.css';
+@import 'timeline.css'; 
 
 *::-webkit-scrollbar-track {border-radius: 4px;}
 *::-webkit-scrollbar {width: 4px;height: 4px;}
@@ -1008,6 +1008,7 @@ footer p {
     }
     #homePageSidebar ul > li {
         height: 1.1rem;
+        line-height: 0.9rem;
     }
     .header-plate {
         bottom: 1.3rem;
@@ -1135,9 +1136,6 @@ footer p {
     }
     #paramFloor .tile-subtitle {
         text-align: center
-    }
-    #homePageSidebar ul > li {
-        line-height: 0.9rem;
     }
     #homePageSidebar .nav .nav-item a:not(.li-side-header) {
         font-size: 0.55rem;
