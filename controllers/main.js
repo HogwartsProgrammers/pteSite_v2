@@ -71,8 +71,8 @@ exports.getPolyPage = (req, res, next) => {
     })
 }
 
-exports.getScladyPage = (req, res, next) => {
-    res.render('sclady', {
+exports.getskladyPage = (req, res, next) => {
+    res.render('sklady', {
         pageTitle: 'Инжиниринговая компания полного цикла ProfTechEngineering',
         pageDescription: 'Мы реализуем любые проекты с момента зарождения вашей идеи через все стадии от проектирования до сдачи объекта под ключ',
         pageKeywords: 'Инжиниринговая компания, проектирование',

@@ -1,10 +1,16 @@
 const os = require('os')
 
 module.exports = () => {
-    if (false) {
+    if (true) {
         console.log(os.hostname())
         switch(os.hostname()) {
             case 'MB-ASER': return {
+                host: 'localhost',
+                user: 'root',
+                database: 'pte',
+                password: '26091940'
+            }
+            case 'LenovoNotebook': return {
                 host: 'localhost',
                 user: 'root',
                 database: 'pte',
