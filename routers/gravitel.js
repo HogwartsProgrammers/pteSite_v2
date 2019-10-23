@@ -41,7 +41,7 @@ router.post('/gravitel', (req, res, next) => {
                 new Contacts().findById(phone[0][0].parent).then(data => {
                     contact.data = data[0][0]
                     new Lids().findByHolder(contact.data.id).then(lids => {
-                        if (!lids[0].length) createLid()
+                        if (!lids[0].length || !lids[0].find(lid => !!lid.active ? true : false)) createLid()
                         else {
                             lids[0].forEach(lid => {
                                 new Lids().findById(lid.id).then(oldData => {
