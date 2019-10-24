@@ -20,3 +20,54 @@ ul.header-stages.header-stages-poly.d-flex
         button.bt_callback.btn.btn-error.text-bold УЗНАТЬ СТОИМОСТЬ
     svg.header-gear2
         use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="11", y="11")
+#economy-block.container.grid-lg
+    .empty
+        .empty-icon.animated.bounce.d-hide
+            svg.icon-3rem.fill-dark
+                use(href="#icon-like", xmlns:xlink="http://www.w3.org/1999/xlink")
+        .empty-title.text-center.h4 ВВЕДИТЕ ДАННЫЕ ДЛЯ РАСЧЁТА ВАШЕЙ ЭКОНОМИИ
+        .empty-subtitle
+            ul#econony-steps.step
+                li.step-item.active
+                    a.tooltip(href="#profits-block", data-step="1", data-tooltip="Площадь объекта") Шаг 1
+                li.step-item
+                    a.tooltip(href="#page-article", data-step="2", data-tooltip="Основание объекта") Шаг 2
+                li.step-item
+                    a.tooltip(href="#certs-block", data-step="3", data-tooltip="Нагрузка на пол") Шаг 3
+                li.step-item
+                    a.tooltip(href="#prodsteps-block", data-step="4", data-tooltip="Ваши контакты") Шаг 4
+        #form_step_1.form-group.col-6.col-md-8.col-sm-12.p-centered.pt-2.animated.fadeIn.form_step
+            label.form-label КАКОВА ПЛОЩАДЬ ВАШЕГО ОБЪЕКТА (м<sup>2</sup>)?
+            input#inp-volume.form-input.text-center(type="number", min="20", step="100,", placeholder="Введите площадь объекта")
+        #form_step_2.d-hide.form-group.col-6.col-md-8.col-sm-12.p-centered.pt-2.animated.fadeIn.form_step
+            label.form-label КАКОЕ У ВАС ОСНОВАНИЕ?
+            .btn-group.btn-group-block.sel_factor.sel_base
+                button.btn.btn-sm.goal_item(data-goal="bt_economy_step_base") Бетон
+                button.btn.btn-sm.goal_item(data-goal="bt_economy_step_base") Щебень, песок
+                button.btn.btn-sm.goal_item(data-goal="bt_economy_step_base") Другое
+        #form_step_3.d-hide.form-group.col-6.col-md-8.col-sm-12.p-centered.pt-2.animated.fadeIn.form_step
+            label.form-label КАКАЯ У ВАС НАГРУЗКА НА ПОЛ?
+            .btn-group.btn-group-block.sel_factor.sel_pressure
+                button.btn.btn-sm.goal_item(data-goal="bt_economy_step_pressure") Промышленная
+                button.btn.btn-sm.goal_item(data-goal="bt_economy_step_pressure") Пешеходная
+        #form_step_4.d-hide.form-group.col-6.col-md-8.col-sm-12.p-centered.pt-2.animated.fadeIn.form_step
+            label.form-label.text-bold.pb-2 ВАШ РАСЧЁТ ПОЧТИ ГОТОВ!
+            .text-small Введите Ваш e-mail. Мы вышлем на него <span class="label">предварительный расчёт экономии</span> промышленного пола для вашего объекта:
+            input#inp-mail.form-input.text-center.mb-2.mt-1(type="text", placeholder="Ваш е-майл")
+            .text-small.pt-2.pb-2 Укажите Ваш телефон для оперативной связи на случай, если у менеджера возникнут дополнительные вопросы:
+            input#inp-phone.form-input.text-center(type="text", placeholder="7(___) ___-__-__")
+            label.form-checkbox.text-left
+                input#inp_legal(type="checkbox", checked="")
+                i.form-icon 
+                small С 
+                    a(href="152fz", target="_blank") политикой конфиденциальности</a> ознакомлен
+        #form_step_5.d-hide.form-group.col-6.col-md-8.col-sm-12.p-centered.pt-2.animated.fadeIn.form_step
+            .form-label.text-bold.pb-2.h4 СПАСИБО ЗА ВАШЕ ОБРАЩЕНИЕ!
+            .text-bold.text-gray.h5 МЫ ПРЕДОСТАВИМ ВАМ РАСЧЁТ В БЛИЖАЙШЕЕ ВРЕМЯ
+            .text-bold.mt-2 БУДЬТЕ НА СВЯЗИ!)
+        .empty-actio
+        button.btn.btn-lg.btn-error.mb-2.bt_next.goal_item(type="button", data-goal="bt_economy_step_volume") ДАЛЕЕ
+        button.btn.btn-link.mb-2.bt_callback.goal_item(type="button", data-goal="bt_call_me_economy_block")
+            svg.phone(style="margin-bottom: -.2rem;") 
+                use(href="#icon-phone", xmlns:xlink="http://www.w3.org/1999/xlink") 
+            |  ПОЗВОНИТЕ МНЕ

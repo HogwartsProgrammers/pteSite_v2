@@ -246,6 +246,24 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     headerIcons()
     photoSlider()
 
+    const 
+
+    fetch('/lids', {
+        method: 'POST',
+        body: JSON.stringify({
+            phoneRaw: inpHiddenRaw.value,
+            lid_data: lid_data,
+            _csrf: callbackModal.querySelector('input[name="_csrf"]').value
+        }), 
+        headers:{
+            "Content-Type": "application/json"
+        }
+    }).then(res => {
+        phoneCleave.destroy()
+        // return res
+    })
+    .catch(error => console.error(error))
+
 //     document.getElementById('logo_txt').style.width = '60%'
 //     // document.getElementById('navTitle').innerText = 'ПРОМЫШЛЕННЫЕ ПОЛЫ'
 //     require('../circlesScript').circlesScript()
