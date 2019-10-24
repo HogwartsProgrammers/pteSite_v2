@@ -10,6 +10,12 @@ module.exports = () => {
                 database: 'pte',
                 password: '26091940'
             }
+            case 'LenovoNotebook': return {
+                host: 'localhost',
+                user: 'root',
+                database: 'pte',
+                password: '26091940'
+            }
             case 'DESKTOP-BU7H8H4': return {
                 host: 'localhost',
                 user: 'root',

@@ -4106,7 +4106,39 @@ a.text-error:visited {
 }
 
 header img {
+    width: 100%;
     display: block;
+}
+
+#eggs_logo {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 3%;
+}
+
+#eggs_logo .column {
+    padding: 0 4.9%;
+}
+
+#eggs_txt text tspan {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+#eggs_txt {
+    width: 100%;
+    margin: 0;
+    position: absolute;
+    top: 4.2%;
+}
+
+#eggs_txt .column {
+    padding: 0 7.6%;
+}
+
+#egg_time {
+    width:0;
+    height:0;
 }
 
 #logo {
@@ -4954,6 +4986,10 @@ footer p {
     .sub-title {
         font-size: 0.6rem;
     }
+    #eggs_txt {
+        top: 3.7%;
+    }
+
 }
 
 @media (max-width: 375px) {
@@ -5007,6 +5043,12 @@ footer p {
     }
     .sub-title {
         font-size: 0.5rem;
+    }
+    #eggs_logo {
+        top: 2.8%;
+    }
+    #eggs_txt {
+        top: 3.4%;
     }
 }
 
@@ -5104,5 +5146,11 @@ footer p {
     }
     .sub-title {
         font-size: 0.4rem;
+    }
+    #eggs_logo {
+        top: 2.5%;
+    }
+    #eggs_txt {
+        top: 2.95%;
     }
 }

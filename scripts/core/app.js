@@ -2,7 +2,7 @@ const Cleave = require('cleave.js')
 const inView = require('../in-view.min')
 
 //функционал верхних стадий
-if (location.pathname.toLocaleLowerCase() == '/') require ('../svg.js').svgjs()
+if (location.pathname.toLocaleLowerCase() == '/') require ('../svg.js').svgjsMain()
 
 const headerIcons = () => {
     let Istages = 1
@@ -96,7 +96,8 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleL
 //         check()
 //     })
 
-if (location.pathname.toLocaleLowerCase() === '/sclady') {
+if (location.pathname.toLocaleLowerCase() === '/sklady') {
+    require ('../svg.js').svgjsSklady()
     headerIcons()
     // document.getElementById('navTitle').innerText = ''
     // require('../historyScroll').slider()
@@ -237,9 +238,6 @@ const photoSlider = () => {
             }, 1000)
         }
     }
-
-
-
 }
 
 if (location.pathname.toLocaleLowerCase() === '/poly') {
