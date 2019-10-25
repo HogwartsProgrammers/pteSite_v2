@@ -186,7 +186,7 @@ export function init() {
                         Вал: <b class="label label-secondary">${accounting.formatMoney(lid.lidData.gi, '', 2, " ", ",")} р.</b>
                         Предоплата: <b class="label label-secondary">${accounting.formatMoney(lid.lidData.prepayment, '', 2, " ", ",")} р.</b>
                         Доплата: <b class="label label-secondary">${accounting.formatMoney(lid.lidData.restpayment, '', 2, " ", ",")} р.</b>
-                    </samll>
+                    </small>
                 `
                 lidGroup.classList.add('w100')
 

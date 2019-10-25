@@ -3793,7 +3793,7 @@ a.text-error:visited {
     position: fixed;
     bottom: calc(5% - 3.75px);
     /* right: calc(3% - 2.25px); */
-    right: 0rem;
+    right: 1rem;
     display: block;
     height: 150px;
     width: 150px;
@@ -4756,6 +4756,12 @@ footer p {
 .sidebar-slider .forward-arrow {
     top: 3rem;
     right: 0;
+}
+
+.phone {
+    width: 1rem;
+    height: 1rem;
+    fill: #000;
 }
 
 #poly_types .col-4 {

@@ -258,10 +258,181 @@ const photoSlider = () => {
         }
     }
 }
+// проверка email
+const inputTest = new RegExp(/^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/)
 
 if (location.pathname.toLocaleLowerCase() === '/poly') {
     headerIcons()
     photoSlider()
+
+    // калькулятор полов
+    // require ('../svg.js').svgjsSklady()
+
+    const inputVolume = document.getElementById('inp-volume') 
+    const nextButton = document.querySelector('#economy-block .bt_next')
+    const stepsLi = document.querySelectorAll('#econony-steps > li')
+    const steps = document.querySelectorAll('#economy-block .form_step')
+    const stepTwoBtns = document.querySelectorAll('#form_step_2 button')
+    const stepThreeBtns = document.querySelectorAll('#form_step_3 button')
+    const inpMail = document.getElementById('inp-mail')
+    const inpPhone = document.getElementById('inp-phone')
+    const inpLegal = document.getElementById('inp_legal')
+
+    let inputVolumeFetch = ''
+    let stepTwoBtnsFetch = ''
+    let stepThreeBtnsFetch
+    let inpMailFetch = ''
+    let inpPhoneFetch = ''
+    let lid_data = {}
+
+    
+    inputVolume.addEventListener('animationend', () => inputVolume.classList.remove('bounce')) 
+    nextButton.addEventListener('animationend', () => nextButton.classList.remove('shake'))
+    inpMail.addEventListener('animationend', () => inpMail.classList.remove('bounce'))
+    inpPhone.addEventListener('animationend', () => inpPhone.classList.remove('bounce'))
+
+    const stepFourPhoneCleave = new Cleave('#inp-phone', {
+        numericOnly: true,
+        prefix: '+7',
+        blocks: [2, 3, 3, 2, 2],
+        delimiters: ['(', ')', '-', '-']
+    })
+
+    const stepTwoBtnsContains = () => {
+        let find = false
+        stepTwoBtns.forEach(el => {
+            if (el.classList.contains('active')) find = true
+        })
+        return find
+    }
+    const stepThreeBtnsContains = () => {
+        let find = false
+        stepThreeBtns.forEach(el => {
+            if (el.classList.contains('active')) find = true
+        })
+        return find
+    }
+    const saveParams = () => {
+        inputVolumeFetch = inputVolume.value
+        stepTwoBtns.forEach(el => {
+            if (el.classList.contains('active')) stepTwoBtnsFetch = el.innerText
+        })
+        stepThreeBtns.forEach(el => {
+            if (el.classList.contains('active')) stepThreeBtnsFetch = el.innerText
+        })
+        inpMailFetch = inpMail.value
+        inpPhoneFetch = inpPhone.value
+    }
+    
+    const stepOne = (event) => {
+        saveParams()
+        event.preventDefault()
+        nextButton.innerText = 'ДАЛЕЕ'
+        inputVolume.focus()
+        steps.forEach(el => el.classList.add('d-hide'))
+        steps[0].classList.remove('d-hide')
+        stepsLi.forEach(el => el.classList.remove('active'))
+        stepsLi[0].classList.add('active')
+        nextButton.onclick = (event) => {
+            saveParams()
+            stepTwo(event)
+        }
+    }
+
+    const stepTwo = (event) => {
+        event.preventDefault()
+        if (inputVolume.value === '' || inputVolume.value == 0 || inputVolume.value < 0) {
+            inputVolume.classList.add('bounce')
+            nextButton.classList.add('shake')
+        } else {
+            saveParams()
+            nextButton.innerText = 'ДАЛЕЕ'
+            steps.forEach(el => el.classList.add('d-hide'))
+            steps[1].classList.remove('d-hide')
+            stepsLi.forEach(el => el.classList.remove('active'))
+            stepsLi[1].classList.add('active')
+            nextButton.onclick = stepThree
+
+            stepTwoBtns.forEach(el => el.onclick = event => {
+                stepTwoBtns.forEach(el => el.classList.remove('active'))
+                event.target.classList.add('active')
+                stepThree(event)
+            })
+        }
+    }
+    
+    const stepThree = (event) => {
+        event.preventDefault()
+        if (!stepTwoBtnsContains()) {
+            nextButton.classList.add('shake')          
+        } else {
+            saveParams()
+            nextButton.innerText = 'ДАЛЕЕ'
+            steps.forEach(el => el.classList.add('d-hide'))
+            steps[2].classList.remove('d-hide')
+            stepsLi.forEach(el => el.classList.remove('active'))
+            stepsLi[2].classList.add('active')
+            nextButton.onclick = stepFour
+
+            stepThreeBtns.forEach(el => el.onclick = event => {
+                stepThreeBtns.forEach(el => el.classList.remove('active'))
+                event.target.classList.add('active')
+                stepFour(event)
+            })
+        }
+    }
+    
+    const stepFour = (event) => {
+        event.preventDefault()
+        if (!stepThreeBtnsContains()) {
+            nextButton.classList.add('shake')                      
+        } else {
+            if (inputTest.test(inpMail.value)) saveParams()
+            nextButton.innerText = 'ОТПРАВИТЬ'
+            steps.forEach(el => el.classList.add('d-hide'))
+            steps[3].classList.remove('d-hide')
+            stepsLi.forEach(el => el.classList.remove('active'))
+            stepsLi[3].classList.add('active')
+            nextButton.onclick = (event) => {
+                if (inpMail.value == '' || inputTest.test(inpMail.value) == false) inpMail.classList.add('animated', 'bounce')
+                else if (stepFourPhoneCleave.getRawValue().substring(2).length != 10) inpPhone.classList.add('animated', 'bounce')
+                else if (!inpLegal.checked) nextButton.classList.add('shake')
+                else {
+                    saveParams()
+                    lid_data.comment = `${inputVolumeFetch}, ${stepTwoBtnsFetch}, ${stepThreeBtnsFetch}, ${inpMailFetch}`
+                     fetch('/lids', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            phoneRaw: stepFourPhoneCleave.getRawValue().substring(2),
+                            lid_data: lid_data,
+                            _csrf: callbackModal.querySelector('input[name="_csrf"]').value
+                        }), 
+                        headers:{
+                            "Content-Type": "application/json"
+                        }
+                    }).catch(error => console.error(error))
+                    stepFive(event)
+                }
+            }
+        }
+    }
+    
+    const stepFive = (event) => {
+        event.preventDefault()
+        steps.forEach(el => el.classList.add('d-hide'))
+        steps[4].classList.remove('d-hide')
+        document.getElementById('econony-steps').classList.add('d-hide')
+        nextButton.classList.add('d-hide')
+        document.querySelector('#economy-block .bt_callback').classList.add('d-hide')
+        document.querySelector('#economy-block .empty-title').classList.add('d-hide')
+        document.querySelector('#economy-block .empty-icon').classList.remove('d-hide')
+    }
+    
+    nextButton.onclick = stepTwo
+    stepsLi[0].onclick = stepOne
+    stepsLi[1].onclick = stepTwo
+    stepsLi[2].onclick = stepThree
+    stepsLi[3].onclick = stepFour
 
 //     document.getElementById('logo_txt').style.width = '60%'
 //     // document.getElementById('navTitle').innerText = 'ПРОМЫШЛЕННЫЕ ПОЛЫ'
@@ -272,11 +443,8 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 //     //отправка параметров пола лида
     floorBtns.forEach(el => {
         el.onclick = () => {
-            if (!el.classList.contains('active')) {
-                el.classList.add('active')
-            } else {
-                el.classList.remove('active')
-            }
+            if (!el.classList.contains('active')) el.classList.add('active') 
+            else el.classList.remove('active')
         }
     })
 }
@@ -288,18 +456,6 @@ if (document.body.clientWidth > 425) {
         el.querySelector('.accordion-body')
     })
 }
-
-
-// document.querySelectorAll('#SideBar > g').forEach((el,i,a) => {
-//     el.onclick = event => {
-//         a.forEach(el => {
-//             el.querySelector('#sideRect').setAttribute('fill', '#E6E7E8') 
-//             el.querySelector('text').setAttribute('fill', '#000')
-//         })
-//         el.querySelector('#sideRect').setAttribute('fill', '#000') 
-//         el.querySelector('text').setAttribute('fill', '#fff')
-//     }
-// })
 
 // // костыль для шестерней
 const use = document.querySelectorAll('.header-plate use')
@@ -532,7 +688,6 @@ checkboxHolder.style.cursor = 'pointer'
 checkboxHolder.addEventListener('click', callbackFormReady)
 callbackInput.addEventListener('input', callbackFormReady)
 function callbackFormReady() {
-    console.log(callbackInput.value)
     if (callbackInput.value.length === 16 && inputCheck.checked) {
         callbackBtn.disabled = false
         inpHiddenRaw.value = phoneCleave.getRawValue().substring(2)
