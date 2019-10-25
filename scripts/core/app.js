@@ -101,7 +101,26 @@ if (location.pathname.toLocaleLowerCase() === '/sklady') {
     headerIcons()
     // document.getElementById('navTitle').innerText = ''
     // require('../historyScroll').slider()
-    
+
+    //Смена Eggs txt
+    let eggsScore = 1
+    const eggsTxt = ['#egg_txt_time', '#egg_txt_money', '#egg_txt_volume', '#egg_txt_roi']
+
+    const eggsTxtFunc = () => {
+        const eggFadeIn = () => document.getElementById('eggs_txt').classList.add('fadeIn')
+        document.getElementById('eggs_txt').classList.remove('fadeIn')
+        setTimeout(eggFadeIn, 10)
+        const egg = document.getElementById('egg_time_holder')
+        egg.classList.add('egg_animated')
+        const removeAnimation = () => egg.classList.remove('egg_animated')
+        setTimeout(removeAnimation, 400)
+
+        document.getElementById('eggs_txt').setAttribute('href', `${eggsTxt[eggsScore]}`)
+        eggsScore++
+        if (eggsScore === 4) eggsScore = 0
+    }
+    setInterval(eggsTxtFunc, 4000)
+
     document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
         document.getElementById('scladSquare').classList.remove('d-hide')
         document.getElementById('scladSquare').addEventListener('animationend', () => document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'}))

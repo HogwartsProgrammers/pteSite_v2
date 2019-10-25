@@ -1,10 +1,10 @@
 img.pt3(src="./images/skladyLogo.svg")
-#eggs_logo.columns
-    #egg_time_holder.column.col-3
-    #egg_money_holder.column.col-3
-    #egg_volume_holder.column.col-3
-    #egg_roi_holder.column.col-3
-#eggs_txt.columns
+#eggs_logo
+    #egg_time_holder
+    //- #egg_money_holder.column.col-3
+    //- #egg_volume_holder.column.col-3
+    //- #egg_roi_holder.column.col-3
+//- #eggs_txt.columns
     .column.col-3
         include ../svg/eggs_logo/egg_txt_time.svg
     .column.col-3
@@ -13,3 +13,6 @@ img.pt3(src="./images/skladyLogo.svg")
         include ../svg/eggs_logo/egg_txt_volume.svg
     .column.col-3
         include ../svg/eggs_logo/egg_txt_roi.svg
+
+svg#eggs_txt_holder
+    use#eggs_txt.animated.fadeIn(href="#egg_txt_time")
