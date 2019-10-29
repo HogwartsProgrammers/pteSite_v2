@@ -1,7 +1,7 @@
 const os = require('os')
 
 module.exports = () => {
-    if (true) {
+    if (Number(process.env.ON_SERVER)) {
         console.log(os.hostname())
         switch(os.hostname()) {
             case 'MB-ASER': return {
