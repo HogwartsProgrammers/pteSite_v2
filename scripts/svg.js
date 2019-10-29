@@ -70,12 +70,12 @@ export function svgjsMain() {
 export function svgjsSklady() {
   // Eggs sklady
   const eggTime = SVG('egg_time_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
-  const eggMoney = SVG('egg_money_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
-  const eggVolume = SVG('egg_volume_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
-  const eggRoi = SVG('egg_roi_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
+  // const eggMoney = SVG('egg_money_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
+  // const eggVolume = SVG('egg_volume_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
+  // const eggRoi = SVG('egg_roi_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
 
-  eggTime.use('egg_time')
-  eggMoney.use('egg_time')
-  eggVolume.use('egg_time')
-  eggRoi.use('egg_time')
+  eggTime.use('egg_time').x('0').y('4')
+  // eggMoney.use('egg_time')
+  // eggVolume.use('egg_time')
+  // eggRoi.use('egg_time')
 }

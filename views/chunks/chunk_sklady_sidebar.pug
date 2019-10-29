@@ -8,40 +8,26 @@
                 a(href="/")
                     span ПРОФТЕХИНЖИНИРИНГ
                     small.d-block ИНЖИНИРИНГОВАЯ КОМПАНИЯ<br>ПОЛНОГО ЦИКЛА
-    //- ul#PolyPageSidebar.nav.sidebar-font
+    ul#PolyPageSidebar.nav.sidebar-font
         li.nav-item.sidebar-not
-            a.li-side-header МЫ УСТАНАВЛИВАЕМ ЛЮБЫЕ<br/>ПРОМЫШЛЕННЫЕ ПОЛЫ:
-            ul.nav 
-                li.nav-item
-                    a(href="https://proftechpol.ru/topping-poly") Топпинг полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/polimernye-poly") Полимерные полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/remont") Ремонт промышленных полов
-        li.nav-item.sidebar-not
-            a.li-side-header ДЛЯ ПОМЕЩЕНИЙ ЛЮБЫХ<br/>ВИДОВ НАЗНАЧЕНИЯ:
-            ul.nav 
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-sklada") Полы для склада
-                li.nav-item
-                    a(href="https://proftechpol.ru/proizvodstvenye-poly") Производственные полы
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-parkingov") Полы для паркинга
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-torgovyh-tsentrov") Полы для торговых центров
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-obschestvenih-i-administrativnih-zdaniy") и административных зданий
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-avtoservisov") Полы для автосервисов
-                li.nav-item
-                    a(href="https://proftechpol.ru/sportivnie-poly-i-pokrytiya") Спортивные полы и покрытия 
-                li.nav-item
-                    a(href="https://proftechpol.ru/poly-dlya-selskogo-hozyaistva") Полы для сельского хозяйства
-//- .sidebar-calculate.p-fixed
+            .accordion
+                input#prom_poly(type="checkbox", name="accordion-checkbox", hidden)
+                label.accordion-header(for="prom_poly")
+                    i.icon.icon-arrow-right.mr-1
+                    a.li-side-header ПРОЕКТИРУЕМ И ВОЗВОДИМ <br> СКЛАДЫ И ЛОГИСТИЧЕСКИЕ <br> ЦЕНТРЫ ЛЮБЫХ ТИПОВ
+                .accordion-body
+                    ul.nav 
+                        li.nav-item
+                            a(href="https://proftechpol.ru/topping-poly") Топпинг полы
+                        li.nav-item
+                            a(href="https://proftechpol.ru/polimernye-poly") Полимерные полы
+                        li.nav-item
+                            a(href="https://proftechpol.ru/remont") Ремонт промышленных полов
+.sidebar-calculate.p-fixed
     .calc-title.p-centered КАЛЬКУЛЯТОР<br/>ПРОМЫШЛЕННОГО ПОЛА
         small.d-block РАССЧИТАЕМ СТОИМОСТЬ ВАШЕГО<br/> ПРОМЫШЛЕННОГО ПОЛА ЗА 5 МИНУТ
     a(href="https://proftechpol.ru/calculator-promyshlennogo-pola").btn.btn-error.p-centered.text-bold РАССЧИТАТЬ
-//- .sidebar-slider.p-fixed
+.sidebar-slider.p-fixed
     .slider-title.p-centered.text-center Портфолио наших объектов: 
     .slider.p-relative
         img.animated.faster(src="", alt="")
