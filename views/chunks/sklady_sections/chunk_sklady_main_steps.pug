@@ -1,0 +1,79 @@
+.obj-header
+    h3.text-center.p-centered СТРОИТЕЛЬСТВО СКЛАДА
+.obj-body
+    .container
+        .projects.columns
+            .column.col-12
+                #stagesStorage.timeline
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> ПЛАНИРОВКА МЕСТНОСТИ </b>
+                            figure
+                                img(src="./images/measuringMan.svg")
+                                figcaption.figure-caption.text-left Мы составляем чертеж участка, размещаем объекты, решаем, какие материалы лучше подойдут для хранения вашей продукции. Делаем вертикальную планировку - изменяем рельеф, что бы вода не скапливалась на участке.
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ 
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> ЗАЛИВКА ФУНДАМЕНТА </b>
+                            figure
+                                img(src="./images/fundament.svg")
+                                figcaption.figure-caption.text-left В зависимости от свойств грунта в месте строительства склада, а также особенностей его эксплуатации, мы определяемся с типом фундамента: плиточный, бетонный (заливной), кирпичный, столбчатый или винтовые сваи.
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> УСТАНОВКА НЕСУЩИХ МЕТАЛЛОКОНСТРУКЦИЙ </b>
+                            figure
+                                img(src="./images/storage_metal_construction.svg")
+                                figcaption.figure-caption.text-left При монтаже металлоконструкций, мы применяем разъёмные модули, изготовленные точно в соответствии с проектной документацией. За счёт этого мы достигаем большей экономии. Также демонтаж различных частей каркаса не представляет сложностей. Это позволит легко установить дополнительные ворота или подвести необходимые инженерные коммуникации.
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> МОНТАЖ ОБШИВКИ И КРОВЛИ </b>
+                            figure
+                                img(src="./images/storage_sheathing_and_roofing.svg")
+                                figcaption.figure-caption.text-left После составления плана строительства, преступаем к работе. Заливаем фундамент, устанавливаем каркас склада, утепляем или делаем его холодным.
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> УСТРОЙСТВО ПОЛОВ </b>
+                            figure
+                                img(src="./images/polyLogo.svg")
+                                figcaption.figure-caption.text-left Мы сделаем пол без ям и неровностей, который может выдержать большую нагрузку. Покрываем полы антипыльным защитным слоем. Проводим электричество, устанавливаем все что нужно для пожарной безопасности и все что может потребоваться.
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ
+                    .timeline-item
+                        .timeline-left
+                            a.timeline-icon.icon-lg
+                                i.icon.icon-check
+                        .timeline-content
+                            h4 <b> УСТАНОВКА СТЕЛЛАЖЕЙ И ДРУГОГО СКЛАДСКОГО ОБОРУДОВАНИЯ </b>
+                            figure
+                                img(src="./images/stelaju.svg")
+                                figcaption.figure-caption.text-left Правильно спроектированное размещение стеллажей обеспечит максимальную производительность вашего склада. Качество самих стеллажей также важно как и оборудование. У нас вы можете заказать всё под ключ по ценам даже более низким, чем у самих производителей!
+                                button.bt_callback.btn.btn-warning.btn-sm.p-left.mt-1r.mb-2.btn-importance КОНСУЛЬТАЦИЯ ПО ЭТАПУ
+                .cta-panel.mt-2.p-centered.p-relative.text-uppercase(data-cta="Остались вопросы? <small class='d-block'>получите бесплатную консультацию</small>", data-btn="ПОЛУЧИТЬ")
+                    svg.gear1.p-absolute
+                        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
+                    .header-plate-text.text-center
+                        .h5.text-uppercase.text-center 
+                    button.bt_callback.btn.btn-error.text-bold.p-centered  УЗНАТЬ СТОИМОСТЬ
+                    svg.gear2.p-absolute
+                        use.g(href="#icon-logo",xmlns:xlink="http://www.w3.org/1999/xlink", x="8.7", y="8.5")
+                //- #timelineHistory.column.col-12
+                    include timeline-layout.pug
+            
+                
