@@ -246,6 +246,22 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     headerIcons()
     photoSlider()
 
+    //header-plate button появление калькулятора
+    const headerPlateButton = document.querySelector('.header-plate .header-plate-text button')
+    headerPlateButton.addEventListener('animationend', () => {
+        headerPlateButton.onclick = () => {
+            headerPlateButton.classList.add('fadeOutDown')
+            headerPlateButton.addEventListener('animationend', () => {
+                headerPlateButton.classList.add('d-hide')
+                document.querySelector('#offer_text').scrollIntoView({behavior: 'smooth'})
+                document.getElementById('economy-block').classList.remove('d-hide')
+
+                // Делем размер header-plate такой, чтобы влез калькулятор
+                document.querySelector('.header-plate').style.height = 'auto'
+            })
+        }
+    })
+
     // калькулятор полов
     // require ('../svg.js').svgjsSklady()
 
@@ -431,15 +447,15 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 }
  
 //функционал svg sidebar'a
-if (document.body.clientWidth > 425) {
-    document.querySelectorAll('.accordion').forEach(el => {
-        el.classList.remove('accordion')
-        el.querySelector('.accordion-body')
-    })
-}
+// if (document.body.clientWidth > 425) {
+//     document.querySelectorAll('.accordion').forEach(el => {
+//         el.classList.remove('accordion')
+//         el.querySelector('.accordion-body')
+//     })
+// }
 
 // // костыль для шестерней
-const use = document.querySelectorAll('.header-plate use')
+const use = document.querySelectorAll('.header-plate > use')
 
 function gearChange() {
     document.body.clientWidth <= 425 ?
@@ -509,7 +525,10 @@ if (document.body.clientWidth > 960) {
         document.querySelector('.header-plate').classList.add('header-plate-sm')
     })
     
-    if(!inView.is(document.querySelector('.offer'))) sidebar.classList.add('sidebar-relative')
+    if(!inView.is(document.querySelector('.offer'))) {
+        sidebar.classList.add('sidebar-relative')
+        document.querySelector('.header-plate').classList.add('header-plate-sm')
+    }
 }
 
 document.querySelector('.js-closeSidebar').onclick = () => {

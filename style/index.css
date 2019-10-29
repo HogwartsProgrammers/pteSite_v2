@@ -452,10 +452,14 @@ h1 span {
 .header-plate {
     position: relative;
     bottom: 0.95rem;
-    height: 8rem;
+    height: fit-content;
     width: 42rem;
     border: 2px solid;
     border-radius: 0.7rem;
+}
+
+.header-plate button {
+    margin-bottom: 1rem;
 }
 
 .header-plate-sm {
@@ -516,6 +520,10 @@ h1 span {
 
 .header-plate-text h2 span {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+}
+
+#economy-block {
+    margin: 2rem 0 0.2rem 0;
 }
 
 .visable-nav {
@@ -887,11 +895,20 @@ footer p {
     background-color: #303742;
     width: 12rem;
     height: 9rem;
+    margin-left: -1rem;
 }
 
 .sidebar-calculate a {
     width: 10rem;
     margin-top: 0.4rem;
+}
+
+.sidebar-slider {
+    top: 29rem;
+    padding-top: 0.7rem;
+    width: 12rem;
+    height: 8.7rem;
+    margin-left: -1rem;
 }
 
 .calc-title {
@@ -917,13 +934,6 @@ footer p {
     height: 6rem;
     position: absolute;
     top: 0.8rem;
-}
-
-.sidebar-slider {
-    top: 29rem;
-    padding-top: 0.7rem;
-    width: 12rem;
-    height: 8.7rem;
 }
 
 .slider-description {
@@ -967,7 +977,7 @@ footer p {
 
 #poly_types .col-4 .panel {
     height: 100%;
-}
+} 
 
 @media (max-width: 768px) {
     #logo {
