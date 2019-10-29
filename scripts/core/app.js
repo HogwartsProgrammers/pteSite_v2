@@ -521,28 +521,31 @@ function gearChange() {
             el.setAttribute('y', '11')
         })
 
-    if (document.body.clientWidth <= 320) {
-        storageUse.setAttribute('x', '5')
-        storageUse.setAttribute('y', '16')
-    } 
-    else if (document.body.clientWidth <= 375) {
-        storageUse.setAttribute('x', '5')
-        storageUse.setAttribute('y', '15')
-    } 
-    else if (document.body.clientWidth <= 425) {
-        storageUse.setAttribute('x', '5')
-        storageUse.setAttribute('y', '14')
+    if (location.pathname.toLocaleLowerCase() === '/sklady') {
+        if (document.body.clientWidth <= 320) {
+            storageUse.setAttribute('x', '5')
+            storageUse.setAttribute('y', '16')
+        } 
+        else if (document.body.clientWidth <= 375) {
+            storageUse.setAttribute('x', '5')
+            storageUse.setAttribute('y', '15')
+        } 
+        else if (document.body.clientWidth <= 425) {
+            storageUse.setAttribute('x', '5')
+            storageUse.setAttribute('y', '14')
+        }
+        else if (document.body.clientWidth <= 768) {
+            storageUse.setAttribute('x', '6')
+            storageUse.setAttribute('y', '12')
+        } 
+        else {
+            document.querySelector('#egg_time_holder svg').setAttribute('viewBox', '0 0 148 148')
+    
+            storageUse.setAttribute('x', '0')
+            storageUse.setAttribute('y', '4')
+        }
     }
-    else if (document.body.clientWidth <= 768) {
-        storageUse.setAttribute('x', '6')
-        storageUse.setAttribute('y', '12')
-    } 
-    else {
-        document.querySelector('#egg_time_holder svg').setAttribute('viewBox', '0 0 148 148')
 
-        storageUse.setAttribute('x', '0')
-        storageUse.setAttribute('y', '4')
-    }
 }
 gearChange()
 
