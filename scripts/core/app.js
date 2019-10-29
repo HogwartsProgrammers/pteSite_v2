@@ -102,29 +102,62 @@ if (location.pathname.toLocaleLowerCase() === '/sklady') {
     // document.getElementById('navTitle').innerText = ''
     // require('../historyScroll').slider()
 
+    const eggsCirclesSvg = document.querySelectorAll('#eggs_slider svg')
+    const eggsCircles = document.querySelectorAll('#eggs_slider circle')
     //Смена Eggs txt
     let eggsScore = 1
+    let eggsCircleScore = 1
+    let stop = false
     const eggsTxt = ['#egg_txt_time', '#egg_txt_money', '#egg_txt_volume', '#egg_txt_roi']
 
+    //Eggs слайдер
+    const eggsCirclesArr = ['egg_circle_time', 'egg_circle_money', 'egg_circle_volume', 'egg_circle_roi']
+
+    eggsCirclesSvg.forEach(el => el.onclick = () => {
+        stop = true
+        eggsCircleScore = Number(el.querySelector('circle').getAttribute('name'))
+        eggsScore = eggsCircleScore
+        eggsTxtFunc()
+        setInterval(() => stop = false, 4000)
+    })
+
+
     const eggsTxtFunc = () => {
+        eggsCircles.forEach(el => el.style.fill = '#fff')
         const eggFadeIn = () => document.getElementById('eggs_txt').classList.add('fadeIn')
         document.getElementById('eggs_txt').classList.remove('fadeIn')
-        setTimeout(eggFadeIn, 10)
+        setTimeout(eggFadeIn, 16)
         const egg = document.getElementById('egg_time_holder')
         egg.classList.add('egg_animated')
         const removeAnimation = () => egg.classList.remove('egg_animated')
         setTimeout(removeAnimation, 400)
 
         document.getElementById('eggs_txt').setAttribute('href', `${eggsTxt[eggsScore]}`)
+        document.getElementById(`${eggsCirclesArr[eggsCircleScore]}`).style.fill = '#000'
+        eggsCircleScore++
         eggsScore++
         if (eggsScore === 4) eggsScore = 0
+        if (eggsCircleScore === 4) eggsCircleScore = 0
     }
-    setInterval(eggsTxtFunc, 4000)
+     
+    setInterval(() => {
+        if (stop) return
+        eggsTxtFunc()
+    }, 4000)
 
-    document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
-        document.getElementById('scladSquare').classList.remove('d-hide')
-        document.getElementById('scladSquare').addEventListener('animationend', () => document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'}))
+    const storageBtns = document.querySelector('.survey_points').querySelectorAll('button')
+
+//     //отправка параметров пола лида
+storageBtns.forEach(el => {
+        el.onclick = () => {
+            if (!el.classList.contains('active')) el.classList.add('active') 
+            else el.classList.remove('active')
+        }
     })
+    // document.querySelectorAll('.header-plate button').forEach(el => el.onclick = () => {
+    //     document.getElementById('scladSquare').classList.remove('d-hide')
+    //     document.getElementById('scladSquare').addEventListener('animationend', () => document.querySelector('.header-plate').scrollIntoView({behavior: 'smooth'}))
+    // })
 }
 
 // функция слайдера
@@ -474,7 +507,8 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 // }
 
 // // костыль для шестерней
-const use = document.querySelectorAll('.header-plate > use')
+const use = document.querySelectorAll('.header-plate use')
+const storageUse = document.querySelector('#eggs_logo use')
 
 function gearChange() {
     document.body.clientWidth <= 425 ?
@@ -486,6 +520,29 @@ function gearChange() {
             el.setAttribute('x', '11')
             el.setAttribute('y', '11')
         })
+
+    if (document.body.clientWidth <= 320) {
+        storageUse.setAttribute('x', '5')
+        storageUse.setAttribute('y', '16')
+    } 
+    else if (document.body.clientWidth <= 375) {
+        storageUse.setAttribute('x', '5')
+        storageUse.setAttribute('y', '15')
+    } 
+    else if (document.body.clientWidth <= 425) {
+        storageUse.setAttribute('x', '5')
+        storageUse.setAttribute('y', '14')
+    }
+    else if (document.body.clientWidth <= 768) {
+        storageUse.setAttribute('x', '6')
+        storageUse.setAttribute('y', '12')
+    } 
+    else {
+        document.querySelector('#egg_time_holder svg').setAttribute('viewBox', '0 0 148 148')
+
+        storageUse.setAttribute('x', '0')
+        storageUse.setAttribute('y', '4')
+    }
 }
 gearChange()
 
@@ -736,6 +793,16 @@ callbackBtn.addEventListener('click', event => {
         })
     }
     lid_data.comment = floorParams.join(', ')
+
+    const storageParams = []
+    if (location.pathname.toLocaleLowerCase() === '/sklady') {
+        storageParams.push(document.querySelector('.survey-value').value + ' -площадь склада')
+        const storageBtns = document.querySelector('.survey_points').querySelectorAll('button')
+        storageBtns.forEach(el => {
+            if(el.classList.contains('active')) storageParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
+        })
+    }
+    lid_data.comment = storageParams.join(', ')
 
     fetch('/lids', {
         method: 'POST',

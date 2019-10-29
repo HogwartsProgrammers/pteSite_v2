@@ -69,7 +69,7 @@ export function svgjsMain() {
 
 export function svgjsSklady() {
   // Eggs sklady
-  const eggTime = SVG('egg_time_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
+  const eggTime = SVG('egg_time_holder').size('100%', '100%').viewbox(0, 0, 160, 160)
   // const eggMoney = SVG('egg_money_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
   // const eggVolume = SVG('egg_volume_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
   // const eggRoi = SVG('egg_roi_holder').size('100%', '100%').viewbox(0, 0, 148, 148)
