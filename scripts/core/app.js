@@ -97,53 +97,53 @@ if (location.pathname.toLocaleLowerCase() === '/' || location.pathname.toLocaleL
 //     })
 
 if (location.pathname.toLocaleLowerCase() === '/sklady') {
-    require ('../svg.js').svgjsSklady()
+    // require ('../svg.js').svgjsSklady()
     headerIcons()
     // document.getElementById('navTitle').innerText = ''
     // require('../historyScroll').slider()
 
-    const eggsCirclesSvg = document.querySelectorAll('#eggs_slider svg')
-    const eggsCircles = document.querySelectorAll('#eggs_slider circle')
-    //Смена Eggs txt
-    let eggsScore = 1
-    let eggsCircleScore = 1
-    let stop = false
-    const eggsTxt = ['#egg_txt_time', '#egg_txt_money', '#egg_txt_volume', '#egg_txt_roi']
+    // const eggsCirclesSvg = document.querySelectorAll('#eggs_slider svg')
+    // const eggsCircles = document.querySelectorAll('#eggs_slider circle')
+    // //Смена Eggs txt
+    // let eggsScore = 1
+    // let eggsCircleScore = 1
+    // let stop = false
+    // const eggsTxt = ['#egg_txt_time', '#egg_txt_money', '#egg_txt_volume', '#egg_txt_roi']
 
-    //Eggs слайдер
-    const eggsCirclesArr = ['egg_circle_time', 'egg_circle_money', 'egg_circle_volume', 'egg_circle_roi']
+    // //Eggs слайдер
+    // const eggsCirclesArr = ['egg_circle_time', 'egg_circle_money', 'egg_circle_volume', 'egg_circle_roi']
 
-    eggsCirclesSvg.forEach(el => el.onclick = () => {
-        stop = true
-        eggsCircleScore = Number(el.querySelector('circle').getAttribute('name'))
-        eggsScore = eggsCircleScore
-        eggsTxtFunc()
-        setInterval(() => stop = false, 4000)
-    })
+    // eggsCirclesSvg.forEach(el => el.onclick = () => {
+    //     stop = true
+    //     eggsCircleScore = Number(el.querySelector('circle').getAttribute('name'))
+    //     eggsScore = eggsCircleScore
+    //     eggsTxtFunc()
+    //     setInterval(() => stop = false, 4000)
+    // })
 
 
-    const eggsTxtFunc = () => {
-        eggsCircles.forEach(el => el.style.fill = '#fff')
-        const eggFadeIn = () => document.getElementById('eggs_txt').classList.add('fadeIn')
-        document.getElementById('eggs_txt').classList.remove('fadeIn')
-        setTimeout(eggFadeIn, 16)
-        const egg = document.getElementById('egg_time_holder')
-        egg.classList.add('egg_animated')
-        const removeAnimation = () => egg.classList.remove('egg_animated')
-        setTimeout(removeAnimation, 400)
+    // const eggsTxtFunc = () => {
+    //     eggsCircles.forEach(el => el.style.fill = '#fff')
+    //     const eggFadeIn = () => document.getElementById('eggs_txt').classList.add('fadeIn')
+    //     document.getElementById('eggs_txt').classList.remove('fadeIn')
+    //     setTimeout(eggFadeIn, 16)
+    //     const egg = document.getElementById('egg_time_holder')
+    //     egg.classList.add('egg_animated')
+    //     const removeAnimation = () => egg.classList.remove('egg_animated')
+    //     setTimeout(removeAnimation, 400)
 
-        document.getElementById('eggs_txt').setAttribute('href', `${eggsTxt[eggsScore]}`)
-        document.getElementById(`${eggsCirclesArr[eggsCircleScore]}`).style.fill = '#000'
-        eggsCircleScore++
-        eggsScore++
-        if (eggsScore === 4) eggsScore = 0
-        if (eggsCircleScore === 4) eggsCircleScore = 0
-    }
+    //     document.getElementById('eggs_txt').setAttribute('href', `${eggsTxt[eggsScore]}`)
+    //     document.getElementById(`${eggsCirclesArr[eggsCircleScore]}`).style.fill = '#000'
+    //     eggsCircleScore++
+    //     eggsScore++
+    //     if (eggsScore === 4) eggsScore = 0
+    //     if (eggsCircleScore === 4) eggsCircleScore = 0
+    // }
      
-    setInterval(() => {
-        if (stop) return
-        eggsTxtFunc()
-    }, 4000)
+    // setInterval(() => {
+    //     if (stop) return
+    //     eggsTxtFunc()
+    // }, 4000)
 
     const storageBtns = document.querySelector('.survey_points').querySelectorAll('button')
 
@@ -508,7 +508,7 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 
 // // костыль для шестерней
 const use = document.querySelectorAll('.header-plate > svg')
-const storageUse = document.querySelector('#eggs_logo use')
+// const storageUse = document.querySelector('#eggs_logo use')
 
 function gearChange() {
     document.body.clientWidth <= 425 ?
@@ -521,31 +521,30 @@ function gearChange() {
             el.setAttribute('y', '11')
         })
 
-    if (location.pathname.toLocaleLowerCase() === '/sklady') {
-        if (document.body.clientWidth <= 320) {
-            storageUse.setAttribute('x', '5')
-            storageUse.setAttribute('y', '16')
-        } 
-        else if (document.body.clientWidth <= 375) {
-            storageUse.setAttribute('x', '5')
-            storageUse.setAttribute('y', '15')
-        } 
-        else if (document.body.clientWidth <= 425) {
-            storageUse.setAttribute('x', '5')
-            storageUse.setAttribute('y', '14')
-        }
-        else if (document.body.clientWidth <= 768) {
-            storageUse.setAttribute('x', '6')
-            storageUse.setAttribute('y', '12')
-        } 
-        else {
-            document.querySelector('#egg_time_holder svg').setAttribute('viewBox', '0 0 148 148')
+    // if (location.pathname.toLocaleLowerCase() === '/sklady') {
+    //     if (document.body.clientWidth <= 320) {
+    //         storageUse.setAttribute('x', '5')
+    //         storageUse.setAttribute('y', '16')
+    //     } 
+    //     else if (document.body.clientWidth <= 375) {
+    //         storageUse.setAttribute('x', '5')
+    //         storageUse.setAttribute('y', '15')
+    //     } 
+    //     else if (document.body.clientWidth <= 425) {
+    //         storageUse.setAttribute('x', '5')
+    //         storageUse.setAttribute('y', '14')
+    //     }
+    //     else if (document.body.clientWidth <= 768) {
+    //         storageUse.setAttribute('x', '6')
+    //         storageUse.setAttribute('y', '12')
+    //     } 
+    //     else {
+    //         document.querySelector('#egg_time_holder svg').setAttribute('viewBox', '0 0 148 148')
     
-            storageUse.setAttribute('x', '0')
-            storageUse.setAttribute('y', '4')
-        }
-    }
-
+    //         storageUse.setAttribute('x', '0')
+    //         storageUse.setAttribute('y', '4')
+    //     }
+    // }
 }
 gearChange()
 
