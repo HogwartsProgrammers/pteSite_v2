@@ -507,7 +507,7 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
 // }
 
 // // костыль для шестерней
-const use = document.querySelectorAll('.header-plate use')
+const use = document.querySelectorAll('.header-plate > svg')
 const storageUse = document.querySelector('#eggs_logo use')
 
 function gearChange() {
