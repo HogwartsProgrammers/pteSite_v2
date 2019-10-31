@@ -801,7 +801,7 @@ callbackBtn.addEventListener('click', event => {
 
     const storageParams = []
     if (location.pathname.toLocaleLowerCase() === '/sklady') {
-        storageParams.push(document.querySelector('.survey-value').value + ' -площадь склада')
+        storageParams.push('Требуется площадь склада = ' + document.querySelector('.survey-value').value + ' м²' + ', хотят:')
         const storageBtns = document.querySelector('.survey_points').querySelectorAll('button')
         storageBtns.forEach(el => {
             if(el.classList.contains('active')) storageParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
