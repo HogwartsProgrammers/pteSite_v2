@@ -391,6 +391,7 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     const stepTwo = (event) => {
         event.preventDefault()
         if (inputVolume.value === '' || inputVolume.value == 0 || inputVolume.value < 0) {
+            inputVolume.focus()
             inputVolume.classList.add('bounce')
             nextButton.classList.add('shake')
         } else {
@@ -413,6 +414,7 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     const stepThree = (event) => {
         event.preventDefault()
         if (!stepTwoBtnsContains()) {
+            inputVolume.focus()
             nextButton.classList.add('shake')          
         } else {
             saveParams()
@@ -434,6 +436,7 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     const stepFour = (event) => {
         event.preventDefault()
         if (!stepThreeBtnsContains()) {
+            inputVolume.focus()
             nextButton.classList.add('shake')                      
         } else {
             if (inputTest.test(inpMail.value)) saveParams()

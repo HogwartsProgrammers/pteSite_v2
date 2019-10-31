@@ -986,6 +986,8 @@ footer p {
     padding-top: 1.1rem;
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
     color: #fff;
+    line-height: 1.1rem;
+    font-size: 0.9rem;
 }
 
 .calc-title small {
