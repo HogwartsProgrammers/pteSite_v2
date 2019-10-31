@@ -5052,7 +5052,7 @@ footer p {
         top: 3.7%;
     }
     #eggs_logo {
-        top: 1.4%;
+        top: .4%;
     }
     #eggs_txt_holder {
         top: 1.8%;
@@ -5124,20 +5124,6 @@ footer p {
     }
     .sub-title {
         font-size: 0.5rem;
-    }
-    #eggs_logo {
-        top: 1.3%;
-    }
-    #eggs_txt {
-        top: 3.4%;
-    }
-    #eggs_txt_holder {
-        top: 1.7%;
-        height: 0.9%;
-    }
-    #eggs_slider {
-        left: 2%;
-        top: 1%;
     }
 }
 
@@ -5238,18 +5224,5 @@ footer p {
     }
     .sub-title {
         font-size: 0.4rem;
-    }
-    #eggs_logo {
-        top: 1.3%;
-    }
-    #eggs_txt {
-        top: 2.95%;
-    }
-    #eggs_txt_holder {
-        height: 0.8%;
-        top: 1.6%;
-    }
-    #eggs_slider {
-        left: 1%;
     }
 }
