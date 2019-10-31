@@ -330,69 +330,24 @@
     width: 38rem;
 }
 
-header img {
+header > img {
     width: 100%;
     display: block;
 }
 
-
+header #eggs_logo img {
+    width: 20%;
+    margin: 0 auto;
+}
 
 #eggs_logo {
-    width: 18%;
-    margin: 0;
+    width: 55%;
+    margin: 0 auto;
     position: absolute;
-    top: 2%;
-    left: 0rem;
+    top: 1.5%;
+    left: 3.3rem;
+    display: flex;
 }
-
-#egg_txt_time  text tspan {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-}
-
-#egg_txt_money  text tspan {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-}
-
-#egg_txt_volume  text tspan {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-}
-
-#egg_txt_roi  text tspan {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-}
-
-#eggs_txt {
-    width: 100%;
-    margin: 0;
-    position: absolute;
-    top: 4.2%;
-}
-
-#eggs_txt .column {
-    padding: 0 7.6%;
-}
-
-#egg_time {
-    width:0;
-    height:0;
-}
-
-#egg_time_holder {
-    transition-duration: 400ms;
-
-}
-
-.egg_animated {
-    transform: rotate(180deg);
-}
-
-#eggs_txt_holder {
-    position: absolute;
-    bottom: 128.2rem;
-    right: 36.9rem;
-    top: 8.2rem;
-}
-
 #eggs_slider svg {
     width: 1rem;
     height: 1rem;
@@ -799,9 +754,10 @@ section:not(.first-section) {
 }
 
 #skladyPageSidebar ul > li {
-    font-size: 0.7rem;
+    font-size: 0.54rem;
     line-height: 0.73rem;
-    margin: 0
+    margin: 0;
+    color: #66758c;
 }
 .navbar-brand small {
     line-height: .6rem;
@@ -973,12 +929,21 @@ footer p {
     margin-top: 0.4rem;
 }
 
+.sidebar-calculate button {
+    width: 10rem;
+    margin-top: 0.4rem;
+}
+
 .sidebar-slider {
     top: 29rem;
     padding-top: 0.7rem;
     width: 12rem;
     height: 8.7rem;
     margin-left: -1rem;
+}
+
+.sidebar-slider img {
+    width: 100%;
 }
 
 .calc-title {
