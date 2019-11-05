@@ -120,104 +120,82 @@
             </g>
         </svg>
     ul#homePageSidebar.nav.sidebar-font
-        li.nav-item
-            a(href="#poly") ПРОМЫШЛЕННЫЕ ПОЛЫ
-        li.nav-item
-            a(href="#sklady") СКЛАДЫ ПОД КЛЮЧ
+        a(href="#poly") ПРОМЫШЛЕННЫЕ ПОЛЫ
+        a(href="#sklady") СКЛАДЫ ПОД КЛЮЧ
         li.nav-item.sidebar-not
-            .accordion
-                input#design(type="checkbox", name="accordion-checkbox", hidden)
-                label.accordion-header(for="design")
-                    i.icon.icon-arrow-right.mr-1
-                    a.text-primary.text-bold ДИЗАЙН ИНТЕРЬЕРОВ
-                .accordion-body
-                    ul.nav 
-                        li.nav-item
-                            a(href="#house") В ЗАГОРОДНЫХ ДОМАХ
-                        li.nav-item
-                            a(href="#room") В КВАРТИРАХ
-                        li.nav-item
-                            a(href="#office") В ОФИСАХ
+            a.li-side-header ДИЗАЙН ИНТЕРЬЕРОВ: <br>
+            ul.nav.d-hide.animated.fadeIn.faster
+                li.nav-item.text-bold
+                    a(href="#house") В загородных домах
+                li.nav-item.text-bold
+                    a(href="#room") В квартирах
+                li.nav-item.text-bold
+                    a(href="#office") В офисах
+            button.btn.btn-sm.p-relative.mb-2.mt-1 ПОДРОБНЕЕ
         li.nav-item.sidebar-not
-            .accordion
-                input#obj(type="checkbox", name="accordion-checkbox", hidden)
-                label.accordion-header(for="obj")
-                    i.icon.icon-arrow-right.mr-1
-                    a.text-primary.text-bold ОБЪЕКТЫ
-                .accordion-body
-                    ul.nav 
-                        li.nav-item
-                            a(href="#living") ЖИЛАЯ НЕДВИЖИМОСТЬ
-                        li.nav-item
-                            a(href="#promObj") ПРОИЗВОДСТВЕННЫЕ ОБЪЕКТЫ
-                        li.nav-item
-                            a(href="#adminBuilding") ОБЩЕСТВЕННЫЕ ЗДАНИЯ
-                        li.nav-item
-                            a(href="#hotel") ЦЕНТРЫ ОТДЫХА И ОТЕЛИ
-                        li.nav-item
-                            a(href="#malls") ТОРГОВЫЕ ЦЕНТРЫ И РЫНКИ
+            a.li-side-header ОБЪЕКТЫ: <br>
+            ul.nav.d-hide.animated.fadeIn.faster
+                li.nav-item.text-bold
+                    a(href="#living") Жилая недвижимость
+                li.nav-item.text-bold
+                    a(href="#promObj") Производственные объекты
+                li.nav-item.text-bold
+                    a(href="#adminBuilding") Общественные здания
+                li.nav-item.text-bold
+                    a(href="#hotel") Центры отдыха и отели
+                li.nav-item.text-bold
+                    a(href="#malls") Торговые центры и рынки
+            button.btn.btn-sm.p-relative.mb-2.mt-1 ПОДРОБНЕЕ
         li.nav-item.sidebar-not
-            .accordion
-                input#engin_network(type="checkbox", name="accordion-checkbox", hidden)
-                label.accordion-header(for="engin_network")
-                    i.icon.icon-arrow-right.mr-1
-                    a.text-primary.text-bold ИНЖИНЕРНЫЕ СЕТИ
-                .accordion-body
-                    ul.nav 
-                        li.nav-item
-                            a(href="#cooling") КОНДИЦИОНИРОВАНИЕ
-                        li.nav-item
-                            a(href="#vent") ВЕНТИЛЯЦИЯ
-                        li.nav-item
-                            a(href="#warming") ОТОПЛЕНИЕ
-                        li.nav-item
-                            a(href="#water") ВОДОСНАБЖЕНИЕ
-                        li.nav-item
-                            a(href="#gas") ГАЗОСНАБЖЕНИЕ
-                        li.nav-item
-                            a(href="#suege") КАНАЛИЗАЦИЯ
-                        li.nav-item
-                            a(href="#itp") ИТП
-                        li.nav-item
-                            a(href="#ctp") ЦТП
+            a.li-side-header ИНЖИНЕРНЫЕ СЕТИ: <br>
+            ul.nav.d-hide.animated.fadeIn.faster
+                li.nav-item.text-bold
+                    a(href="#cooling") Кондиционирование
+                li.nav-item.text-bold
+                    a(href="#vent") Вентиляция
+                li.nav-item.text-bold
+                    a(href="#warming") Отопление
+                li.nav-item.text-bold
+                    a(href="#water") Водоснабжение
+                li.nav-item.text-bold
+                    a(href="#gas") Газоснабжение
+                li.nav-item.text-bold
+                    a(href="#suege") Канализация
+                li.nav-item.text-bold
+                    a(href="#itp") ИТП
+                li.nav-item.text-bold
+                    a(href="#ctp") ЦТП
+            button.btn.btn-sm.p-relative.mb-2.mt-1 ПОДРОБНЕЕ
         li.nav-item.sidebar-not
-            .accordion
-                input#low_voltage(type="checkbox", name="accordion-checkbox", hidden)
-                label.accordion-header(for="low_voltage")
-                    i.icon.icon-arrow-right.mr-1
-                    a.text-primary.text-bold СЛАБОТОЧНЫЕ РАБОТЫ
-                .accordion-body
-                    ul.nav 
-                        li.nav-item
-                            a(href="#lowVolt") СИСТЕМА БЕЗОПАСНОСТИ
-                        li.nav-item
-                            a(href="#lowVolt") СИСТЕМА ПОЖАРОТУШЕНИЯ
-                        li.nav-item
-                            a(href="#lowVolt") СИСТЕМА СИГНАЛИЗАЦИИ
+            a.li-side-header СЛАБОТОЧНЫЕ РАБОТЫ: <br>
+            ul.nav.d-hide.animated.fadeIn.faster
+                li.nav-item.text-bold
+                    a(href="#lowVolt") Система безопасности
+                li.nav-item.text-bold
+                    a(href="#lowVolt") Система пожаротушения
+                li.nav-item.text-bold
+                    a(href="#lowVolt") Система сигнализации
+            button.btn.btn-sm.p-relative.mb-2.mt-1 ПОДРОБНЕЕ
         li.nav-item.sidebar-not
-            .accordion
-                input#civ_works(type="checkbox", name="accordion-checkbox", hidden)
-                label.accordion-header(for="civ_works")
-                    i.icon.icon-arrow-right.mr-1
-                    a.text-primary.text-bold ОБЩЕСТРОИТЕЛЬНЫЕ РАБОТЫ
-                .accordion-body
-                    ul.nav 
-                        li.nav-item
-                            a(href="#zemelnyeRab") ЗЕМЕЛЬНЫЕ РАБОТЫ
-                        li.nav-item
-                            a(href="#monolit") МОНОЛИТНЫЕ И ЖБ КОНСТРУКЦИИ
-                        li.nav-item
-                            a(href="#floor") КЛАДОЧНЫЕ РАБОТЫ
-                        li.nav-item
-                            a(href="#roof") КРОВЕЛЬНЫЕ РАБОТЫ
-                        li.nav-item
-                            a(href="#facade") ФАСАДНЫЕ РАБОТЫ
-                        li.nav-item
-                            a(href="#roomDecoration") ОТДЕЛОЧНЫЕ РАБОТЫ
-                        li.nav-item
-                            a(href="#park") БЛАГОУСТРОЙСТВО
-                        li.nav-item
-                            a(href="#waterResist") ГИДРОИЗОЛЯЦИЯ
+            a.li-side-header ОБЩЕСТРОИТЕЛЬНЫЕ РАБОТЫ: <br>
+            ul.nav.d-hide.animated.fadeIn.faster
+                li.nav-item.text-bold
+                    a(href="#zemelnyeRab") Земельные работы
+                li.nav-item.text-bold
+                    a(href="#monolit") Монолитные и ЖБ конструкции
+                li.nav-item.text-bold
+                    a(href="#floor") Кладочные работы
+                li.nav-item.text-bold
+                    a(href="#roof") Кровельные работы
+                li.nav-item.text-bold
+                    a(href="#facade") Фасадные работы
+                li.nav-item.text-bold
+                    a(href="#roomDecoration") Отделочные работы
+                li.nav-item.text-bold
+                    a(href="#park") Благоустройство
+                li.nav-item.text-bold
+                    a(href="#waterResist") Гидроизоляция
+            button.btn.btn-sm.p-relative.mb-2.mt-1 ПОДРОБНЕЕ
 
                 
     

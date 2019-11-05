@@ -741,16 +741,34 @@ section:not(.first-section) {
     position: fixed;
 }
 
+.docs-nav > .nav > .nav-item > a:hover {
+    cursor: pointer;
+}
+
 #homePageSidebar ul > li {
-    font-size: 0.7rem;
-    line-height: 0.9rem;
-    margin: 0
+    font-size: 0.54rem;
+    line-height: 0.73rem;
+    margin: 0;
+    color: #66758c;
+}
+
+#homePageSidebar > a {
+    padding: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
+    outline: none;
+    text-decoration: none;
+    color: #66758c;
+}
+
+#homePageSidebar > a:hover {
+    color: black;
 }
 
 #polyPageSidebar ul > li {
-    font-size: 0.7rem;
-    line-height: 0.9rem;
-    margin: 0
+    font-size: 0.54rem;
+    line-height: 0.73rem;
+    margin: 0;
+    color: #66758c;
 }
 
 #skladyPageSidebar ul > li {
@@ -759,6 +777,22 @@ section:not(.first-section) {
     margin: 0;
     color: #66758c;
 }
+
+#skladyPageSidebar button {
+    width: 50%;
+    left: 2rem;
+}
+
+#polyPageSidebar button {
+    width: 50%;
+    left: 2rem;
+}
+
+#homePageSidebar button {
+    width: 50%;
+    left: 2rem;
+}
+
 .navbar-brand small {
     line-height: .6rem;
     font-size: .41rem;

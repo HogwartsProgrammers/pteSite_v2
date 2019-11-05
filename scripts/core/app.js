@@ -294,6 +294,26 @@ const photoSlider = () => {
 // проверка email
 const inputTest = new RegExp(/^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)(?!.*@.*\-$)(.*@.+(\..{1,11})?)$/)
 
+
+// Функционал заголовков в сайдбаре 
+const sidebarTitleBtn = document.querySelectorAll('.docs-nav > .nav > .nav-item')
+
+sidebarTitleBtn.forEach(el => {
+    el.querySelector('button').onclick = () => {
+        el.querySelector('button').classList.add('d-hide')
+        el.querySelector('ul').classList.remove('d-hide')
+    }
+    el.querySelector('.li-side-header').onclick = () => {
+        if (el.querySelector('ul').classList.contains('d-hide')) {
+            el.querySelector('button').classList.add('d-hide')
+            el.querySelector('ul').classList.remove('d-hide')
+        } else {
+            el.querySelector('ul').classList.add('d-hide')
+            el.querySelector('button').classList.remove('d-hide')
+        }
+    }
+})
+
 if (location.pathname.toLocaleLowerCase() === '/poly') {
     headerIcons()
     photoSlider()
