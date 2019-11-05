@@ -26,19 +26,19 @@ export function scrollSidebar() {
     for(let key in positions) {
         if (positions['A' + (+key.substring(1)+1)]) {
         if ((positions[key] - 350) < 0 && (positions['A' + (+key.substring(1)+1)] - 350) > 0 && !this.animation) {
-            items.forEach(item => item.classList.remove('active'))
-            if (!!items[+key.substring(1)]) items[+key.substring(1)].classList.add('active')
+            // items.forEach(item => item.classList.remove('active'))
+            // if (!!items[+key.substring(1)]) items[+key.substring(1)].classList.add('active')
             break
         }
         } else {
         if (!this.animation) {
             if ((positions[key] - 350 > 0)) {
-            items.forEach(item => item.classList.remove('active'))
-            items[0].classList.add('active')
+            // items.forEach(item => item.classList.remove('active'))
+            // items[0].classList.add('active')
             break
             } else {
-            items.forEach(item => item.classList.remove('active'))
-            items[items.length-1].classList.add('active')
+            // items.forEach(item => item.classList.remove('active'))
+            // items[items.length-1].classList.add('active')
             }
         }
         }
@@ -54,8 +54,8 @@ export function scrollSidebar() {
     e.addEventListener('click', event => {
         const element = e.querySelector('a')
         event.preventDefault()
-        items.forEach(item => item.classList.remove('active'))
-        e.classList.add('active')
+        // items.forEach(item => item.classList.remove('active'))
+        // e.classList.add('active')
 
         containers.forEach(a => {
         if(element.getAttribute('href').substring(1) ===  a.getAttribute('name')) {

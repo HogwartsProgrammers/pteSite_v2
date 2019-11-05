@@ -56,8 +56,8 @@ export function scrollSidebar() {
         e.addEventListener('click', event => {
             const element = e.querySelector('a')
             event.preventDefault()
-            items.forEach(item => item.classList.remove('active'))
-            e.classList.add('active')
+            // items.forEach(item => item.classList.remove('active'))
+            // e.classList.add('active')
 
             containers.forEach(a => {
             if(element.getAttribute('href').substring(1) ===  a.getAttribute('name')) {

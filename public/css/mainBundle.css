@@ -4127,21 +4127,6 @@ header #eggs_logo img {
     left: 3.3rem;
     display: flex;
 }
-#eggs_slider svg {
-    width: 1rem;
-    height: 1rem;
-}
-#eggs_slider svg:hover {
-    cursor: pointer;
-}
-
-#eggs_slider {
-    position: absolute;
-    top: 1.4%;
-    left: 2.4rem;
-    height: 1rem;
-}
-
 
 #logo {
    height: 16.5rem; 
@@ -4531,18 +4516,6 @@ section:not(.first-section) {
     color: #66758c;
 }
 
-#homePageSidebar > a {
-    padding: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif !important;
-    outline: none;
-    text-decoration: none;
-    color: #66758c;
-}
-
-#homePageSidebar > a:hover {
-    color: black;
-}
-
 #polyPageSidebar ul > li {
     font-size: 0.54rem;
     line-height: 0.73rem;
@@ -4870,18 +4843,6 @@ footer p {
         margin: 0 0 0 1rem;
         height: fit-content;
     }
-    #eggs_txt_holder {
-        left: 0rem;
-        top: 2.7%; 
-        width: 18%;
-        height: 2.3%;
-    }
-    #eggs_slider {
-        bottom: 0;
-        left: 3.8%;
-        height: 1rem;
-        top: 1.5%;
-    }
 }
 
 @media (max-width: 425px) {
@@ -5091,19 +5052,6 @@ footer p {
     #eggs_txt_holder {
         top: 1.8%;
         height: 1.2%;
-    }
-    #eggs_slider {
-        bottom: 0;
-        left: 3%;
-        height: 1rem;
-        top: 1.1%;
-    }
-    #eggs_slider svg {
-        width: 0.6rem;
-    }
-    #eggs_slider svg circle {
-        cx: 8;
-        r: 3;
     }
 }
 

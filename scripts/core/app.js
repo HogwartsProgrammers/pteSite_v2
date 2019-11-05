@@ -296,7 +296,7 @@ const inputTest = new RegExp(/^(?!.*@.*@.*$)(?!.*@.*\-\-.*\..*$)(?!.*@.*\-\..*$)
 
 
 // Функционал заголовков в сайдбаре 
-const sidebarTitleBtn = document.querySelectorAll('.docs-nav > .nav > .nav-item')
+const sidebarTitleBtn = document.querySelectorAll('.docs-nav > .nav .sidebar-not')
 
 sidebarTitleBtn.forEach(el => {
     el.querySelector('button').onclick = () => {
