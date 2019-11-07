@@ -1,3 +1,5 @@
+document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
+
 const route = location.pathname.toLocaleLowerCase()
 
 const access = document.getElementById('access').value
@@ -7,7 +9,6 @@ document.querySelectorAll('.modal-close').forEach(el => {
     el.addEventListener('click', event => document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active')))
 })
 
-document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 try {
     document.getElementById('closeLowAccessWarn').onclick = event => {
         closeWarn(event.target.parentElement)
@@ -362,6 +363,8 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
     const chanelsAccess = document.getElementById('chanelsAccess')
     const privilagesAccess = document.getElementById('privilagesAccess')
     const tasksAccess = document.getElementById('tasksAccess')
+    const usersAccess = document.getElementById('usersAccess')
+    const postsAccess = document.getElementById('postsAccess')
 
     // privilage_data
     const createPrivilageData = () => {
@@ -380,6 +383,8 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
             chanels: getRadioSelect(chanelsAccess),
             privilage: getRadioSelect(privilagesAccess),
             tasks: getRadioSelect(tasksAccess),
+            users: getRadioSelect(usersAccess),
+            posts: getRadioSelect(postsAccess),
         }
     }
 
@@ -404,6 +409,10 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 case 'privilage': setAccess(privilagesAccess, privilage_data[key])
                 break
                 case 'tasks': setAccess(tasksAccess, privilage_data[key])
+                break
+                case 'users': setAccess(usersAccess, privilage_data[key])
+                break
+                case 'posts': setAccess(postsAccess, privilage_data[key])
             }
         }
     }
@@ -430,6 +439,10 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 case 'privilage': disable(privilagesAccess, privilage_data[key])
                 break
                 case 'tasks': disable(privilagesAccess, privilage_data[key])
+                break
+                case 'users': disable(privilagesAccess, privilage_data[key])
+                break
+                case 'posts': setAccess(postsAccess, privilage_data[key])
             }
         }
     }
@@ -477,7 +490,7 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 deletePrivilage.classList.remove('d-hide')
 
                 savePrivilage.onclick = event => {
-                    if (privilageTitle.value.trim().length > 5) {
+                    if (privilageTitle.value.trim().length > 2) {
                         privilagesModal.querySelectorAll('input, select, button').forEach(input => input.disabled = true)
                         if (access == 'full') fetch('/office/privilages/update', {
                             method: 'POST',
@@ -491,7 +504,7 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                             headers:{"Content-Type": "application/json"}
                         }).then(result => result.json()).then(() => {
                             privilagesModal.querySelectorAll('input, select, button').forEach(input => input.disabled = false)
-                            disablePrivilages(parent.privilage_data)
+                            if (parent) disablePrivilages(parent)
                         })
                     }
                     else {
@@ -694,4 +707,14 @@ if (route === '/office/tasks' || route === '/office/tasks/') {
 
 if (route === '/office/contacts' || route === '/office/contacts/') {
     require('./officeScripts/contactsPage.js').init()
+}
+
+// Страница "Сотрудники"
+if (route === '/office/users' || route === '/office/users/') {
+    require('./officeScripts/usersPage.js').init()
+}
+
+// Страница "Посты"
+if (route === '/office/posts' || route === '/office/posts/') {
+    require('./officeScripts/postsPage.js').init()
 }

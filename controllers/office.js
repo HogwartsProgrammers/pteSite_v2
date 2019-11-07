@@ -1,14 +1,15 @@
 const bcrypt = require('bcryptjs')
 const cfg = require('./config')
-const Users = require('../models/users')
-const Lids = require('../models/lids')
-const Pipes = require('../models/pipes')
-const Steps = require('../models/steps')
 const Chanels = require('../models/chanels')
-const Phones = require('../models/phones')
-const Email = require('../models/email')
 const Contacts = require('../models/contacts')
+const Email = require('../models/email')
+const Lids = require('../models/lids')
+const Users = require('../models/users')
+const Pipes = require('../models/pipes')
+const Phones = require('../models/phones')
 const Privilages = require('../models/privilages')
+const Posts = require('../models/posts')
+const Steps = require('../models/steps')
 
 const getTasksAmount = userId => {
     return new Lids().fetchAll().then(data => {
@@ -283,7 +284,63 @@ exports.getPipes = (req, res, next) => {
             res.redirect('/login')
         }
     })
-    else res.render('noProfile', {         pageTitle: 'Панель администрирования',         year: cfg.year,         path: cfg.path()     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
+}
+
+
+// Отображение страницы users
+exports.getUsersPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.users != 'none')
+            Users.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    res.render('users', {
+                        pageTitle: 'Панель администрирования',
+                        year: cfg.year,
+                        path: cfg.path(),
+                        users: result[0],
+                        tasks: a,
+                    })
+                })
+            })
+            else  
+            res.render('noAccess', {
+                pageTitle: 'Панель администрирования',
+                year: cfg.year,
+                path: cfg.path()
+            })
+        } else {
+            res.redirect('/login')
+        }
+    })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
+}
+
+exports.getPostsPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.posts != 'none')
+            Posts.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        res.render('posts', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            posts: result[0],
+                            tasks: a,
+                            users: users[0],
+                        })
+                    })
+                })
+            })
+        }
+    })
 }
 
 // Создание нового pipe
@@ -793,10 +850,46 @@ exports.updateUser = (req, res, next) => {
             oldData[0][0].password,
             user.fio ? user.fio : oldData[0][0].fio,
             user.role ? user.role : oldData[0][0].role,
+            user.active != undefined ? user.active : oldData[0][0].active,
         ).update().then(result => {
             res.status(201).json(result[0])
         })
     })
+}
+
+exports.updatePosts = (req, res, next) => {
+    const posts = JSON.parse(JSON.stringify(req.body))
+
+    if (posts.cmd == 'delete') {
+        new Posts(posts.id).delete().then(() => res.status(201).json('deleted'))
+        return
+    }
+
+    if (posts.id)
+    new Posts().findById(posts.id).then(oldData => {
+        new Posts(
+            posts.id,
+            posts.parent ? posts.parent : oldData[0][0].parent,
+            posts.active != undefined ? posts.active : oldData[0][0].active,
+            posts.title ? posts.title : oldData[0][0].title,
+            posts.users ? posts.users : oldData[0][0].users,
+        ).update().then(result => {
+            console.log(result)
+            res.status(201).json(result[0])
+        })
+    })
+    
+    else {
+        new Posts(
+            null,
+            posts.parent ? posts.parent : null,
+            posts.active ? posts.active : 1,
+            posts.title ? posts.title : null,
+            posts.users ? posts.users : null,
+        ).save().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
 }
 
 exports.getUsersList = (req, res, next) => {

@@ -3,10 +3,17 @@
 @import 'animate.min.css';
 @import 'common.css';
 @import 'spectre-icons.css';
+@import 'spectre-exp.css';
+
+.lg-grid {
+    max-width: 976px;
+    margin: 0 auto;
+}
 
 .ma {
     margin: auto !important;
 }
+
 
 .mla {
     margin-left: auto !important;
@@ -888,6 +895,10 @@ img {
 #newSubContactSuggestion dd:hover {
     margin-bottom: 0 !important;
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+
+.form-autocomplete .menu:empty {
+    display: none
 }
 
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
