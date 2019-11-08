@@ -794,7 +794,8 @@ exports.updatePrivilages = (req, res, next) => {
                 user.login,
                 user.password,
                 user.fio,
-                0
+                0,
+                user.posts
             ).update()
         }))
         return
@@ -851,6 +852,7 @@ exports.updateUser = (req, res, next) => {
             user.fio ? user.fio : oldData[0][0].fio,
             user.role ? user.role : oldData[0][0].role,
             user.active != undefined ? user.active : oldData[0][0].active,
+            user.posts != undefined ? user.posts : oldData[0][0].posts,
         ).update().then(result => {
             res.status(201).json(result[0])
         })
@@ -872,8 +874,46 @@ exports.updatePosts = (req, res, next) => {
             posts.parent ? posts.parent : oldData[0][0].parent,
             posts.active != undefined ? posts.active : oldData[0][0].active,
             posts.title ? posts.title : oldData[0][0].title,
-            posts.users ? posts.users : oldData[0][0].users,
-        ).update().then(result => {
+            posts.users != undefined ? posts.users : oldData[0][0].users,
+        ).update().then(async result => {
+            if (posts.users != undefined) {
+                const postUsers = posts.users.split(',')
+                const users = (await Users.fetchAll())[0]
+                console.log(users)
+                users.forEach(user => {
+                    if (postUsers.find(uid => uid == user.id) && !user.posts.split(',').find(pid => pid == posts.id)) {
+                        Users.findById(user.id).then(oldData => {
+                            oldData[0][0].posts = oldData[0][0].posts.length ? oldData[0][0].posts.split(',') : []
+                            oldData[0][0].posts.push(posts.id)
+                            oldData[0][0].posts = oldData[0][0].posts.join(',')
+                            new Users(
+                                user.id,
+                                oldData[0][0].login,
+                                oldData[0][0].password,
+                                oldData[0][0].fio,
+                                oldData[0][0].role,
+                                oldData[0][0].active,
+                                oldData[0][0].posts
+                        ).update()})
+                    }
+                    if (!postUsers.find(uid => uid == user.id) && user.posts.split(',').find(pid => pid == posts.id)) {
+                        Users.findById(user.id).then(oldData => {
+                            oldData[0][0].posts = oldData[0][0].posts.length ? oldData[0][0].posts.split(',') : []
+                            const index = oldData[0][0].posts.indexOf(posts.id)
+                            oldData[0][0].posts.splice(index, 1)
+                            oldData[0][0].posts = oldData[0][0].posts.join(',')
+                            new Users(
+                                user.id,
+                                oldData[0][0].login,
+                                oldData[0][0].password,
+                                oldData[0][0].fio,
+                                oldData[0][0].role,
+                                oldData[0][0].active,
+                                oldData[0][0].posts
+                        ).update()})
+                    }
+                })
+            }
             console.log(result)
             res.status(201).json(result[0])
         })
@@ -883,9 +923,9 @@ exports.updatePosts = (req, res, next) => {
         new Posts(
             null,
             posts.parent ? posts.parent : null,
-            posts.active ? posts.active : 1,
+            posts.active != undefined ? posts.active : 1,
             posts.title ? posts.title : null,
-            posts.users ? posts.users : null,
+            posts.users != undefined ? posts.users : null,
         ).save().then(result => {
             res.status(201).json(result[0])
         })
@@ -907,6 +947,11 @@ exports.getUsersList = (req, res, next) => {
         break
         case 'byrole': 
         new Users().find(income.role).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        case 'search': 
+        Users.search(income.fio).then(result => {
             res.status(201).json(result[0])
         })
         break

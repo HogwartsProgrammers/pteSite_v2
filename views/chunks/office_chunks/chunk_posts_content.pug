@@ -18,14 +18,15 @@ input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
             each post in posts
                 if post.active 
                     tr
-                        td= post.title
+                        td(contenteditable="true", data-data=JSON.stringify(post))= post.title
                         td 
                             .form-autocomplete(data-data=JSON.stringify(post))
                                 .form-autocomplete-input
                                     .chips
-                                        each uid in post.users.split(',')
-                                            span.chip(data-id=uid)= users.find(user => user.id == uid).fio
-                                                a.btn.btn-clear
+                                        if post.users.length
+                                            each uid in post.users.split(',')
+                                                span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
                                     input.form-input(type="text", placeholder="Поиск")
                                 ul.menu
                         td
@@ -38,16 +39,34 @@ input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
                         td= post.title
                         td 
                             .form-autocomplete(data-data=JSON.stringify(post))
-                                .form-autocomplete-input.form-input 
+                                .form-autocomplete-input
                                     .chips
-                                        each uid in post.users.split(',')
-                                            span.chip= users.find(user => user.id == uid).fio
-                                                a.btn.btn-clear
-                                    input.form-input(type="text", placeholder="typing here")
+                                        if post.users.length
+                                            each uid in post.users.split(',')
+                                                span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
                                 ul.menu
                         td
                             .form-group
                                 label.operations.form-switch
                                     input(type="checkbox", checked=!!post.active, data-uid= post.id)
                                     i.form-icon
-
+#postCreator.modal.active
+  a.modal-overlay
+  .modal-container
+    .modal-header
+      a.btn.btn-clear.float-right
+      .modal-title.h5.text-center НОВЫЙ ПОСТ
+    .modal-body
+        .form-group
+            label.form-label Название
+            input#postName.form-input(type="text", placeholder="Введите название")
+            label.form-label Пользователи
+            .form-autocomplete
+                .form-autocomplete-input
+                    .chips
+                        input.form-input(type="text", placeholder="Поиск")
+                ul.menu
+    .modal-footer
+        button.btn.btn-primary.float-right Добавить
