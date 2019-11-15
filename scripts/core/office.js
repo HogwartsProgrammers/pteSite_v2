@@ -1,3 +1,4 @@
+
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
 const route = location.pathname.toLocaleLowerCase()
@@ -365,6 +366,7 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
     const tasksAccess = document.getElementById('tasksAccess')
     const usersAccess = document.getElementById('usersAccess')
     const postsAccess = document.getElementById('postsAccess')
+    const statsAccess = document.getElementById('statsAccess')
 
     // privilage_data
     const createPrivilageData = () => {
@@ -385,6 +387,7 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
             tasks: getRadioSelect(tasksAccess),
             users: getRadioSelect(usersAccess),
             posts: getRadioSelect(postsAccess),
+            stats: getRadioSelect(statsAccess),
         }
     }
 
@@ -413,6 +416,8 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 case 'users': setAccess(usersAccess, privilage_data[key])
                 break
                 case 'posts': setAccess(postsAccess, privilage_data[key])
+                break
+                case 'stats': setAccess(statsAccess, privilage_data[key])
             }
         }
     }
@@ -443,6 +448,8 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 case 'users': disable(privilagesAccess, privilage_data[key])
                 break
                 case 'posts': setAccess(postsAccess, privilage_data[key])
+                break
+                case 'stats': setAccess(statsAccess, privilage_data[key])
             }
         }
     }
@@ -717,4 +724,9 @@ if (route === '/office/users' || route === '/office/users/') {
 // Страница "Посты"
 if (route === '/office/posts' || route === '/office/posts/') {
     require('./officeScripts/postsPage.js').init()
+}
+
+// Страница "Статистики"
+if (route === '/office/stats' || route === '/office/stats/') {
+    require('./officeScripts/statsPage.js').init()
 }

@@ -31,6 +31,7 @@ export function init() {
 
     // функционал удаления пользователя из поста
     document.querySelectorAll('table .form-autocomplete').forEach(autoComplete => {
+        if (!autoComplete.dataset.data) return
         const post = JSON.parse(autoComplete.dataset.data)
         const initClear = () => {
             autoComplete.querySelectorAll('.chip').forEach(chip => chip.querySelector('a').onclick = () => {
@@ -107,6 +108,7 @@ export function init() {
 
     //функционал изменения названия поста
     document.querySelectorAll('table tbody tr td:first-child').forEach(td => {
+        if (!td.dataset.data) return
         const post = JSON.parse(td.dataset.data)
         td.onkeydown = (event) => {
             if (event.code == 'Enter') {
@@ -129,5 +131,25 @@ export function init() {
     })
 
     // функционал добавления поста
-    document.getElementById
+    document.getElementById('addPost').onclick = async () => {
+        const pId = await fetch('/office/posts/update', {
+            method: 'POST',
+            body: JSON.stringify({
+                _csrf: document.getElementById('csrfToken').value
+            }),
+            headers:{"Content-Type": "application/json"}
+        }).then(data => data.json()).then(data => data.insertId)
+        const postData = JSON.stringify({
+            id: pId,
+            parent: null,
+            active: 1,
+            title: '',
+            users: ''
+        })
+        const tr = document.createElement('tr')
+        tr.innerHTML = `<td contenteditable="true"></td><td> <div class="form-autocomplete"><div class="form-autocomplete-input"><div class="chips"></div><input class="form-input" type="text" placeholder="Поиск"></div><ul class="menu"></ul></div></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked="checked" data-uid="1"><i class="form-icon"></i></label></div></td>`
+        tr.querySelectorAll('td:first-child,.form-autocomplete').forEach(td => td.setAttribute('data-data', postData))
+        document.querySelector('table tbody').insertAdjacentElement('beforeend', tr)
+        init()
+    }
 }

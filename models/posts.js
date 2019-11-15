@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const db = require('./database')
 
 module.exports = class Posts {
-    constructor(id, parent = null, active = 1, title = null, users) {
+    constructor(id, parent = null, active = 1, title = null, users = '') {
         this.id = id
         this.parent = parent
         this.title = title

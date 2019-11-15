@@ -1,0 +1,42 @@
+input#access(type="hidden", value= access)
+input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
+.col-12.p-centered.mt-2.lg-grid
+    .form-group
+        label#showInactive.form-switch Отобразить неактивных
+            input(type="checkbox")
+            i.form-icon
+    table.table
+        thead
+            tr
+                th Название
+                th Описание
+                th Операции
+        tbody
+            each stat in stats
+                if stat.active
+                    tr
+                        td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
+                        td(data-data=JSON.stringify(stat))= stat.description
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
+                                    i.form-icon
+                else
+                    tr.d-hide
+                        td(contenteditable="true")
+                        td(contenteditable="true")
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
+                                    i.form-icon
+#modal-id.modal.active
+  a.modal-overlay
+  .modal-container
+    .modal-header
+      a.btn.btn-clear.float-right
+      .modal-title.h5.text-center Описание
+    #codex-editor.modal-body
+    .modal-footer
+            

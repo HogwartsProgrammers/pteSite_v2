@@ -2,12 +2,12 @@
 input#access(type="hidden", value= access)
 input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
 .col-12.p-centered.mt-2.lg-grid
-    div.d-flex
+    .d-flex
         .form-group
             label#showInactive.form-switch Отобразить неактивных
                 input(type="checkbox")
                 i.form-icon
-        button.btn Добавить
+        button#addPost.btn Добавить
     table.table
         thead
             tr
@@ -52,7 +52,7 @@ input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
                                 label.operations.form-switch
                                     input(type="checkbox", checked=!!post.active, data-uid= post.id)
                                     i.form-icon
-#postCreator.modal.active
+//- #postCreator.modal.active
   a.modal-overlay
   .modal-container
     .modal-header

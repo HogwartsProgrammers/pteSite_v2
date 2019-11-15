@@ -10,6 +10,7 @@ const Phones = require('../models/phones')
 const Privilages = require('../models/privilages')
 const Posts = require('../models/posts')
 const Steps = require('../models/steps')
+const Stats = require('../models/stats')
 
 const getTasksAmount = userId => {
     return new Lids().fetchAll().then(data => {
@@ -287,7 +288,6 @@ exports.getPipes = (req, res, next) => {
     else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
 }
 
-
 // Отображение страницы users
 exports.getUsersPage = (req, res, next) => {
     if (!req.session.user) res.redirect('/login')
@@ -317,6 +317,30 @@ exports.getUsersPage = (req, res, next) => {
         }
     })
     else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
+}
+
+//Отображение страницы "Статистики"
+exports.getStatsPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.stats != 'none')
+            Stats.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        res.render('stats', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            stats: result[0],
+                            tasks: a,
+                        })
+                    })
+                })
+            })
+        }
+    })
 }
 
 exports.getPostsPage = (req, res, next) => {
@@ -925,7 +949,36 @@ exports.updatePosts = (req, res, next) => {
             posts.parent ? posts.parent : null,
             posts.active != undefined ? posts.active : 1,
             posts.title ? posts.title : null,
-            posts.users != undefined ? posts.users : null,
+            posts.users != undefined ? posts.users : '',
+        ).save().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
+
+exports.updateStats = (req, res, next) => {
+    const stats = JSON.parse(JSON.stringify(req.body))
+    console.log(stats)
+
+    if (stats.id)
+    new Stats().findById(stats.id).then(oldData => {
+        console.log(oldData[0][0])
+        new Stats(
+            stats.id,
+            stats.title ? stats.title : oldData[0][0].title,
+            stats.description ? stats.description : oldData[0][0].description,
+            stats.reverted != undefined ? stats.reverted : oldData[0][0].reverted,
+            stats.active != undefined ? stats.active : oldData[0][0].active,
+        ).update()
+    })
+    else {
+        new Stats(
+            null,
+            stats.title ? stats.title : null,
+            stats.description ? stats.description : null,
+            stats.reverted != undefined ? stats.reverted : 0,
+            stats.active != undefined ? stats.active : 1,
         ).save().then(result => {
             res.status(201).json(result[0])
         })
