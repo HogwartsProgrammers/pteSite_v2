@@ -1,5 +1,5 @@
 export function init() {
-    // делать активным и неактивным пользователя с помощью switch
+    // делать активным и неактивным пост с помощью switch
     document.querySelectorAll('.operations input').forEach(el => {
         el.onclick = () => {
             fetch('/office/posts/update', {
@@ -14,7 +14,7 @@ export function init() {
         }
     })
 
-    // показывать неактивных пользователей с помощью switch
+    // показывать неактивные посты с помощью switch
     const switchShow = document.querySelector('#showInactive input')
     const tr = document.querySelectorAll('tbody tr')
     switchShow.onclick = () => {
@@ -30,7 +30,7 @@ export function init() {
     }
 
     // функционал удаления пользователя из поста
-    document.querySelectorAll('table .form-autocomplete').forEach(autoComplete => {
+    document.querySelectorAll('.users .form-autocomplete').forEach(autoComplete => {
         if (!autoComplete.dataset.data) return
         const post = JSON.parse(autoComplete.dataset.data)
         const initClear = () => {
@@ -103,8 +103,85 @@ export function init() {
                 sugetion.insertAdjacentElement('beforeend', li)
             })
         }
-    autoComplete.removeAttribute('data-data')
-})
+        autoComplete.removeAttribute('data-data')
+    })
+
+    // функционал удаления статистики из поста
+    document.querySelectorAll('.stats .form-autocomplete').forEach(autoComplete => {
+        if (!autoComplete.dataset.data) return
+        const post = JSON.parse(autoComplete.dataset.data)
+        const initClear = () => {
+            autoComplete.querySelectorAll('.chip').forEach(chip => chip.querySelector('a').onclick = () => {
+                chip.remove()
+                const index = post.stat_id.split(',').indexOf(chip.dataset.id)
+                post.stat_id = post.stat_id.split(',')
+                post.stat_id.splice(index, 1)
+                post.stat_id = post.stat_id.join(',')
+                fetch('/office/posts/update', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: post.id,
+                        stat_id: post.stat_id,
+                        _csrf: document.getElementById('csrfToken').value
+                    }), 
+                    headers:{"Content-Type": "application/json"}
+                })
+            })
+        }
+        initClear()
+        const sugetion = autoComplete.querySelector('ul') 
+
+        //функционал поиска и добавления
+        autoComplete.querySelector('input').oninput = async (event) => {
+            if (!event.target.value.trim().length) return sugetion.innerHTML = ''
+            const stats = await fetch('/office/stats', {
+                method: 'POST',
+                body: JSON.stringify({
+                    find: 'search',
+                    title: event.target.value.trim(),
+                    _csrf: document.getElementById('csrfToken').value
+                }),
+                headers:{"Content-Type": "application/json"}
+            }).then(data => data.json())
+            if (!stats.length) return sugetion.innerHTML = ''
+            sugetion.innerHTML = ''
+            stats.forEach(stat => {
+                if (post.stat_id.split(',').find(sid => sid == stat.id)) return
+                const li = document.createElement('li')
+                li.classList.add('menu-item')
+                li.innerHTML = `
+                <a>
+                    <div class="tile tile-centered">
+                        <div class="tile-content">${stat.title}</div>
+                    </div>
+                </a>`
+                li.querySelector('a').onclick = () => {
+                    sugetion.innerHTML = ''
+                    event.target.value = ''
+                    const chip = document.createElement('span')
+                    chip.classList.add('chip')
+                    chip.dataset.id = stat.id
+                    chip.innerHTML = `${stat.title}<a class="btn btn-clear"></a>`
+                    autoComplete.querySelector('.chips').insertAdjacentElement('beforeend', chip)
+                    initClear()
+                    post.stat_id = post.stat_id.length ? post.stat_id.split(',') : []
+                    post.stat_id.push(stat.id)
+                    post.stat_id = post.stat_id.join(',')
+                    fetch('/office/posts/update', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            id: post.id,
+                            stat_id: post.stat_id,
+                            _csrf: document.getElementById('csrfToken').value
+                        }), 
+                        headers:{"Content-Type": "application/json"}
+                    })
+                }
+                sugetion.insertAdjacentElement('beforeend', li)
+            })
+        }
+        autoComplete.removeAttribute('data-data')
+    })
 
     //функционал изменения названия поста
     document.querySelectorAll('table tbody tr td:first-child').forEach(td => {

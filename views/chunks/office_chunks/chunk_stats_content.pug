@@ -16,7 +16,8 @@ input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
                 if stat.active
                     tr
                         td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
-                        td(data-data=JSON.stringify(stat))= stat.description
+                        td(data-data=JSON.stringify(stat))
+                            button.btn.btn-link.text-gray Открыть описание
                         td
                             .form-group
                                 label.operations.form-switch
@@ -31,12 +32,13 @@ input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
                                 label.operations.form-switch
                                     input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
                                     i.form-icon
-#modal-id.modal.active
+#modalDescription.modal
   a.modal-overlay
   .modal-container
     .modal-header
-      a.btn.btn-clear.float-right
+      a.btn.btn-clear.float-right.modal-close
       .modal-title.h5.text-center Описание
     #codex-editor.modal-body
     .modal-footer
+        button.btn.btn-primary.modal-close Сохранить
             

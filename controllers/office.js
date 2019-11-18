@@ -352,13 +352,16 @@ exports.getPostsPage = (req, res, next) => {
             Posts.fetchAll().then(result => {
                 getTasksAmount(req.session.user.id).then(a => {
                     Users.fetchAll().then(users => {
-                        res.render('posts', {
-                            pageTitle: 'Панель администрирования',
-                            year: cfg.year,
-                            path: cfg.path(),
-                            posts: result[0],
-                            tasks: a,
-                            users: users[0],
+                        Stats.fetchAll().then(stats => {
+                            res.render('posts', {
+                                pageTitle: 'Панель администрирования',
+                                year: cfg.year,
+                                path: cfg.path(),
+                                posts: result[0],
+                                tasks: a,
+                                users: users[0],
+                                stat_id: stats[0]
+                            })
                         })
                     })
                 })
@@ -899,6 +902,7 @@ exports.updatePosts = (req, res, next) => {
             posts.active != undefined ? posts.active : oldData[0][0].active,
             posts.title ? posts.title : oldData[0][0].title,
             posts.users != undefined ? posts.users : oldData[0][0].users,
+            posts.stat_id != undefined ? posts.stat_id : oldData[0][0].stat_id,
         ).update().then(async result => {
             if (posts.users != undefined) {
                 const postUsers = posts.users.split(',')
@@ -950,6 +954,7 @@ exports.updatePosts = (req, res, next) => {
             posts.active != undefined ? posts.active : 1,
             posts.title ? posts.title : null,
             posts.users != undefined ? posts.users : '',
+            posts.stat_id != undefined ? posts.stat_id : '',
         ).save().then(result => {
             res.status(201).json(result[0])
         })
@@ -1010,6 +1015,21 @@ exports.getUsersList = (req, res, next) => {
         break
         default :
         Users.fetchAll().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
+exports.getStatsList = (req, res, next) => {
+    const income = JSON.parse(JSON.stringify(req.body))
+    switch (income.find) {
+        case 'search': 
+        Stats.search(income.title).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        default :
+        Stats.fetchAll().then(result => {
             res.status(201).json(result[0])
         })
     }

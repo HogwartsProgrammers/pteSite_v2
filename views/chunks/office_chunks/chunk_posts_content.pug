@@ -7,25 +7,36 @@ input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
             label#showInactive.form-switch Отобразить неактивных
                 input(type="checkbox")
                 i.form-icon
-        button#addPost.btn Добавить
+        button#addPost.btn.btn-sm Добавить
     table.table
         thead
             tr
                 th Название
                 th Пользователи
+                th Статистики
                 th Операции
         tbody
             each post in posts
                 if post.active 
                     tr
                         td(contenteditable="true", data-data=JSON.stringify(post))= post.title
-                        td 
+                        td.users
                             .form-autocomplete(data-data=JSON.stringify(post))
                                 .form-autocomplete-input
                                     .chips
                                         if post.users.length
                                             each uid in post.users.split(',')
                                                 span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td.stats
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.stat_id.length
+                                            each sid in post.stat_id.split(',')
+                                                span.chip(data-id=sid)= stat_id.find(stat => stat.id == sid).title
                                                     a.btn.btn-clear
                                     input.form-input(type="text", placeholder="Поиск")
                                 ul.menu
@@ -36,14 +47,24 @@ input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
                                     i.form-icon
                 else
                     tr.d-hide
-                        td= post.title
-                        td 
+                        td(contenteditable="true", data-data=JSON.stringify(post))= post.title
+                        td.users
                             .form-autocomplete(data-data=JSON.stringify(post))
                                 .form-autocomplete-input
                                     .chips
                                         if post.users.length
                                             each uid in post.users.split(',')
                                                 span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td.stats
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.stat_id.length
+                                            each sid in post.stat_id.split(',')
+                                                span.chip(data-id=sid)= stat_id.find(stat => stat.id == sid).title
                                                     a.btn.btn-clear
                                     input.form-input(type="text", placeholder="Поиск")
                                 ul.menu

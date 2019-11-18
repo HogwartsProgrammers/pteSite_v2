@@ -22,6 +22,10 @@ module.exports = class Stats {
         )
     }
 
+    static search(title) {
+        return db.execute(`SELECT * FROM stats WHERE title LIKE "%${title}%"`)
+    }
+
     static fetchAll() {
         return db.execute('SELECT * FROM stats')
     }

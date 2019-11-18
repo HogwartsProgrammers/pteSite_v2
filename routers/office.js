@@ -35,6 +35,7 @@ router.post('/users', ctrl.getUsersList)
 router.post('/users/update', ctrl.updateUser)
 router.post('/posts/update', ctrl.updatePosts)
 router.post('/stats/update', ctrl.updateStats)
+router.post('/stats', ctrl.getStatsList)
 
 router.post('/phones', ctrl.getPhones)
 router.post('/phones/update', ctrl.updatePhone)
