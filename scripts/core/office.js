@@ -329,6 +329,13 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             newPassRepeat.disabled = false
         })
     }
+    // Календарь статистик
+    const dhxCalendar = new dhx.Calendar('stats_calendar', {})
+
+    // Выбор поста
+    const postsSelect = document.getElementById('posts')
+    
+
 }
 
 // Privilages route

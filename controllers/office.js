@@ -122,16 +122,22 @@ exports.getCabinet = (req, res, next) => {
         ])
         .then(result => {
             getTasksAmount(req.session.user.id).then(a => {
-                res.render('cabinet', {
-                    pageTitle: 'Панель администрирования',
-                    year: cfg.year,
-                    path: cfg.path(),
-                    mail: result[0][0][0].login,
-                    fio: result[0][0][0].fio,
-                    id: result[0][0][0].id,
-                    created: result[0][0][0].created,
-                    privilage: result[1][0].find(el => el.id == result[0][0][0].role ? true : false),
-                    tasks: a
+                Stats.fetchAll().then(stats => {
+                    Posts.fetchAll().then(posts => {
+                        res.render('cabinet', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            mail: result[0][0][0].login,
+                            fio: result[0][0][0].fio,
+                            id: result[0][0][0].id,
+                            created: result[0][0][0].created,
+                            privilage: result[1][0].find(el => el.id == result[0][0][0].role ? true : false),
+                            stats: stats[0],
+                            posts: posts[0],
+                            tasks: a
+                        })
+                    })
                 })
             })
         })

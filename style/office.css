@@ -901,6 +901,10 @@ img {
     display: none
 }
 
+#select_stats {
+    max-width: 12.6rem;
+}
+
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
 *::-webkit-scrollbar {width: 6px;height: 6px;}
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}
