@@ -334,8 +334,29 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
     // Выбор поста
     const postsSelect = document.getElementById('posts')
-    
 
+    postsSelect.onchange = async () => {
+        localStorage.setItem('postId', postsSelect.value)
+        const posts = await fetch('/office/posts', {
+            method: 'POST',
+            body: JSON.stringify({
+                find: 'byid',
+                id: Number(postsSelect.value),
+                _csrf: document.getElementById('csrfToken').value
+            }), 
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result => result.json()).then(result => result)
+
+        const select = document.createElement('select')
+        select.classList.add('form-select', 'p-centered')
+        posts.stat_id.forEach(stat => {
+            let option = document.createElement('option')
+            option.innerText = stat
+        })
+    }   
+    postsSelect.value = localStorage.getItem('postId')
 }
 
 // Privilages route

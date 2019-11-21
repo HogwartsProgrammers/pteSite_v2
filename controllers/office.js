@@ -134,7 +134,7 @@ exports.getCabinet = (req, res, next) => {
                             created: result[0][0][0].created,
                             privilage: result[1][0].find(el => el.id == result[0][0][0].role ? true : false),
                             stats: stats[0],
-                            posts: posts[0],
+                            posts: posts[0].filter(post => post.users.split(',').find(uid => uid == req.session.user.id)),
                             tasks: a
                         })
                     })
@@ -1026,6 +1026,26 @@ exports.getUsersList = (req, res, next) => {
     }
 }
 
+exports.getPostsList = (req, res, next) => {
+    const income = JSON.parse(JSON.stringify(req.body))
+    switch (income.find) {
+        case 'byid': 
+        new Posts().findById(income.id).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        case 'search': 
+        Posts.search(income.title).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        default :
+        Posts.fetchAll().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
 exports.getStatsList = (req, res, next) => {
     const income = JSON.parse(JSON.stringify(req.body))
     switch (income.find) {
@@ -1040,6 +1060,7 @@ exports.getStatsList = (req, res, next) => {
         })
     }
 }
+
 
 exports.getTasksPage = (req, res, next) => {
     if (!req.session.user) res.redirect('/login')
