@@ -1,3 +1,4 @@
+import *  as d3 from "d3"
 
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
@@ -329,14 +330,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             newPassRepeat.disabled = false
         })
     }
-    // Календарь статистик
-    const dhxCalendar = new dhx.Calendar('stats_calendar', {})
-
+    
     // Выбор поста
     const postsSelect = document.getElementById('posts')
-
-    postsSelect.onchange = async () => {
-        localStorage.setItem('postId', postsSelect.value)
+    
+    const selectPost = async () => {
         const posts = await fetch('/office/posts', {
             method: 'POST',
             body: JSON.stringify({
@@ -349,14 +347,233 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         }).then(result => result.json()).then(result => result)
 
-        const select = document.createElement('select')
+        let stat_id = posts[0].stat_id.split(',')
+
+        // const select = document.createElement('select')
+        const select = document.querySelector('#select_stats select')
+        select.innerHTML = ''
         select.classList.add('form-select', 'p-centered')
-        posts.stat_id.forEach(stat => {
-            let option = document.createElement('option')
-            option.innerText = stat
+        stat_id.forEach(async statId => {
+            let stat = await fetch('/office/stats', {
+                method: 'POST',
+                body: JSON.stringify({
+                    find: 'byid',
+                    id: statId,
+                    _csrf: document.getElementById('csrfToken').value
+                }), 
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            }).then(result => result.json()).then(result => result)
+            
+            const option = document.createElement('option')
+            option.setAttribute('value', stat[0].id)
+            option.innerText = stat[0].title
+            select.insertAdjacentElement('beforeend', option)
         })
-    }   
-    postsSelect.value = localStorage.getItem('postId')
+    }
+    
+    postsSelect.onchange = () => {
+        localStorage.setItem('postId', postsSelect.value)
+        selectPost()
+    }
+    if (localStorage.getItem('postId')) postsSelect.value = localStorage.getItem('postId')
+    selectPost()
+
+    // выбор статистики
+    const statsSelect = document.getElementById('stats')
+
+    const selectStat = async () => {
+        const stats = await fetch('/office/stats', {
+            method: 'POST',
+            body: JSON.stringify({
+                find: 'byid',
+                id: Number(statsSelect.value),
+                _csrf: document.getElementById('csrfToken').value
+            }), 
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result => result.json()).then(result => result)
+
+        const statInput = document.getElementById('stats_value')
+
+        statInput.onkeydown = event => {
+            if (event.code == 'Enter') {
+                event.preventDefault()
+                statInput.blur()
+            }
+        }
+        
+        let currentDay
+
+        statInput.onblur = async event => {
+            console.log(currentDay)
+            await fetch('/office/stats/update', {
+                method: 'POST',
+                body: JSON.stringify({
+                    id: Number(statsSelect.value),
+                    date: currentDay,
+                    value: statInput.value,
+                    _csrf: document.getElementById('csrfToken').value
+                }), 
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            }).then(result => result.json()).then(result => result)
+
+        }
+
+
+        dhxCalendar.events.on('Change', () => {
+            currentDay = dhxCalendar.getValue()
+        })
+
+        // const select = document.createElement('select')
+        // const select = document.querySelector('#select_stats select')
+        // select.innerHTML = ''
+        // select.classList.add('form-select', 'p-centered')
+        // stat_id.forEach(async statId => {
+        //     let stat = await fetch('/office/stats', {
+        //         method: 'POST',
+        //         body: JSON.stringify({
+        //             find: 'byid',
+        //             id: statId,
+        //             _csrf: document.getElementById('csrfToken').value
+        //         }), 
+        //         headers:{
+        //             "Content-Type": "application/json"
+        //         }
+        //     }).then(result => result.json()).then(result => result)
+            
+        //     const option = document.createElement('option')
+        //     option.setAttribute('value', stat[0].id)
+        //     option.innerText = stat[0].title
+        //     select.insertAdjacentElement('beforeend', option)
+        // })
+    }
+    selectStat()
+
+    statsSelect.onchange = () => {
+        selectStat()
+    }
+
+    // Календарь статистик
+    const dhxCalendar = new dhx.Calendar('stats_calendar', {
+        dateFormat:"%d.%m.%Y"
+    })
+
+    
+
+    
+    
+
+
+    
+
+
+
+    
+// set the dimensions and margins of the graph
+    var margin = {top: 10, right: 30, bottom: 30, left: 60},
+    width = 300 - margin.left - margin.right,
+    height = 240 - margin.top - margin.bottom;
+    // append the svg object to the body of the page
+    var svg = d3.select("#my_dataviz")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform",
+        "translate(" + margin.left + "," + margin.top + ")");
+    //Read the data
+    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/connectedscatter.csv",
+    // When reading the csv, I must format variables:
+    function(d){
+    return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
+    },
+    // Now I can use this dataset:
+    function(data) {
+        console.log(data)
+    // Add X axis --> it is a date format
+    var x = d3.scaleLinear()
+    .domain([ 50, 70 ])
+    .range([ 0, width ]);
+    svg.append("g")
+    .attr("transform", "translate(0," + height + ")")
+    .call(d3.axisBottom(x));
+    // Add Y axis
+    var y = d3.scaleLinear()
+    .domain( [0, 100])
+    .range([ height, 0 ]);
+    svg.append("g")
+    .call(d3.axisLeft(y));
+    // Add the line
+    svg.append("path")
+    .datum(data)
+    .attr("fill", "none")
+    .attr("stroke", "#69b3a2")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(function(d) { return x(d.date) })
+        .y(function(d) { return y(d.value) })
+        )
+    // Add the points
+    svg
+    .append("g")
+    .selectAll("dot")
+    .data(data)
+    .enter()
+    .append("circle")
+        .attr("cx", function(d) { return x(d.date) } )
+        .attr("cy", function(d) { return y(d.value) } )
+        .attr("r", 5)
+        .attr("fill", "#69b3a2")
+    })
+
+    
+    // const data = [
+    //     {
+    //         date:'2018-04-14',
+    //         value:8140.71
+    //     },
+    //     {
+    //         date:'2018-04-15',
+    //         value:8338.42
+    //     },
+    //     {
+    //         date:'2018-04-16',
+    //         value:8371.15
+    //     },
+    //     {
+    //         date:'2018-04-17',
+    //         value:8285.96
+    //     },
+    //     {
+    //         date:'2018-04-18',
+    //         value:8197.8
+    //     },
+    //     {
+    //         date:'2018-04-19',
+    //         value:8298.69
+    //     },
+    //     {
+    //         date:'2018-04-20',
+    //         value:8880.23
+    //     },
+    //     {
+    //         date:'2018-04-21',
+    //         value:8997.57
+    //     },
+    //     {
+    //         date:'2018-04-22',
+    //         value:9001.64
+    //     },
+    //     {
+    //         date:'2018-04-23',
+    //         value:8958.55
+    //     }
+    // ];
 }
 
 // Privilages route

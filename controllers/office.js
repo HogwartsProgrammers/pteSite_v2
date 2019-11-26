@@ -981,6 +981,7 @@ exports.updateStats = (req, res, next) => {
             stats.description ? stats.description : oldData[0][0].description,
             stats.reverted != undefined ? stats.reverted : oldData[0][0].reverted,
             stats.active != undefined ? stats.active : oldData[0][0].active,
+            stats.stat_data ? stats.stat_data : oldData[0][0].stat_data,
         ).update()
     })
     else {
@@ -990,6 +991,7 @@ exports.updateStats = (req, res, next) => {
             stats.description ? stats.description : null,
             stats.reverted != undefined ? stats.reverted : 0,
             stats.active != undefined ? stats.active : 1,
+            stats.stat_data ? stats.active : null,
         ).save().then(result => {
             res.status(201).json(result[0])
         })
@@ -1049,6 +1051,11 @@ exports.getPostsList = (req, res, next) => {
 exports.getStatsList = (req, res, next) => {
     const income = JSON.parse(JSON.stringify(req.body))
     switch (income.find) {
+        case 'byid': 
+        new Stats().findById(income.id).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
         case 'search': 
         Stats.search(income.title).then(result => {
             res.status(201).json(result[0])

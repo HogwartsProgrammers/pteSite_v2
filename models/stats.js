@@ -2,23 +2,24 @@ const bcrypt = require('bcryptjs')
 const db = require('./database')
 
 module.exports = class Stats {
-    constructor(id, title = null, description, reverted = 0, active = 1) {
+    constructor(id, title = null, description, reverted = 0, active = 1, stat_data = null) {
         this.id = id
         this.title = title
         this.description = description
         this.reverted = reverted
         this.active = active
+        this.stat_data = stat_data
     }
     save() {
         db.execute(
-            'INSERT INTO stats (title, description, reverted, active) VALUES (?, ?, ?, ?)', [this.title, this.description, this.reverted, this.active]
+            'INSERT INTO stats (title, description, reverted, active, stat_data) VALUES (?, ?, ?, ?, ?)', [this.title, this.description, this.reverted, this.active, this.stat_data]
         )
     }
 
     update() {
         console.log(this)
         db.execute(
-            'UPDATE stats SET title= ?, description= ?, reverted= ?, active= ? WHERE id= ? LIMIT 1', [this.title, this.description, this.reverted, this.active, this.id]
+            'UPDATE stats SET title= ?, description= ?, reverted= ?, active= ?, stat_data= ? WHERE id= ? LIMIT 1', [this.title, this.description, this.reverted, this.active, this.stat_data, this.id]
         )
     }
 

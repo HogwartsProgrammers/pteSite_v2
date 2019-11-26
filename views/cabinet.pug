@@ -36,7 +36,7 @@ block content
                                     if post.active
                                         option(value=post.id)= post.title
                         else 
-                            select#posts(disabled).form-select.p-centered
+                            select(disabled)#posts.c-hand.form-select.p-centered
                                 each post in posts
                                     if post.active
                                         option(value=post.id)= post.title
@@ -53,13 +53,14 @@ block content
                     .card-footer
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
             .h1.text-center Редактирование статистик
-                .columns
-                    .col-5.col-md-12.card
-                        .card-header
+                .columns.mt-2
+                    .column.col-2.col-md-12
                             #select_stats.form-group
-                                select.form-select.p-centered
-                        .card-body
-                            #stats_calendar.p-centered
-                        .card-footer
-                    
+                                select#stats.form-select
+                            #stats_calendar
+                            input(type="number")#stats_value.form-input.mt-2
+                    .column.col-3.col-md-12
+                        #my_dataviz
+
+                        
 
