@@ -8,17 +8,17 @@ module.exports = class Stats {
         this.description = description
         this.reverted = reverted
         this.active = active
-        this.stat_data = stat_data
+        this.stat_data = JSON.stringify(stat_data)
     }
     save() {
-        db.execute(
+        return db.execute(
             'INSERT INTO stats (title, description, reverted, active, stat_data) VALUES (?, ?, ?, ?, ?)', [this.title, this.description, this.reverted, this.active, this.stat_data]
         )
     }
 
     update() {
         console.log(this)
-        db.execute(
+        return db.execute(
             'UPDATE stats SET title= ?, description= ?, reverted= ?, active= ?, stat_data= ? WHERE id= ? LIMIT 1', [this.title, this.description, this.reverted, this.active, this.stat_data, this.id]
         )
     }

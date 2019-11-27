@@ -330,6 +330,14 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             newPassRepeat.disabled = false
         })
     }
+
+    
+    // Календарь статистик
+    const dhxCalendar = new dhx.Calendar('stats_calendar', {
+        dateFormat:"%d.%m.%Y",
+        value: new Date()
+    })
+
     
     // Выбор поста
     const postsSelect = document.getElementById('posts')
@@ -348,13 +356,14 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }).then(result => result.json()).then(result => result)
 
         let stat_id = posts[0].stat_id.split(',')
-
+        let stats = []
+        
         // const select = document.createElement('select')
         const select = document.querySelector('#select_stats select')
         select.innerHTML = ''
         select.classList.add('form-select', 'p-centered')
-        stat_id.forEach(async statId => {
-            let stat = await fetch('/office/stats', {
+        stat_id.forEach(statId => {
+            let stat = fetch('/office/stats', {
                 method: 'POST',
                 body: JSON.stringify({
                     find: 'byid',
@@ -366,11 +375,16 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 }
             }).then(result => result.json()).then(result => result)
             
-            const option = document.createElement('option')
-            option.setAttribute('value', stat[0].id)
-            option.innerText = stat[0].title
-            select.insertAdjacentElement('beforeend', option)
+            stats.push(stat)
         })
+
+        await Promise.all(stats).then(result => result.map(dt => dt[0])).then(result => result.forEach(stat => {
+            const option = document.createElement('option')
+            option.setAttribute('value', stat.id)
+            option.innerText = stat.title
+            select.insertAdjacentElement('beforeend', option)
+        }))
+        selectStat()
     }
     
     postsSelect.onchange = () => {
@@ -384,7 +398,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const statsSelect = document.getElementById('stats')
 
     const selectStat = async () => {
-        const stats = await fetch('/office/stats', {
+        let stats = await fetch('/office/stats', {
             method: 'POST',
             body: JSON.stringify({
                 find: 'byid',
@@ -394,9 +408,21 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             headers:{
                 "Content-Type": "application/json"
             }
-        }).then(result => result.json()).then(result => result)
-
+        }).then(result => result.json()).then(result => result[0])
+        if (stats.stat_data == null) stats.stat_data = []
+        
         const statInput = document.getElementById('stats_value')
+        
+        statInput.value = 0
+        
+        let currentDay = dhxCalendar.getValue()
+
+        const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
+        if (currentStatValue) statInput.value = currentStatValue.value
+        
+        dhxCalendar.events.on('Change', () => {
+            currentDay = dhxCalendar.getValue()
+        })
 
         statInput.onkeydown = event => {
             if (event.code == 'Enter') {
@@ -404,75 +430,42 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 statInput.blur()
             }
         }
-        
-        let currentDay
 
         statInput.onblur = async event => {
-            console.log(currentDay)
+            if (!statInput.value) statInput.value = 0
+            let data = {
+                date: currentDay,
+                value: statInput.value
+            }
+            console.log(stats.stat_data)
+            let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
+            if (currentStat) {
+                let statIndex = stats.stat_data.indexOf(currentStat)
+                stats.stat_data[statIndex] = data
+            } else stats.stat_data.push(data)
+
             await fetch('/office/stats/update', {
                 method: 'POST',
                 body: JSON.stringify({
                     id: Number(statsSelect.value),
-                    date: currentDay,
-                    value: statInput.value,
+                    stat_data: stats.stat_data,
                     _csrf: document.getElementById('csrfToken').value
                 }), 
                 headers:{
                     "Content-Type": "application/json"
                 }
-            }).then(result => result.json()).then(result => result)
+            }).then(result => result.json())
 
         }
-
-
-        dhxCalendar.events.on('Change', () => {
-            currentDay = dhxCalendar.getValue()
-        })
-
-        // const select = document.createElement('select')
-        // const select = document.querySelector('#select_stats select')
-        // select.innerHTML = ''
-        // select.classList.add('form-select', 'p-centered')
-        // stat_id.forEach(async statId => {
-        //     let stat = await fetch('/office/stats', {
-        //         method: 'POST',
-        //         body: JSON.stringify({
-        //             find: 'byid',
-        //             id: statId,
-        //             _csrf: document.getElementById('csrfToken').value
-        //         }), 
-        //         headers:{
-        //             "Content-Type": "application/json"
-        //         }
-        //     }).then(result => result.json()).then(result => result)
-            
-        //     const option = document.createElement('option')
-        //     option.setAttribute('value', stat[0].id)
-        //     option.innerText = stat[0].title
-        //     select.insertAdjacentElement('beforeend', option)
-        // })
     }
-    selectStat()
+
+    dhxCalendar.events.on('Change', () => {
+        selectStat()
+    })
 
     statsSelect.onchange = () => {
         selectStat()
     }
-
-    // Календарь статистик
-    const dhxCalendar = new dhx.Calendar('stats_calendar', {
-        dateFormat:"%d.%m.%Y"
-    })
-
-    
-
-    
-    
-
-
-    
-
-
-
     
 // set the dimensions and margins of the graph
     var margin = {top: 10, right: 30, bottom: 30, left: 60},
@@ -494,7 +487,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     },
     // Now I can use this dataset:
     function(data) {
-        console.log(data)
     // Add X axis --> it is a date format
     var x = d3.scaleLinear()
     .domain([ 50, 70 ])

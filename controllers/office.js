@@ -982,7 +982,7 @@ exports.updateStats = (req, res, next) => {
             stats.reverted != undefined ? stats.reverted : oldData[0][0].reverted,
             stats.active != undefined ? stats.active : oldData[0][0].active,
             stats.stat_data ? stats.stat_data : oldData[0][0].stat_data,
-        ).update()
+        ).update().then(result => res.status(201).json(result[0]))
     })
     else {
         new Stats(
