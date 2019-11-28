@@ -331,11 +331,43 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
     }
 
+    Date.prototype.getWeek = function(a) {
+        var date = new Date(this.getTime());
+        date.setHours(0, 0, 0, 0);
+        // Thursday in current week decides the year.
+        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
+        // January 4 is always in week 1.
+        var week1 = new Date(date.getFullYear(), 0, a);
+        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
+        console.log(week1)
+        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
+    }
+
+    console.log(new Date().getWeek(4))
+
+    let currentDateTime = new Date()
+    // время начала текущего года, в миллисекундах
+    let startTimeOfCurrentYear = (new Date(currentDateTime.getFullYear(), 0, 1)).getTime()
+    // текущее время в миллисекундах
+    let currentTime = currentDateTime.getTime()
+    // прошедшее время с начала года, в миллисекундах
+    let pastTimeOfStartCurrentYear = currentTime - startTimeOfCurrentYear
+    // количество миллисекунд в одном часе
+    let hourOfMillisecs = 3600000
+    // количество часов в одной неделе
+    let hoursOfOneWeek = 168
+    console.log(currentTime)
+
+    console.log(Math.ceil((pastTimeOfStartCurrentYear / hourOfMillisecs / hoursOfOneWeek).toFixed(2)))
+      
+
+
     
     // Календарь статистик
     const dhxCalendar = new dhx.Calendar('stats_calendar', {
         dateFormat:"%d.%m.%Y",
-        value: new Date()
+        value: new Date(),
+        weekStart: "monday"
     })
 
     
