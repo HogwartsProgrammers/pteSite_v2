@@ -442,12 +442,22 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         }).then(result => result.json()).then(result => result[0])
         if (stats.stat_data == null) stats.stat_data = []
+
         
         const statInput = document.getElementById('stats_value')
         
         statInput.value = 0
         
         let currentDay = dhxCalendar.getValue()
+
+        let currentWeekDay = dhxCalendar.getValue(true).getDay()
+
+        let firstWeekDay
+
+        if (stats.last_day - currentWeekDay <= 0) {
+            console.log(new Date(new Date().setDate(dhxCalendar.getValue(true).getDate() + (6 - (stats.last_day - currentWeekDay)))))
+        }
+
 
         const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
         if (currentStatValue) statInput.value = currentStatValue.value

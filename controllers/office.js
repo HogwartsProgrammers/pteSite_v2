@@ -982,6 +982,7 @@ exports.updateStats = (req, res, next) => {
             stats.reverted != undefined ? stats.reverted : oldData[0][0].reverted,
             stats.active != undefined ? stats.active : oldData[0][0].active,
             stats.stat_data ? stats.stat_data : oldData[0][0].stat_data,
+            stats.last_day != undefined ? stats.last_day : oldData[0][0].last_day,
         ).update().then(result => res.status(201).json(result[0]))
     })
     else {
@@ -992,6 +993,7 @@ exports.updateStats = (req, res, next) => {
             stats.reverted != undefined ? stats.reverted : 0,
             stats.active != undefined ? stats.active : 1,
             stats.stat_data ? stats.active : null,
+            stats.last_day != undefined ? stats.last_day : null,
         ).save().then(result => {
             res.status(201).json(result[0])
         })
