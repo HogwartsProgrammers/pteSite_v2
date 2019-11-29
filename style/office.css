@@ -228,6 +228,10 @@
     height: fit-content;
 }
 
+#statsEditing #weekSwitch{
+    margin-left:3rem !important;
+}
+
 .form-switch {
     width: fit-content;
     margin: 0 !important;
@@ -903,6 +907,30 @@ img {
 
 #select_stats {
     max-width: 12.6rem;
+}
+
+#calendar_body {
+    width: 12.4rem;
+}
+
+#calendar_body {
+    flex-wrap: wrap;
+}
+
+#calendar_header {
+    justify-content: center;
+}
+
+#calendar_body .btn-week {
+    min-width: 1.9rem;
+}
+
+#stats_calendar_weeks {
+    padding: 0.6rem;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px 20px rgba(0,0,0,0.05);
+    width: 12.4rem;
+    padding-left: 10px;
 }
 
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}

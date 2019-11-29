@@ -20,7 +20,7 @@ module.exports = class Stats {
     update() {
         console.log(this)
         return db.execute(
-            'UPDATE stats SET title= ?, description= ?, reverted= ?, active= ?, stat_data= ?, last_day WHERE id= ? LIMIT 1', [this.title, this.description, this.reverted, this.active, this.stat_data, this.last_day, this.id]
+            'UPDATE stats SET title= ?, description= ?, reverted= ?, active= ?, stat_data= ?, last_day= ? WHERE id= ? LIMIT 1', [this.title, this.description, this.reverted, this.active, this.stat_data, this.last_day, this.id]
         )
     }
 

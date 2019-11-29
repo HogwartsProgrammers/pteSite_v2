@@ -450,17 +450,79 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         
         let currentDay = dhxCalendar.getValue()
 
-        let currentWeekDay = dhxCalendar.getValue(true).getDay()
+        let currentWeekDay = dhxCalendar.getValue(true).getDay() || 7   
 
-        let firstWeekDay
+        let lastWeekDay
 
-        if (stats.last_day - currentWeekDay <= 0) {
-            console.log(new Date(new Date().setDate(dhxCalendar.getValue(true).getDate() + (6 - (stats.last_day - currentWeekDay)))))
-        }
+        let currentWeekDays = []
+        
+        currentWeekDay - stats.last_day <= 0 
+        ? lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (-(currentWeekDay - stats.last_day))))
+        : lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (7 - (currentWeekDay - stats.last_day))))
+        
+        let firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
+        
+        console.log(firstWeekDay)
+        console.log(lastWeekDay)  
+        
+        // firstWeekDay = `${firstWeekDay.getDate()}.${firstWeekDay.getMonth() + 1}.${firstWeekDay.getFullYear()}`
+        // lastWeekDay = `${lastWeekDay.getDate()}.${lastWeekDay.getMonth() + 1}.${lastWeekDay.getFullYear()}`
 
+        console.log(firstWeekDay)
+        console.log(lastWeekDay)  
 
         const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
         if (currentStatValue) statInput.value = currentStatValue.value
+
+        for (let i = 0; i < 7; i++) {
+            if (!weekSwitch.checked) {
+                document.getElementById('stats_calendar_weeks').classList.add('d-hide')
+                document.getElementById('stats_calendar').classList.remove('d-hide')
+                let date = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - i))
+                date = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+                let lastWeekDayIndex = stats.stat_data.indexOf(stats.stat_data.find(stat => stat.date == date))
+                currentWeekDays.push(stats.stat_data[lastWeekDayIndex])
+            }
+        }
+        if (weekSwitch.checked) {
+            document.getElementById('stats_calendar').classList.add('d-hide')
+            document.getElementById('stats_calendar_weeks').classList.remove('d-hide')
+            let currentYearDays = stats.stat_data.filter(stat => stat.date.split('.')[2] == new Date().getFullYear())
+            let everyLastDayCurrentYear = currentYearDays.filter(stat => {
+                const day = new Date(stat.date.split('.')[2],stat.date.split('.')[1] - 1,stat.date.split('.')[0]).getDay()
+                return (day || 7) == stats.last_day
+            })
+            console.log(stats.stat_data)
+            console.log(currentYearDays) 
+            console.log(everyLastDayCurrentYear)
+        }
+
+        let i = new Date(new Date().getFullYear(),0,1).getDay()
+
+        i - stats.last_day <= 0 
+        ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
+        : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
+        // i = `${i.getDate()}.${i.getMonth() + 1}.${i.getFullYear()}`
+        console.log(i)
+        const weeksHolder = document.getElementById('calendar_body')
+        weeksHolder.innerText = ''
+
+        let a = []
+        let noWeek = 1
+        while (i.getFullYear() == new Date().getFullYear() ) {
+            let week = document.createElement('button')
+            week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link')
+            week.dataset.date = `${i.getDate()}.${i.getMonth() + 1}.${i.getFullYear()}`
+            week.innerText = noWeek
+            weeksHolder.insertAdjacentElement('beforeend', week)
+            a.push(i)
+            i = new Date(i.setDate(i.getDate() + 7))
+            noWeek++
+        }
+        console.log(a)
+
+        currentWeekDays.reverse()
+        console.log(currentWeekDays)
         
         dhxCalendar.events.on('Change', () => {
             currentDay = dhxCalendar.getValue()
@@ -499,6 +561,12 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }).then(result => result.json())
 
         }
+    }
+
+    const weekSwitch = document.getElementById('showWeek')
+    weekSwitch.onclick = (event) => {
+        weekSwitch.checked ? weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные' : weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
+        selectStat()
     }
 
     dhxCalendar.events.on('Change', () => {

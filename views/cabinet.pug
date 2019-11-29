@@ -53,18 +53,25 @@ block content
                     .card-footer
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
             .h1.text-center Редактирование статистик
-            .columns.mt-2
+            #statsEditing.columns.mt-2
                 .column.col-6.col-md-12
                     .d-flex.mb-2
-                        .form-group
-                            label#showInactive.form-switch.text-bold Ежедневные
-                                input(type="checkbox")
+                        #weekSwitch.form-group.float-left
+                            label.form-switch.text-bold 
+                                span Ежедневные
+                                input#showWeek(type="checkbox")
                                 i.form-icon
                     .d-flex
                         #edit_stats
-                            #select_stats.form-group
+                            #select_stats.form-group.p-centered
                                 select#stats.form-select
-                            #stats_calendar
+                            #stats_calendar.animated.fadeIn.faster
+                            #stats_calendar_weeks.animated.fadeIn.faster.d-hide
+                                #calendar_header.d-flex
+                                    button a
+                                    button b
+                                    button c
+                                #calendar_body.d-flex
                             input(type="number")#stats_value.form-input.mt-2
                         #stat
                             #my_dataviz
