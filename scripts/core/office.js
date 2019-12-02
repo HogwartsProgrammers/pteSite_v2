@@ -6,6 +6,11 @@ const route = location.pathname.toLocaleLowerCase()
 
 const access = document.getElementById('access').value
 
+const format = data => {
+    data += ''
+    return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
+}
+
 // Закрытие всех модалов при нажатии на элемент с .modal-close классом
 document.querySelectorAll('.modal-close').forEach(el => {
     el.addEventListener('click', event => document.querySelectorAll('.modal').forEach(modal => modal.classList.remove('active')))
@@ -330,38 +335,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             newPassRepeat.disabled = false
         })
     }
-
-    Date.prototype.getWeek = function(a) {
-        var date = new Date(this.getTime());
-        date.setHours(0, 0, 0, 0);
-        // Thursday in current week decides the year.
-        date.setDate(date.getDate() + 3 - (date.getDay() + 6) % 7);
-        // January 4 is always in week 1.
-        var week1 = new Date(date.getFullYear(), 0, a);
-        // Adjust to Thursday in week 1 and count number of weeks from date to week1.
-        console.log(week1)
-        return 1 + Math.round(((date.getTime() - week1.getTime()) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
-    }
-
-    console.log(new Date().getWeek(4))
-
-    let currentDateTime = new Date()
-    // время начала текущего года, в миллисекундах
-    let startTimeOfCurrentYear = (new Date(currentDateTime.getFullYear(), 0, 1)).getTime()
-    // текущее время в миллисекундах
-    let currentTime = currentDateTime.getTime()
-    // прошедшее время с начала года, в миллисекундах
-    let pastTimeOfStartCurrentYear = currentTime - startTimeOfCurrentYear
-    // количество миллисекунд в одном часе
-    let hourOfMillisecs = 3600000
-    // количество часов в одной неделе
-    let hoursOfOneWeek = 168
-    console.log(currentTime)
-
-    console.log(Math.ceil((pastTimeOfStartCurrentYear / hourOfMillisecs / hoursOfOneWeek).toFixed(2)))
-      
-
-
     
     // Календарь статистик
     const dhxCalendar = new dhx.Calendar('stats_calendar', {
@@ -390,7 +363,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         let stat_id = posts[0].stat_id.split(',')
         let stats = []
         
-        // const select = document.createElement('select')
         const select = document.querySelector('#select_stats select')
         select.innerHTML = ''
         select.classList.add('form-select', 'p-centered')
@@ -426,10 +398,15 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     if (localStorage.getItem('postId')) postsSelect.value = localStorage.getItem('postId')
     selectPost()
 
+    // Отрисвка статистик d3 js
+    const drawStats = (days) => {
+        console.log(days)
+    }
+
     // выбор статистики
     const statsSelect = document.getElementById('stats')
 
-    const selectStat = async () => {
+    const selectStat = async (dateWeek) => {
         let stats = await fetch('/office/stats', {
             method: 'POST',
             body: JSON.stringify({
@@ -441,6 +418,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 "Content-Type": "application/json"
             }
         }).then(result => result.json()).then(result => result[0])
+
         if (stats.stat_data == null) stats.stat_data = []
 
         
@@ -449,6 +427,8 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         statInput.value = 0
         
         let currentDay = dhxCalendar.getValue()
+
+        let currentWeek = dateWeek
 
         let currentWeekDay = dhxCalendar.getValue(true).getDay() || 7   
 
@@ -459,70 +439,63 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         currentWeekDay - stats.last_day <= 0 
         ? lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (-(currentWeekDay - stats.last_day))))
         : lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (7 - (currentWeekDay - stats.last_day))))
-        
-        let firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
-        
-        console.log(firstWeekDay)
-        console.log(lastWeekDay)  
-        
-        // firstWeekDay = `${firstWeekDay.getDate()}.${firstWeekDay.getMonth() + 1}.${firstWeekDay.getFullYear()}`
-        // lastWeekDay = `${lastWeekDay.getDate()}.${lastWeekDay.getMonth() + 1}.${lastWeekDay.getFullYear()}`
 
-        console.log(firstWeekDay)
-        console.log(lastWeekDay)  
+        if (!weekSwitch.checked) {
+            const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
+            if (currentStatValue) statInput.value = currentStatValue.value
+        } else {
+            const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentWeek)
+            if (currentStatValue) statInput.value = currentStatValue.value
+        }
 
-        const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
-        if (currentStatValue) statInput.value = currentStatValue.value
-
-        for (let i = 0; i < 7; i++) {
-            if (!weekSwitch.checked) {
+        if (!weekSwitch.checked) {
+            for (let i = 0; i < 7; i++) {
                 document.getElementById('stats_calendar_weeks').classList.add('d-hide')
                 document.getElementById('stats_calendar').classList.remove('d-hide')
                 let date = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - i))
-                date = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`
+                date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
                 let lastWeekDayIndex = stats.stat_data.indexOf(stats.stat_data.find(stat => stat.date == date))
-                currentWeekDays.push(stats.stat_data[lastWeekDayIndex])
+                currentWeekDays.push(stats.stat_data[lastWeekDayIndex] || {date,value: 0})
             }
+            drawStats(currentWeekDays)
         }
+        
+        currentWeekDays.reverse()
+
         if (weekSwitch.checked) {
             document.getElementById('stats_calendar').classList.add('d-hide')
             document.getElementById('stats_calendar_weeks').classList.remove('d-hide')
             let currentYearDays = stats.stat_data.filter(stat => stat.date.split('.')[2] == new Date().getFullYear())
-            let everyLastDayCurrentYear = currentYearDays.filter(stat => {
+            currentYearDays.filter(stat => {
                 const day = new Date(stat.date.split('.')[2],stat.date.split('.')[1] - 1,stat.date.split('.')[0]).getDay()
                 return (day || 7) == stats.last_day
             })
-            console.log(stats.stat_data)
-            console.log(currentYearDays) 
-            console.log(everyLastDayCurrentYear)
+
+            let i = new Date(new Date().getFullYear(),0,1).getDay()
+
+            i - stats.last_day <= 0 
+            ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
+            : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
+
+            const weeksHolder = document.getElementById('calendar_body')
+            weeksHolder.innerText = ''
+
+            let everyLastDayCurrentYear = []
+            let noWeek = 1
+            while (i.getFullYear() == new Date().getFullYear() ) {
+                let week = document.createElement('button')
+                week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link', 'tooltip')
+                let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}` 
+                week.dataset.date = date
+                week.dataset.tooltip = date
+                week.innerText = noWeek
+                weeksHolder.insertAdjacentElement('beforeend', week)
+                everyLastDayCurrentYear.push(stats.stat_data.find(data => data.date == date) || {date,value:0})
+                i = new Date(i.setDate(i.getDate() + 7))
+                noWeek++
+            }
+            drawStats(everyLastDayCurrentYear)
         }
-
-        let i = new Date(new Date().getFullYear(),0,1).getDay()
-
-        i - stats.last_day <= 0 
-        ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
-        : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
-        // i = `${i.getDate()}.${i.getMonth() + 1}.${i.getFullYear()}`
-        console.log(i)
-        const weeksHolder = document.getElementById('calendar_body')
-        weeksHolder.innerText = ''
-
-        let a = []
-        let noWeek = 1
-        while (i.getFullYear() == new Date().getFullYear() ) {
-            let week = document.createElement('button')
-            week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link')
-            week.dataset.date = `${i.getDate()}.${i.getMonth() + 1}.${i.getFullYear()}`
-            week.innerText = noWeek
-            weeksHolder.insertAdjacentElement('beforeend', week)
-            a.push(i)
-            i = new Date(i.setDate(i.getDate() + 7))
-            noWeek++
-        }
-        console.log(a)
-
-        currentWeekDays.reverse()
-        console.log(currentWeekDays)
         
         dhxCalendar.events.on('Change', () => {
             currentDay = dhxCalendar.getValue()
@@ -535,14 +508,22 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         }
 
+
+        document.querySelectorAll('#calendar_body .btn-week').forEach(el => {
+            el.onclick = (event) => {
+                let date = event.target.dataset.date
+                selectStat(date)
+            }
+        })
+
         statInput.onblur = async event => {
             if (!statInput.value) statInput.value = 0
-            let data = {
-                date: currentDay,
-                value: statInput.value
-            }
-            console.log(stats.stat_data)
+
+            let data 
+            weekSwitch.checked ? data = {date: currentWeek,value: statInput.value}  : data = {date: currentDay,value: statInput.value}
+
             let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
+
             if (currentStat) {
                 let statIndex = stats.stat_data.indexOf(currentStat)
                 stats.stat_data[statIndex] = data
@@ -559,11 +540,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                     "Content-Type": "application/json"
                 }
             }).then(result => result.json())
-
         }
     }
 
     const weekSwitch = document.getElementById('showWeek')
+
     weekSwitch.onclick = (event) => {
         weekSwitch.checked ? weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные' : weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
         selectStat()

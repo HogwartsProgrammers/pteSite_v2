@@ -4556,8 +4556,63 @@ img {
 }
 
 #calendar_header {
-    justify-content: center;
+    align-items: center;
+    text-align:center;
+    justify-content: space-between;
+    margin: -4px 2px 4px;
 }
+
+#calendar_header .arrow-btn {
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 50%;
+    color: #4d4d4d;
+    outline-width: 0;
+    border-radius: 32px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    background: transparent;
+    transition: background-color .2s ease-in,box-shadow .2s ease-in;
+    padding: 6px 16px;
+    text-transform: uppercase;
+    overflow: visible;
+    position: relative;
+    text-decoration: none;
+    border: 0;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga";
+}
+
+#calendar_header .arrow-btn {
+    line-height: 0;
+    pointer-events: none;
+    display: inline-block;
+    text-rendering: auto;
+    font-size: 0;
+}
+
+#calendar_header .arrow-btn {
+    line-height: 0;
+    pointer-events: none;
+    display: inline-block;
+    text-rendering: auto;
+    font-size: 0;
+}
+
 
 #calendar_body .btn-week {
     min-width: 1.9rem;
