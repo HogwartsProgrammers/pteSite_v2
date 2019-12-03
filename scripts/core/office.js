@@ -359,6 +359,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 "Content-Type": "application/json"
             }
         }).then(result => result.json()).then(result => result)
+        console.log(new Date(2019,0,1))
 
         let stat_id = posts[0].stat_id.split(',')
         let stats = []
@@ -399,8 +400,53 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     selectPost()
 
     // Отрисвка статистик d3 js
-    const drawStats = (days) => {
-        console.log(days)
+    const margin = {top: 40, right: 20, bottom: 50, left: 100}
+    const graphWidth = 560 - margin.left - margin.right
+    const graphHeight = 400 - margin.top - margin.bottom
+    const svg = d3.select("#my_dataviz")
+        .append("svg")
+        .attr("width", graphWidth + margin.left + margin.right)
+        .attr("height", graphHeight + margin.top + margin.bottom)
+        
+    const graph = svg.append("g")
+        .attr('width', graphWidth)
+        .attr('height', graphHeight)
+        .attr('transform', `translate(${margin.left}, ${margin.top})`)
+
+    const x = d3.scaleTime().range([0,graphWidth])
+    const y = d3.scaleLinear().range([graphHeight,0])
+
+    const dateFromSring = (date) => new Date(date.split('.')[2],date.split('.')[1] - 1,date.split('.')[0])
+
+    const drawStats = (data) => {
+        x.domain(d3.extent(data, d => dateFromSring(d.date)))
+        y.domain([0, 100])
+
+        const circles = graph.selectAll('circle')
+            .data(data)
+        circles.enter()
+            .append('circle')
+                .attr('r', 4)
+                .attr('cx', d => x(dateFromSring(d.date)))
+                .attr('cy', d => y(d.value))
+                .attr('fill', '#000')
+    
+        const xAxisGroup = graph.append('g')
+            .attr('class', 'x-axis')
+            .attr('transform', 'translate(0, ' + graphHeight + ')')
+    
+        const yAxisGroup = graph.append('g')
+            .attr('class', 'y-axis')
+        
+        const xAxis = d3.axisBottom(x)
+            .ticks(7)
+            .tickFormat(d3.timeFormat('%d.%m.%y'))
+
+        const yAxis = d3.axisLeft(y)
+            .ticks(4)
+        
+        xAxisGroup.call(xAxis)
+        yAxisGroup.call(yAxis)
     }
 
     // выбор статистики
@@ -516,14 +562,17 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         })
 
+        console.log(currentWeek)
+
         statInput.onblur = async event => {
             if (!statInput.value) statInput.value = 0
+            console.log(currentDay)
 
             let data 
             weekSwitch.checked ? data = {date: currentWeek,value: statInput.value}  : data = {date: currentDay,value: statInput.value}
 
             let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
-
+            console.log(stats.stat_data)
             if (currentStat) {
                 let statIndex = stats.stat_data.indexOf(currentStat)
                 stats.stat_data[statIndex] = data
@@ -557,107 +606,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     statsSelect.onchange = () => {
         selectStat()
     }
-    
-// set the dimensions and margins of the graph
-    var margin = {top: 10, right: 30, bottom: 30, left: 60},
-    width = 300 - margin.left - margin.right,
-    height = 240 - margin.top - margin.bottom;
-    // append the svg object to the body of the page
-    var svg = d3.select("#my_dataviz")
-    .append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-    .attr("transform",
-        "translate(" + margin.left + "," + margin.top + ")");
-    //Read the data
-    d3.csv("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/connectedscatter.csv",
-    // When reading the csv, I must format variables:
-    function(d){
-    return { date : d3.timeParse("%Y-%m-%d")(d.date), value : d.value }
-    },
-    // Now I can use this dataset:
-    function(data) {
-    // Add X axis --> it is a date format
-    var x = d3.scaleLinear()
-    .domain([ 50, 70 ])
-    .range([ 0, width ]);
-    svg.append("g")
-    .attr("transform", "translate(0," + height + ")")
-    .call(d3.axisBottom(x));
-    // Add Y axis
-    var y = d3.scaleLinear()
-    .domain( [0, 100])
-    .range([ height, 0 ]);
-    svg.append("g")
-    .call(d3.axisLeft(y));
-    // Add the line
-    svg.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "#69b3a2")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) { return x(d.date) })
-        .y(function(d) { return y(d.value) })
-        )
-    // Add the points
-    svg
-    .append("g")
-    .selectAll("dot")
-    .data(data)
-    .enter()
-    .append("circle")
-        .attr("cx", function(d) { return x(d.date) } )
-        .attr("cy", function(d) { return y(d.value) } )
-        .attr("r", 5)
-        .attr("fill", "#69b3a2")
-    })
-
-    
-    // const data = [
-    //     {
-    //         date:'2018-04-14',
-    //         value:8140.71
-    //     },
-    //     {
-    //         date:'2018-04-15',
-    //         value:8338.42
-    //     },
-    //     {
-    //         date:'2018-04-16',
-    //         value:8371.15
-    //     },
-    //     {
-    //         date:'2018-04-17',
-    //         value:8285.96
-    //     },
-    //     {
-    //         date:'2018-04-18',
-    //         value:8197.8
-    //     },
-    //     {
-    //         date:'2018-04-19',
-    //         value:8298.69
-    //     },
-    //     {
-    //         date:'2018-04-20',
-    //         value:8880.23
-    //     },
-    //     {
-    //         date:'2018-04-21',
-    //         value:8997.57
-    //     },
-    //     {
-    //         date:'2018-04-22',
-    //         value:9001.64
-    //     },
-    //     {
-    //         date:'2018-04-23',
-    //         value:8958.55
-    //     }
-    // ];
-}
+}   
 
 // Privilages route
 if (route === '/office/privilages' || route === '/office/privilages/') {
