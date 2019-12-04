@@ -342,7 +342,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         value: new Date(),
         weekStart: "monday"
     })
-
     
     // Выбор поста
     const postsSelect = document.getElementById('posts')
@@ -416,31 +415,103 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const x = d3.scaleTime().range([0,graphWidth])
     const y = d3.scaleLinear().range([graphHeight,0])
 
-    const dateFromSring = (date) => new Date(date.split('.')[2],date.split('.')[1] - 1,date.split('.')[0])
+    // x.attr('stroke-width', 5).attr('stroke', 'black')
+    
+    const xAxisGroup = graph.append('g')
+    .attr('class', 'x-axis')
+    .attr('transform', 'translate(0, ' + graphHeight + ')')
+
+    const yAxisGroup = graph.append('g')
+        .attr('class', 'y-axis')
+        
+    const line = d3.line()
+        .x(function(d){ return x(dateFromString(d.date))})
+        .y(function(d){ return y(d.value)})
+
+    const path = graph.append('path')
+
+    const dottedLines = graph.append('g')
+        .attr('class', 'lines')
+        .style('opacity', 0)
+
+    const xDottedLine = dottedLines.append('line')
+        .attr('stroke', '#aaa')
+        .attr('stroke-width', 1)
+        .attr('stroke-dasharray', 4)
+
+    const yDottedLine = dottedLines.append('line')
+        .attr('stroke', '#aaa')
+        .attr('stroke-width', 1)
+        .attr('stroke-dasharray', 4)
+
+    const dateFromString = (date) => new Date(date.split('.')[2],date.split('.')[1] - 1,date.split('.')[0])
 
     const drawStats = (data) => {
-        x.domain(d3.extent(data, d => dateFromSring(d.date)))
-        y.domain([0, 100])
+        data = data.map(day => {
+            return {
+                date: day.date,
+                value: Number(day.value)
+            }
+        })
+        
+        x.domain(d3.extent(data, d => dateFromString(d.date)))
+        y.domain([0, (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
+
+        path.data([data])
+            .attr('fill', 'none')
+            .attr('stroke', '#000')
+            .attr('stroke-width', 2)
+            .attr('d', line)
 
         const circles = graph.selectAll('circle')
             .data(data)
+
+        circles.exit().remove()
+
+        circles
+            .attr('cx', d => x(dateFromString(d.date)))
+            .attr('cy', d => y(d.value))
+
         circles.enter()
             .append('circle')
                 .attr('r', 4)
-                .attr('cx', d => x(dateFromSring(d.date)))
+                .attr('cx', d => x(dateFromString(d.date)))
                 .attr('cy', d => y(d.value))
                 .attr('fill', '#000')
-    
-        const xAxisGroup = graph.append('g')
-            .attr('class', 'x-axis')
-            .attr('transform', 'translate(0, ' + graphHeight + ')')
-    
-        const yAxisGroup = graph.append('g')
-            .attr('class', 'y-axis')
+            
+        graph.selectAll('circle')
+            .on('mouseover', (d,i,n) => {
+                d3.select(n[i])
+                    .transition().duration(100)
+                        .attr('r', 8)
+                        .attr('fill', '#000')
+                xDottedLine
+                    .attr('x1', x(dateFromString(d.date)))
+                    .attr('x2', x(dateFromString(d.date)))
+                    .attr('y1', graphHeight)
+                    .attr('y2', y(d.value))
+                yDottedLine
+                    .attr('x1', 0)
+                    .attr('x2', x(dateFromString(d.date)))
+                    .attr('y1', y(d.value))
+                    .attr('y2', y(d.value))
+
+                dottedLines.style('opacity', 1)
+            })
+            .on('mouseleave', (d,i,n) => {
+                d3.select(n[i])
+                    .transition().duration(100)
+                        .attr('r', 4)
+                        .attr('fill', '#000')
+
+                dottedLines.style('opacity', 0)
+            })
         
         const xAxis = d3.axisBottom(x)
             .ticks(7)
             .tickFormat(d3.timeFormat('%d.%m.%y'))
+        xAxis
+            d3.select('path').attr('stroke-width', 2)
 
         const yAxis = d3.axisLeft(y)
             .ticks(4)
@@ -589,6 +660,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                     "Content-Type": "application/json"
                 }
             }).then(result => result.json())
+            selectStat()
         }
     }
 
