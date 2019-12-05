@@ -358,7 +358,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 "Content-Type": "application/json"
             }
         }).then(result => result.json()).then(result => result)
-        console.log(new Date(2019,0,1))
 
         let stat_id = posts[0].stat_id.split(',')
         let stats = []
@@ -398,24 +397,25 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     if (localStorage.getItem('postId')) postsSelect.value = localStorage.getItem('postId')
     selectPost()
 
+    const weekSwitch = document.getElementById('showWeek')
+
     // Отрисвка статистик d3 js
     const margin = {top: 40, right: 20, bottom: 50, left: 100}
-    const graphWidth = 560 - margin.left - margin.right
+    const graphWidth = 1500 - margin.left - margin.right
     const graphHeight = 400 - margin.top - margin.bottom
     const svg = d3.select("#my_dataviz")
         .append("svg")
         .attr("width", graphWidth + margin.left + margin.right)
         .attr("height", graphHeight + margin.top + margin.bottom)
+        // .attr('class', 'dragscroll')
         
     const graph = svg.append("g")
         .attr('width', graphWidth)
         .attr('height', graphHeight)
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-    const x = d3.scaleTime().range([0,graphWidth])
+    const x = d3.scaleLinear().range([0,graphWidth])
     const y = d3.scaleLinear().range([graphHeight,0])
-
-    // x.attr('stroke-width', 5).attr('stroke', 'black')
     
     const xAxisGroup = graph.append('g')
     .attr('class', 'x-axis')
@@ -425,7 +425,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         .attr('class', 'y-axis')
         
     const line = d3.line()
-        .x(function(d){ return x(dateFromString(d.date))})
+        .x(function(d,i,a){ return x(i + 1)})
         .y(function(d){ return y(d.value)})
 
     const path = graph.append('path')
@@ -453,8 +453,10 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 value: Number(day.value)
             }
         })
+
+        console.log(data)
         
-        x.domain(d3.extent(data, d => dateFromString(d.date)))
+        x.domain([1,data.length])
         y.domain([0, (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
 
         path.data([data])
@@ -469,13 +471,13 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         circles.exit().remove()
 
         circles
-            .attr('cx', d => x(dateFromString(d.date)))
+            .attr('cx', (d,i) => x(i + 1))
             .attr('cy', d => y(d.value))
 
         circles.enter()
             .append('circle')
                 .attr('r', 4)
-                .attr('cx', d => x(dateFromString(d.date)))
+                .attr('cx', (d,i) => x(i + 1))
                 .attr('cy', d => y(d.value))
                 .attr('fill', '#000')
             
@@ -486,13 +488,13 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                         .attr('r', 8)
                         .attr('fill', '#000')
                 xDottedLine
-                    .attr('x1', x(dateFromString(d.date)))
-                    .attr('x2', x(dateFromString(d.date)))
+                    .attr('x1', x(i + 1))
+                    .attr('x2', x(i + 1))
                     .attr('y1', graphHeight)
                     .attr('y2', y(d.value))
                 yDottedLine
                     .attr('x1', 0)
-                    .attr('x2', x(dateFromString(d.date)))
+                    .attr('x2', x(i + 1))
                     .attr('y1', y(d.value))
                     .attr('y2', y(d.value))
 
@@ -508,16 +510,15 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             })
         
         const xAxis = d3.axisBottom(x)
-            .ticks(7)
-            .tickFormat(d3.timeFormat('%d.%m.%y'))
-        xAxis
-            d3.select('path').attr('stroke-width', 2)
+            .ticks(data.length)
+            // .tickFormat(data.length > 7 ? d3.timeFormat('%d.%m') : d3.timeFormat('%d.%m.%y'))
 
         const yAxis = d3.axisLeft(y)
             .ticks(4)
         
         xAxisGroup.call(xAxis)
         yAxisGroup.call(yAxis)
+        return data
     }
 
     // выбор статистики
@@ -574,10 +575,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 let lastWeekDayIndex = stats.stat_data.indexOf(stats.stat_data.find(stat => stat.date == date))
                 currentWeekDays.push(stats.stat_data[lastWeekDayIndex] || {date,value: 0})
             }
+            currentWeekDays.reverse()
             drawStats(currentWeekDays)
         }
         
-        currentWeekDays.reverse()
+        
 
         if (weekSwitch.checked) {
             document.getElementById('stats_calendar').classList.add('d-hide')
@@ -633,9 +635,8 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         })
 
-        console.log(currentWeek)
-
         statInput.onblur = async event => {
+            console.log()
             if (!statInput.value) statInput.value = 0
             console.log(currentDay)
 
@@ -664,8 +665,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }
     }
 
-    const weekSwitch = document.getElementById('showWeek')
-
     weekSwitch.onclick = (event) => {
         weekSwitch.checked ? weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные' : weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
         selectStat()
@@ -678,6 +677,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     statsSelect.onchange = () => {
         selectStat()
     }
+    require('../dragscroll').reset()
 }   
 
 // Privilages route
