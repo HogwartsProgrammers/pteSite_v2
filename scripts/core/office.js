@@ -382,6 +382,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
 
         await Promise.all(stats).then(result => result.map(dt => dt[0])).then(result => result.forEach(stat => {
+            if (!stat) return
             const option = document.createElement('option')
             option.setAttribute('value', stat.id)
             option.innerText = stat.title
@@ -400,14 +401,13 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const weekSwitch = document.getElementById('showWeek')
 
     // Отрисвка статистик d3 js
-    const margin = {top: 40, right: 20, bottom: 50, left: 100}
-    const graphWidth = 1500 - margin.left - margin.right
+    const margin = {top: 40, right: 20, bottom: 50, left: 60}
+    let graphWidth = 1000 - margin.left - margin.right
     const graphHeight = 400 - margin.top - margin.bottom
     const svg = d3.select("#my_dataviz")
         .append("svg")
         .attr("width", graphWidth + margin.left + margin.right)
         .attr("height", graphHeight + margin.top + margin.bottom)
-        // .attr('class', 'dragscroll')
         
     const graph = svg.append("g")
         .attr('width', graphWidth)
@@ -453,8 +453,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 value: Number(day.value)
             }
         })
-
-        console.log(data)
         
         x.domain([1,data.length])
         y.domain([0, (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
@@ -511,14 +509,16 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         
         const xAxis = d3.axisBottom(x)
             .ticks(data.length)
-            // .tickFormat(data.length > 7 ? d3.timeFormat('%d.%m') : d3.timeFormat('%d.%m.%y'))
+            .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date)
 
         const yAxis = d3.axisLeft(y)
             .ticks(4)
         
         xAxisGroup.call(xAxis)
         yAxisGroup.call(yAxis)
-        return data
+
+        xAxisGroup.selectAll('text')
+            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : '')
     }
 
     // выбор статистики
@@ -536,7 +536,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 "Content-Type": "application/json"
             }
         }).then(result => result.json()).then(result => result[0])
-
+        if (!stats) return
         if (stats.stat_data == null) stats.stat_data = []
 
         
@@ -567,6 +567,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }
 
         if (!weekSwitch.checked) {
+            if (currentDay)  statInput.classList.remove('d-hide') 
             for (let i = 0; i < 7; i++) {
                 document.getElementById('stats_calendar_weeks').classList.add('d-hide')
                 document.getElementById('stats_calendar').classList.remove('d-hide')
@@ -578,10 +579,9 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             currentWeekDays.reverse()
             drawStats(currentWeekDays)
         }
-        
-        
 
         if (weekSwitch.checked) {
+            currentWeek ? statInput.classList.remove('d-hide') : statInput.classList.add('d-hide')
             document.getElementById('stats_calendar').classList.add('d-hide')
             document.getElementById('stats_calendar_weeks').classList.remove('d-hide')
             let currentYearDays = stats.stat_data.filter(stat => stat.date.split('.')[2] == new Date().getFullYear())
@@ -597,18 +597,19 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
 
             const weeksHolder = document.getElementById('calendar_body')
-            weeksHolder.innerText = ''
 
             let everyLastDayCurrentYear = []
             let noWeek = 1
             while (i.getFullYear() == new Date().getFullYear() ) {
-                let week = document.createElement('button')
-                week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link', 'tooltip')
                 let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}` 
-                week.dataset.date = date
-                week.dataset.tooltip = date
-                week.innerText = noWeek
-                weeksHolder.insertAdjacentElement('beforeend', week)
+                if (weeksHolder.querySelectorAll('.btn-week').length < 52) {
+                    let week = document.createElement('button')
+                    week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link', 'tooltip')
+                    week.dataset.date = date
+                    week.dataset.tooltip = date
+                    week.innerText = noWeek
+                    weeksHolder.insertAdjacentElement('beforeend', week)
+                }
                 everyLastDayCurrentYear.push(stats.stat_data.find(data => data.date == date) || {date,value:0})
                 i = new Date(i.setDate(i.getDate() + 7))
                 noWeek++
@@ -636,19 +637,19 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
 
         statInput.onblur = async event => {
-            console.log()
+            console.log(currentWeek)
             if (!statInput.value) statInput.value = 0
             console.log(currentDay)
 
             let data 
             weekSwitch.checked ? data = {date: currentWeek,value: statInput.value}  : data = {date: currentDay,value: statInput.value}
 
-            let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
-            console.log(stats.stat_data)
+            let currentStat = stats.stat_data.find(sdata => weekSwitch.checked ? sdata.date == currentWeek: sdata.date == currentDay)
             if (currentStat) {
                 let statIndex = stats.stat_data.indexOf(currentStat)
                 stats.stat_data[statIndex] = data
             } else stats.stat_data.push(data)
+            console.log(data)
 
             await fetch('/office/stats/update', {
                 method: 'POST',
@@ -1078,4 +1079,9 @@ if (route === '/office/posts' || route === '/office/posts/') {
 // Страница "Статистики"
 if (route === '/office/stats' || route === '/office/stats/') {
     require('./officeScripts/statsPage.js').init()
+}
+
+// Страница "Офис"
+if (route === '/office' || route === '/office/office/') {
+    require('./officeScripts/officePage.js').init()
 }

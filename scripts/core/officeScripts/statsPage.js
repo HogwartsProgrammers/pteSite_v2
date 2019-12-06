@@ -62,6 +62,7 @@ export function init() {
     })
 
     document.querySelectorAll('table tbody tr td:nth-child(2)').forEach(td => {
+        console.log(td)
         td.querySelector('button').onclick = () => {
             document.getElementById('codex-editor').innerHTML = ''
             const statData = JSON.parse(td.dataset.data)

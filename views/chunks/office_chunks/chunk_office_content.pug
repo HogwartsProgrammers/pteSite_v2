@@ -1,0 +1,13 @@
+h1.text-center ВАША СТАТИСТИКА
+each post in posts
+    section
+        h2.text-center= post.title
+        .columns
+        each sid in post.stat_id.split(',')
+            .column.col-4
+                .card
+                    .card-header
+                        .card-title 
+                    .card-body
+                        .my_dataviz.dragscroll(style="max-width:100%; overflow:auto")
+                        

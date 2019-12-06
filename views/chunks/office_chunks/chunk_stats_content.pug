@@ -25,8 +25,9 @@ input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
                                     i.form-icon
                 else
                     tr.d-hide
-                        td(contenteditable="true")
-                        td(contenteditable="true")
+                        td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
+                        td(data-data=JSON.stringify(stat))
+                            button.btn.btn-link.text-gray Открыть описание
                         td
                             .form-group
                                 label.operations.form-switch

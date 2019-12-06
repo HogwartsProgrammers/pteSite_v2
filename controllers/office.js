@@ -49,12 +49,15 @@ exports.getOffice = (req, res, next) => {
         if (req.session.UserLogged) {
             if (privData[0][0].privilage_data.main != 'none')
             getTasksAmount(req.session.user.id).then(a => {
-                res.render('office', {
-                    pageTitle: 'Панель администрирования',
-                    year: cfg.year,
-                    path: cfg.path(),
-                    access: privData[0][0].privilage_data.main,
-                    tasks: a
+                Posts.fetchAll().then(posts => {
+                    res.render('office', {
+                        pageTitle: 'Панель администрирования',
+                        year: cfg.year,
+                        path: cfg.path(),
+                        access: privData[0][0].privilage_data.main,
+                        posts: posts[0].filter(post => post.users.split(',').find(uid => uid == req.session.user.id)),
+                        tasks: a
+                    })
                 })
             })
             else 
@@ -180,7 +183,30 @@ exports.getPrivilagesPage = (req, res, next) => {
             res.redirect('/login')
         }
     })
-    else res.render('noProfile', {         pageTitle: 'Панель администрирования',         year: cfg.year,         path: cfg.path()     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования',year: cfg.year,path: cfg.path()})
+}
+
+exports.getCicPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.stats != 'none')
+            Stats.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        res.render('stats', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            stats: result[0],
+                            tasks: a,
+                        })
+                    })
+                })
+            })
+        }
+    })
 }
 
 // Отправка всех данных о лидах
