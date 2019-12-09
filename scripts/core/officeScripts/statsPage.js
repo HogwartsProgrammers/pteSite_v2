@@ -62,7 +62,6 @@ export function init() {
     })
 
     document.querySelectorAll('table tbody tr td:nth-child(2)').forEach(td => {
-        console.log(td)
         td.querySelector('button').onclick = () => {
             document.getElementById('codex-editor').innerHTML = ''
             const statData = JSON.parse(td.dataset.data)
@@ -117,5 +116,28 @@ export function init() {
             }   
         }
     })
-
+    // функционал добавления статистики
+    document.getElementById('addStat').onclick = async () => {
+        const sId = await fetch('/office/stats/update', {
+            method: 'POST',
+            body: JSON.stringify({
+                _csrf: document.getElementById('csrfToken').value
+            }),
+            headers:{"Content-Type": "application/json"}
+        }).then(data => data.json()).then(data => data.insertId)
+        const statData = JSON.stringify({
+            id: sId,
+            title: null,
+            description: null,
+            reverted: 0,
+            active: 1,
+            stat_data: null,
+            last_day: 5,
+        })
+        const tr = document.createElement('tr')
+        tr.innerHTML = `<td contenteditable="true"></td><td><button class="btn btn-link text-gray">Открыть описание</button></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked><i class="form-icon"></i></label></div></td>`
+        tr.querySelectorAll('td:first-child,td:nth-child(2)').forEach(td => td.setAttribute('data-data', statData))
+        document.querySelector('table tbody').insertAdjacentElement('beforeend', tr)
+        init()
+    }
 }

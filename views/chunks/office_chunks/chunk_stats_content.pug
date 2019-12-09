@@ -1,10 +1,12 @@
 input#access(type="hidden", value= access)
 input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
 .col-12.p-centered.mt-2.lg-grid
-    .form-group
-        label#showInactive.form-switch Отобразить неактивных
-            input(type="checkbox")
-            i.form-icon
+    .d-flex
+        .form-group
+            label#showInactive.form-switch Отобразить неактивных
+                input(type="checkbox")
+                i.form-icon
+        button#addStat.btn.btn-sm Добавить
     table.table
         thead
             tr

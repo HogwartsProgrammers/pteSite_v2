@@ -69,6 +69,7 @@ export function init() {
             if (!users.length) return sugetion.innerHTML = ''
             sugetion.innerHTML = ''
             users.forEach(user => {
+                console.log(post.users)
                 if (post.users.split(',').find(uid => uid == user.id)) return
                 const li = document.createElement('li')
                 li.classList.add('menu-item')
@@ -146,6 +147,7 @@ export function init() {
             if (!stats.length) return sugetion.innerHTML = ''
             sugetion.innerHTML = ''
             stats.forEach(stat => {
+                console.log(post, post.stat_id)
                 if (post.stat_id.split(',').find(sid => sid == stat.id)) return
                 const li = document.createElement('li')
                 li.classList.add('menu-item')
@@ -221,10 +223,12 @@ export function init() {
             parent: null,
             active: 1,
             title: '',
-            users: ''
+            users: '',
+            stat_id: ''
         })
         const tr = document.createElement('tr')
-        tr.innerHTML = `<td contenteditable="true"></td><td> <div class="form-autocomplete"><div class="form-autocomplete-input"><div class="chips"></div><input class="form-input" type="text" placeholder="Поиск"></div><ul class="menu"></ul></div></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked="checked" data-uid="1"><i class="form-icon"></i></label></div></td>`
+        tr.innerHTML = `
+        <td contenteditable="true"></td><td class="users"><div class="form-autocomplete"><div class="form-autocomplete-input"><div class="chips"></div><input class="form-input" type="text" placeholder="Поиск"></div><ul class="menu"></ul></div></td><td class="stats"><div class="form-autocomplete"><div class="form-autocomplete-input"><div class="chips"></div><input class="form-input" type="text" placeholder="Поиск"></div><ul class="menu"></ul></div></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked="checked"<i class="form-icon"></i></label></div></td>`
         tr.querySelectorAll('td:first-child,.form-autocomplete').forEach(td => td.setAttribute('data-data', postData))
         document.querySelector('table tbody').insertAdjacentElement('beforeend', tr)
         init()
