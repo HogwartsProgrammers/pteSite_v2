@@ -195,7 +195,7 @@ exports.getCicPage = (req, res, next) => {
             Stats.fetchAll().then(result => {
                 getTasksAmount(req.session.user.id).then(a => {
                     Users.fetchAll().then(users => {
-                        res.render('stats', {
+                        res.render('cic', {
                             pageTitle: 'Панель администрирования',
                             year: cfg.year,
                             path: cfg.path(),
@@ -1009,6 +1009,7 @@ exports.updateStats = (req, res, next) => {
             stats.active != undefined ? stats.active : oldData[0][0].active,
             stats.stat_data ? stats.stat_data : oldData[0][0].stat_data,
             stats.last_day != undefined ? stats.last_day : oldData[0][0].last_day,
+            stats.sort != undefined ? stats.sort : oldData[0][0].sort,
         ).update().then(result => res.status(201).json(result[0]))
     })
     else {
@@ -1020,10 +1021,30 @@ exports.updateStats = (req, res, next) => {
             stats.active != undefined ? stats.active : 1,
             stats.stat_data ? stats.stat_data : null,
             stats.last_day != undefined ? stats.last_day : 5,
-        ).save().then(result => {
+            stats.sort != undefined ? stats.sort : null,
+            ).save().then(result => {
             res.status(201).json(result[0])
         })
     }
+}
+
+exports.postSortStats = (req, res) => {
+    const stats = JSON.parse(JSON.stringify(req.body))
+    console.log(stats)
+    stats.id.forEach((el, i) => {
+        new Stats().findById(el).then(oldData => {
+            new Stats(
+                el,
+                oldData[0][0].title,
+                oldData[0][0].description,
+                oldData[0][0].reverted,
+                oldData[0][0].active,
+                oldData[0][0].stat_data,
+                oldData[0][0].last_day,
+                i,
+            ).update().then(result => res.status(201).json(result[0]))
+        })
+    })
 }
 
 exports.getUsersList = (req, res, next) => {

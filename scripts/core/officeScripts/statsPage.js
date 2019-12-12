@@ -1,6 +1,7 @@
 import EditorJS from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import List from '@editorjs/list';
+import Sortable from 'sortablejs'
 const Marker = require('@editorjs/marker');
 const Paragraph = require('@editorjs/paragraph');
 const Checklist = require('@editorjs/checklist');
@@ -38,7 +39,7 @@ export function init() {
     }
 
     //функционал изменения названия поста
-    document.querySelectorAll('table tbody tr td:first-child').forEach(td => {
+    document.querySelectorAll('table tbody tr td:nth-child(2)').forEach(td => {
         if (!td.dataset.data) return
         const post = JSON.parse(td.dataset.data)
         td.onkeydown = (event) => {
@@ -61,7 +62,7 @@ export function init() {
         td.removeAttribute('data-data')
     })
 
-    document.querySelectorAll('table tbody tr td:nth-child(2)').forEach(td => {
+    document.querySelectorAll('table tbody tr td:nth-child(3)').forEach(td => {
         td.querySelector('button').onclick = () => {
             document.getElementById('codex-editor').innerHTML = ''
             const statData = JSON.parse(td.dataset.data)
@@ -136,8 +137,28 @@ export function init() {
         })
         const tr = document.createElement('tr')
         tr.innerHTML = `<td contenteditable="true"></td><td><button class="btn btn-link text-gray">Открыть описание</button></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked><i class="form-icon"></i></label></div></td>`
-        tr.querySelectorAll('td:first-child,td:nth-child(2)').forEach(td => td.setAttribute('data-data', statData))
+        tr.querySelectorAll('td:nth-child(2),td:nth-child(3)').forEach(td => td.setAttribute('data-data', statData))
         document.querySelector('table tbody').insertAdjacentElement('beforeend', tr)
         init()
     }
+    const table = document.querySelector('tbody')
+
+    const sortStats = async () => {
+        const stats = []
+        document.querySelectorAll('table tbody tr').forEach(el => stats.push(Number(el.dataset.sid)))
+        await fetch('/office/stats/sort', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: stats,
+                _csrf: document.getElementById('csrfToken').value
+            }),
+            headers:{"Content-Type": "application/json"}
+        }).then(data => data.json()).then(data => data.insertId)
+    }
+
+    new Sortable(table, {
+        handle: '.c-hand',
+        animation: 150,
+        onEnd: sortStats
+    })
 }

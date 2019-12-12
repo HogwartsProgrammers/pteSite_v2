@@ -10,13 +10,17 @@ input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
     table.table
         thead
             tr
+                th 
                 th Название
                 th Описание
                 th Операции
         tbody
+            - stats.sort((a,b) => a.sort - b.sort)
             each stat in stats
                 if stat.active
-                    tr
+                    tr(data-sid=JSON.stringify(stat.id), data-data=JSON.stringify(stat.sort))
+                        td.text-center
+                            i.icon.icon-menu.c-hand
                         td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
                         td(data-data=JSON.stringify(stat))
                             button.btn.btn-link.text-gray Открыть описание
@@ -26,7 +30,9 @@ input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
                                     input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
                                     i.form-icon
                 else
-                    tr.d-hide
+                    tr.d-hide(data-sid=JSON.stringify(stat.id), data-data=JSON.stringify(stat.sort))
+                        td.text-center
+                            i.icon.icon-menu.c-hand
                         td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
                         td(data-data=JSON.stringify(stat))
                             button.btn.btn-link.text-gray Открыть описание

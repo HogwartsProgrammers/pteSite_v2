@@ -988,6 +988,32 @@ img {
     padding-left: 10px;
 }
 
+.my_dataviz {
+    padding-left: 10px
+}
+.card-title {
+    
+    position: relative;
+    top: 0.3rem;
+}
+
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
 *::-webkit-scrollbar {width: 6px;height: 6px;}
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}
+
+@media (max-width: 1650px) {
+    .col-xxl-3 {
+        width: 25%;
+    }
+}
+
+
+@media (max-width: 2560px) {
+   .card  {
+        /* min-height: 15rem; */
+   } 
+
+   .card .card-header {
+        /* height: 88px; */
+   }
+}

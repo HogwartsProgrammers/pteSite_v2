@@ -37,7 +37,7 @@ export function init() {
         el.innerHTML = ''
         const svg = d3.select(el)
             .append("svg")
-            .attr("width", el.offsetWidth - 15)
+            .attr("width", el.offsetWidth - 10)
             .attr("height", graphHeight + margin.top + margin.bottom)
             
         const graph = svg.append("g")
@@ -45,7 +45,7 @@ export function init() {
             .attr('height', graphHeight)
             .attr('transform', `translate(${margin.left}, ${margin.top})`)
 
-        const x = d3.scaleLinear().range([0,el.offsetWidth - 100])
+        const x = d3.scaleLinear().range([0,el.offsetWidth - 130])
         const y = d3.scaleLinear().range([graphHeight,0])
         
         const xAxisGroup = graph.append('g')
@@ -136,7 +136,7 @@ export function init() {
             }
         }
 
-        require('../../dragscroll').reset()
+        // require('../../dragscroll').reset()
 
         drawStats(currentDays,el)
     })
@@ -205,6 +205,7 @@ export function init() {
         const xAxis = d3.axisBottom(svg.x)
             .ticks(data.length)
             .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date.substr(0, 5))
+        
 
         const yAxis = d3.axisLeft(svg.y)
             .ticks(4)

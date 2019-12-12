@@ -398,7 +398,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     if (localStorage.getItem('postId')) postsSelect.value = localStorage.getItem('postId')
     selectPost()
 
-    const weekSwitch = document.getElementById('weekSwith')
+    const weekSwitch = document.getElementById('weekSwitch')
 
     // Отрисвка статистик d3 js
     const margin = {top: 40, right: 30, bottom: 50, left: 60}
@@ -1082,6 +1082,11 @@ if (route === '/office/stats' || route === '/office/stats/') {
 }
 
 // Страница "Офис"
-if (route === '/office' || route === '/office/office/') {
+if (route === '/office' || route === '/office/') {
     require('./officeScripts/officePage.js').init()
+}
+
+// Страница "ИЦО"
+if (route === '/office/cic' || route === '/office/cic/') {
+    require('./officeScripts/cicPage.js').init()
 }
