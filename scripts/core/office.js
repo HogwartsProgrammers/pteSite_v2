@@ -2,6 +2,16 @@ import *  as d3 from "d3"
 
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
+document.querySelectorAll('header a').forEach(a => {
+    if (a.getAttribute('href') == window.location.pathname) {
+        a.classList.remove('btn-link')
+        a.classList.add('btn-error')
+    }
+})
+
+
+
+
 const route = location.pathname.toLocaleLowerCase()
 
 const access = document.getElementById('access').value
