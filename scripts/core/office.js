@@ -468,7 +468,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
         
         x.domain([1,data.length])
-        y.domain([0, (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
+        y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
 
         path.data([data])
             .attr('fill', 'none')

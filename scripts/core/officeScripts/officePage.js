@@ -143,6 +143,7 @@ export function init() {
     })
 
     const drawStats = (data,svg) => {
+        if (!data.find(el => el.value != 0)) return
         data = data.map(day => {
             return {
                 date: day.date,
@@ -151,7 +152,7 @@ export function init() {
         })
         
         svg.x.domain([1,data.length])
-        svg.y.domain([0, (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
+        svg.y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
 
         svg.path.data([data])
             .attr('fill', 'none')
