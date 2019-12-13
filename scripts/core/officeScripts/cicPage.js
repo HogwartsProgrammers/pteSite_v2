@@ -214,7 +214,11 @@ export function init() {
         svg.yAxisGroup.call(yAxis)
 
         svg.xAxisGroup.selectAll('text')
-            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : '')
+            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : 'rotate(-90) translate(-22, -13)')
+    }
+    const titleSwitch = document.getElementById('titleSwitch')
+    titleSwitch.onchange = () => {
+        titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
     }
     weekSwitch.onchange = init
 }

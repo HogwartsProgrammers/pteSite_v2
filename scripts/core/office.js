@@ -359,6 +359,8 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
         }).then(result => result.json()).then(result => result)
 
+        if (!posts[0].stat_id) return
+
         let stat_id = posts[0].stat_id.split(',')
         let stats = []
         
@@ -637,9 +639,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
 
         statInput.onblur = async event => {
-            console.log(currentWeek)
             if (!statInput.value) statInput.value = 0
-            console.log(currentDay)
 
             let data 
             weekSwitch.checked ? data = {date: currentWeek,value: statInput.value}  : data = {date: currentDay,value: statInput.value}
@@ -649,7 +649,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 let statIndex = stats.stat_data.indexOf(currentStat)
                 stats.stat_data[statIndex] = data
             } else stats.stat_data.push(data)
-            console.log(data)
 
             await fetch('/office/stats/update', {
                 method: 'POST',

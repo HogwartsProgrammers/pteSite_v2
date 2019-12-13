@@ -1,4 +1,4 @@
-.container.pl-2.pr-2
+.stats-container
     h1.text-center ИЦО
     .d-flex.mb-2
         .form-group.float-left
@@ -9,16 +9,17 @@
         .form-group.float-left
             label.form-switch.text-bold 
                 span без заголовков
-                input#weekSwitch(type="checkbox")
+                input#titleSwitch(type="checkbox")
                 i.form-icon
     - stats.sort((a,b) => a.sort - b.sort)
     section.mt-2.ml-2.mr-2
         .columns
             each stat in stats
-                .column.col-2.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2
-                    .card
-                        .card-header(style="height:0px").pt-0
-                            .card-title.stat-title.text-bold.text-center 
-                        .card-nav
-                            .my_dataviz(data-sid= stat.id)
+                if stat.active
+                    .column.col-2.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2
+                        .card
+                            .card-header(style="height:0px").pt-0
+                                .card-title.stat-title.text-bold.text-center 
+                            .card-nav
+                                .my_dataviz(data-sid= stat.id)
                         

@@ -4634,6 +4634,10 @@ img {
     position: relative;
     top: 0.3rem;
 }
+.stats-container {
+    margin: 0 auto;
+    max-width: 85rem;
+}
 
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
 *::-webkit-scrollbar {width: 6px;height: 6px;}

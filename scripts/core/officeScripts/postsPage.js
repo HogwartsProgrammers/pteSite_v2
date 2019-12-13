@@ -24,7 +24,7 @@ export function init() {
             })
         } else {
             tr.forEach(el => {
-                if (!el.querySelector('input').checked) el.classList.add('d-hide')
+                if (!el.querySelector('td:nth-child(4) input').checked) el.classList.add('d-hide')
             })
         }
     }
@@ -69,7 +69,6 @@ export function init() {
             if (!users.length) return sugetion.innerHTML = ''
             sugetion.innerHTML = ''
             users.forEach(user => {
-                console.log(post.users)
                 if (post.users.split(',').find(uid => uid == user.id)) return
                 const li = document.createElement('li')
                 li.classList.add('menu-item')
@@ -147,7 +146,6 @@ export function init() {
             if (!stats.length) return sugetion.innerHTML = ''
             sugetion.innerHTML = ''
             stats.forEach(stat => {
-                console.log(post, post.stat_id)
                 if (post.stat_id.split(',').find(sid => sid == stat.id)) return
                 const li = document.createElement('li')
                 li.classList.add('menu-item')

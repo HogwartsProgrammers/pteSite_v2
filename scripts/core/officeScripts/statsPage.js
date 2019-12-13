@@ -136,7 +136,7 @@ export function init() {
             last_day: 5,
         })
         const tr = document.createElement('tr')
-        tr.innerHTML = `<td contenteditable="true"></td><td><button class="btn btn-link text-gray">Открыть описание</button></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked><i class="form-icon"></i></label></div></td>`
+        tr.innerHTML = `<td class="text-center"><i class="icon icon-menu c-hand"></i></td><td contenteditable="true"></td><td><button class="btn btn-link text-gray">Открыть описание</button></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked="checked"><i class="form-icon"></i></label></div></td>`
         tr.querySelectorAll('td:nth-child(2),td:nth-child(3)').forEach(td => td.setAttribute('data-data', statData))
         document.querySelector('table tbody').insertAdjacentElement('beforeend', tr)
         init()
