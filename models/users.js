@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs')
 const db = require('./database')
 
 module.exports = class User {
-    constructor(id, login = null, pass, fio = '', role = 0, active = 1, posts) {
+    constructor(id, login = null, pass, fio = '', role = 0, active = 1, posts = '') {
         this.id = id
         this.login = login
         this.password = pass
