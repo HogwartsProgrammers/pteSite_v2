@@ -28,6 +28,12 @@ module.exports = () => {
                 database: 'pte',
                 password: '26091940'
             }
+            case 'DESKTOP-G7T9ARD': return {
+                host: 'localhost',
+                user: 'root',
+                database: 'pte',
+                password: '123456789'
+            }
             default: return {
                 host: 'fr79263q.beget.tech',
                 user: 'fr79263q_node',

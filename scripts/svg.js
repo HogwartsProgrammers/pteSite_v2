@@ -1,4 +1,4 @@
-import inView from './in-view.min'
+const inView = require('in-view')
 export function svgjsMain() {
   let speedBg = 240000
   let speedBgF = 120000
@@ -37,7 +37,7 @@ export function svgjsMain() {
   blackCog.node.dataset.id = 2
   whiteCog.animate(10000, '-').rotate(360).loop()
   blackCog.animate(10000, '-').rotate(-360).loop()
-
+  // console.log(inView)
     if (!inView.is(document.querySelector('#logo'))) {
         fsBGBack.pause()
         fsBGBackClone.pause()

@@ -1,5 +1,6 @@
 extends templates/tpl_office.pug
 block content
+    <script type="text/javascript" src="./js/suite.min.js"></script>
     input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
     input#userId(type="hidden", name="userId", value=id)
     input#access(type="hidden", value= access)
@@ -27,6 +28,19 @@ block content
                         label Аккаунт был создан 
                         br
                         b=  new Date(created).toISOString().split('T')[0].split('-')[2] + '.' + new Date(created).toISOString().split('T')[0].split('-')[1] + '.' + new Date(created).toISOString().split('T')[0].split('-')[0] + ' ' + new Date(created).toISOString().split('T')[1].slice(0,5)
+                        br
+                        label Пост
+                        if posts.filter(post => post.active).length > 1
+                            select#posts.c-hand.form-select.p-centered
+                                each post in posts
+                                    if post.active
+                                        option(value=post.id)= post.title
+                        else 
+                            select(disabled)#posts.c-hand.form-select.p-centered
+                                each post in posts
+                                    if post.active
+                                        option(value=post.id)= post.title
+
                 .col-4.col-md-12.card
                     .card-body
                         .h4.text-center Смена пароля
@@ -38,4 +52,31 @@ block content
                         input#newPassRepeat.form-input(placeholder="••••••••••" type="password")
                     .card-footer
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
+            .h1.text-center Редактирование статистик
+            #statsEditing.columns.mt-2
+                .column.col-6.col-md-12
+                    .d-flex.mb-2
+                        .form-group.float-left
+                            label.form-switch.text-bold 
+                                span Ежедневные
+                                input#weekSwitch(type="checkbox")
+                                i.form-icon
+                    .d-flex
+                        #edit_stats
+                            #select_stats.form-group.p-centered
+                                select#stats.form-select
+                            #stats_calendar.animated.fadeIn.faster
+                            #stats_calendar_weeks.animated.fadeIn.faster.d-hide
+                                #calendar_header.d-flex
+                                    button.dhx_calendar-navigation__button.dhx_calendar-action__prev.dhx_button.dhx_button--view_link.dhx_button--icon.dhx_button--size_medium.dhx_button--color_secondary.dhx_button--icon.dhx_button--circle
+                                        .dhx_button__icon.dxi.dxi-chevron-left
+                                    button.dhx_calendar-action__show-year.dhx_button.dhx_button--view_link.dhx_button--size_small.dhx_button--color_secondary.dhx_button--circle 2019
+                                    button.dhx_calendar-navigation__button.dhx_calendar-action__next.dhx_button.dhx_button--view_link.dhx_button--icon.dhx_button--size_medium.dhx_button--color_secondary.dhx_button--icon.dhx_button--circle
+                                        .dhx_button__icon.dxi.dxi-chevron-right
+                                #calendar_body.d-flex
+                            input(type="number")#stats_value.form-input.mt-2
+                        #stat
+                            #my_dataviz.dragscroll(style="max-width:100%; overflow:auto")
+
+                        
 

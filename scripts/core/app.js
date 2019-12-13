@@ -1,5 +1,5 @@
-const Cleave = require('cleave.js')
-const inView = require('../in-view.min')
+import Cleave from 'cleave.js';
+const inView = require('in-view')
 
 //функционал верхних стадий
 if (location.pathname.toLocaleLowerCase() == '/') require ('../svg.js').svgjsMain()

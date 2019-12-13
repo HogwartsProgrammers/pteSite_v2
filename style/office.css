@@ -3,10 +3,17 @@
 @import 'animate.min.css';
 @import 'common.css';
 @import 'spectre-icons.css';
+@import 'spectre-exp.css';
+
+.lg-grid {
+    max-width: 976px;
+    margin: 0 auto;
+}
 
 .ma {
     margin: auto !important;
 }
+
 
 .mla {
     margin-left: auto !important;
@@ -219,6 +226,10 @@
 
 #stepsHolder .input-group{
     height: fit-content;
+}
+
+#statsEditing #weekSwitch{
+    margin-left:3rem !important;
 }
 
 .form-switch {
@@ -890,6 +901,123 @@ img {
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
+.form-autocomplete .menu:empty {
+    display: none
+}
+
+#select_stats {
+    max-width: 12.6rem;
+}
+
+#calendar_body {
+    width: 12.4rem;
+}
+
+#calendar_body {
+    flex-wrap: wrap;
+}
+
+#calendar_header {
+    align-items: center;
+    text-align:center;
+    justify-content: space-between;
+    margin: -4px 2px 4px;
+}
+
+#calendar_header .arrow-btn {
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 50%;
+    color: #4d4d4d;
+    outline-width: 0;
+    border-radius: 32px;
+    display: flex;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+    text-align: center;
+    background: transparent;
+    transition: background-color .2s ease-in,box-shadow .2s ease-in;
+    padding: 6px 16px;
+    text-transform: uppercase;
+    overflow: visible;
+    position: relative;
+    text-decoration: none;
+    border: 0;
+    touch-action: manipulation;
+    -webkit-appearance: none;
+    user-select: none;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "liga";
+}
+
+#calendar_header .arrow-btn {
+    line-height: 0;
+    pointer-events: none;
+    display: inline-block;
+    text-rendering: auto;
+    font-size: 0;
+}
+
+#calendar_header .arrow-btn {
+    line-height: 0;
+    pointer-events: none;
+    display: inline-block;
+    text-rendering: auto;
+    font-size: 0;
+}
+
+
+#calendar_body .btn-week {
+    min-width: 1.9rem;
+}
+
+#stats_calendar_weeks {
+    padding: 0.6rem;
+    background-color: #fff;
+    box-shadow: 0px 0px 20px 20px rgba(0,0,0,0.05);
+    width: 12.4rem;
+    padding-left: 10px;
+}
+
+.my_dataviz {
+    padding-left: 10px
+}
+.card-title {
+    
+    position: relative;
+    top: 0.3rem;
+}
+.stats-container {
+    margin: 0 auto;
+    max-width: 85rem;
+}
+
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
 *::-webkit-scrollbar {width: 6px;height: 6px;}
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}
+
+@media (max-width: 1650px) {
+    .col-xxl-3 {
+        width: 25%;
+    }
+}
+
+
+@media (max-width: 2560px) {
+   .card  {
+        /* min-height: 15rem; */
+   } 
+
+   .card .card-header {
+        /* height: 88px; */
+   }
+}

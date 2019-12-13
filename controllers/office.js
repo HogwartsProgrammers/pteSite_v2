@@ -1,14 +1,16 @@
 const bcrypt = require('bcryptjs')
 const cfg = require('./config')
-const Users = require('../models/users')
-const Lids = require('../models/lids')
-const Pipes = require('../models/pipes')
-const Steps = require('../models/steps')
 const Chanels = require('../models/chanels')
-const Phones = require('../models/phones')
-const Email = require('../models/email')
 const Contacts = require('../models/contacts')
+const Email = require('../models/email')
+const Lids = require('../models/lids')
+const Users = require('../models/users')
+const Pipes = require('../models/pipes')
+const Phones = require('../models/phones')
 const Privilages = require('../models/privilages')
+const Posts = require('../models/posts')
+const Steps = require('../models/steps')
+const Stats = require('../models/stats')
 
 const getTasksAmount = userId => {
     return new Lids().fetchAll().then(data => {
@@ -47,12 +49,15 @@ exports.getOffice = (req, res, next) => {
         if (req.session.UserLogged) {
             if (privData[0][0].privilage_data.main != 'none')
             getTasksAmount(req.session.user.id).then(a => {
-                res.render('office', {
-                    pageTitle: 'Панель администрирования',
-                    year: cfg.year,
-                    path: cfg.path(),
-                    access: privData[0][0].privilage_data.main,
-                    tasks: a
+                Posts.fetchAll().then(posts => {
+                    res.render('office', {
+                        pageTitle: 'Панель администрирования',
+                        year: cfg.year,
+                        path: cfg.path(),
+                        access: privData[0][0].privilage_data.main,
+                        posts: posts[0].filter(post => post.users.split(',').find(uid => uid == req.session.user.id)),
+                        tasks: a
+                    })
                 })
             })
             else 
@@ -120,16 +125,22 @@ exports.getCabinet = (req, res, next) => {
         ])
         .then(result => {
             getTasksAmount(req.session.user.id).then(a => {
-                res.render('cabinet', {
-                    pageTitle: 'Панель администрирования',
-                    year: cfg.year,
-                    path: cfg.path(),
-                    mail: result[0][0][0].login,
-                    fio: result[0][0][0].fio,
-                    id: result[0][0][0].id,
-                    created: result[0][0][0].created,
-                    privilage: result[1][0].find(el => el.id == result[0][0][0].role ? true : false),
-                    tasks: a
+                Stats.fetchAll().then(stats => {
+                    Posts.fetchAll().then(posts => {
+                        res.render('cabinet', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            mail: result[0][0][0].login,
+                            fio: result[0][0][0].fio,
+                            id: result[0][0][0].id,
+                            created: result[0][0][0].created,
+                            privilage: result[1][0].find(el => el.id == result[0][0][0].role ? true : false),
+                            stats: stats[0],
+                            posts: posts[0].filter(post => post.users.split(',').find(uid => uid == req.session.user.id)),
+                            tasks: a
+                        })
+                    })
                 })
             })
         })
@@ -172,7 +183,30 @@ exports.getPrivilagesPage = (req, res, next) => {
             res.redirect('/login')
         }
     })
-    else res.render('noProfile', {         pageTitle: 'Панель администрирования',         year: cfg.year,         path: cfg.path()     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования',year: cfg.year,path: cfg.path()})
+}
+
+exports.getCicPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.stats != 'none')
+            Stats.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        res.render('cic', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            stats: result[0],
+                            tasks: a,
+                        })
+                    })
+                })
+            })
+        }
+    })
 }
 
 // Отправка всех данных о лидах
@@ -283,7 +317,89 @@ exports.getPipes = (req, res, next) => {
             res.redirect('/login')
         }
     })
-    else res.render('noProfile', {         pageTitle: 'Панель администрирования',         year: cfg.year,         path: cfg.path()     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
+}
+
+// Отображение страницы users
+exports.getUsersPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.users != 'none')
+            Users.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    res.render('users', {
+                        pageTitle: 'Панель администрирования',
+                        year: cfg.year,
+                        path: cfg.path(),
+                        users: result[0],
+                        tasks: a,
+                    })
+                })
+            })
+            else  
+            res.render('noAccess', {
+                pageTitle: 'Панель администрирования',
+                year: cfg.year,
+                path: cfg.path()
+            })
+        } else {
+            res.redirect('/login')
+        }
+    })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
+}
+
+//Отображение страницы "Статистики"
+exports.getStatsPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.stats != 'none')
+            Stats.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        res.render('stats', {
+                            pageTitle: 'Панель администрирования',
+                            year: cfg.year,
+                            path: cfg.path(),
+                            stats: result[0],
+                            tasks: a,
+                        })
+                    })
+                })
+            })
+        }
+    })
+}
+
+exports.getPostsPage = (req, res, next) => {
+    if (!req.session.user) res.redirect('/login')
+    if (req.session.user.role != 0)
+    new Privilages().findById(req.session.user.role).then(privData => {
+        if (req.session.UserLogged) {
+            if (privData[0][0].privilage_data.posts != 'none')
+            Posts.fetchAll().then(result => {
+                getTasksAmount(req.session.user.id).then(a => {
+                    Users.fetchAll().then(users => {
+                        Stats.fetchAll().then(stats => {
+                            res.render('posts', {
+                                pageTitle: 'Панель администрирования',
+                                year: cfg.year,
+                                path: cfg.path(),
+                                posts: result[0],
+                                tasks: a,
+                                users: users[0],
+                                stat_id: stats[0]
+                            })
+                        })
+                    })
+                })
+            })
+        }
+    })
 }
 
 // Создание нового pipe
@@ -737,7 +853,8 @@ exports.updatePrivilages = (req, res, next) => {
                 user.login,
                 user.password,
                 user.fio,
-                0
+                0,
+                user.posts
             ).update()
         }))
         return
@@ -793,8 +910,139 @@ exports.updateUser = (req, res, next) => {
             oldData[0][0].password,
             user.fio ? user.fio : oldData[0][0].fio,
             user.role ? user.role : oldData[0][0].role,
+            user.active != undefined ? user.active : oldData[0][0].active,
+            user.posts != undefined ? user.posts : oldData[0][0].posts,
         ).update().then(result => {
             res.status(201).json(result[0])
+        })
+    })
+}
+
+exports.updatePosts = (req, res, next) => {
+    const posts = JSON.parse(JSON.stringify(req.body))
+
+    if (posts.cmd == 'delete') {
+        new Posts(posts.id).delete().then(() => res.status(201).json('deleted'))
+        return
+    }
+
+    if (posts.id)
+    new Posts().findById(posts.id).then(oldData => {
+        new Posts(
+            posts.id,
+            posts.parent ? posts.parent : oldData[0][0].parent,
+            posts.active != undefined ? posts.active : oldData[0][0].active,
+            posts.title ? posts.title : oldData[0][0].title,
+            posts.users != undefined ? posts.users : oldData[0][0].users,
+            posts.stat_id != undefined ? posts.stat_id : oldData[0][0].stat_id,
+        ).update().then(async result => {
+            if (posts.users != undefined) {
+                const postUsers = posts.users.split(',')
+                const users = (await Users.fetchAll())[0]
+                console.log(users)
+                users.forEach(user => {
+                    if (postUsers.find(uid => uid == user.id) && !user.posts.split(',').find(pid => pid == posts.id)) {
+                        Users.findById(user.id).then(oldData => {
+                            oldData[0][0].posts = oldData[0][0].posts.length ? oldData[0][0].posts.split(',') : []
+                            oldData[0][0].posts.push(posts.id)
+                            oldData[0][0].posts = oldData[0][0].posts.join(',')
+                            new Users(
+                                user.id,
+                                oldData[0][0].login,
+                                oldData[0][0].password,
+                                oldData[0][0].fio,
+                                oldData[0][0].role,
+                                oldData[0][0].active,
+                                oldData[0][0].posts
+                        ).update()})
+                    }
+                    if (!postUsers.find(uid => uid == user.id) && user.posts.split(',').find(pid => pid == posts.id)) {
+                        Users.findById(user.id).then(oldData => {
+                            oldData[0][0].posts = oldData[0][0].posts.length ? oldData[0][0].posts.split(',') : []
+                            const index = oldData[0][0].posts.indexOf(posts.id)
+                            oldData[0][0].posts.splice(index, 1)
+                            oldData[0][0].posts = oldData[0][0].posts.join(',')
+                            new Users(
+                                user.id,
+                                oldData[0][0].login,
+                                oldData[0][0].password,
+                                oldData[0][0].fio,
+                                oldData[0][0].role,
+                                oldData[0][0].active,
+                                oldData[0][0].posts
+                        ).update()})
+                    }
+                })
+            }
+            console.log(result)
+            res.status(201).json(result[0])
+        })
+    })
+    
+    else {
+        new Posts(
+            null,
+            posts.parent ? posts.parent : null,
+            posts.active != undefined ? posts.active : 1,
+            posts.title ? posts.title : null,
+            posts.users != undefined ? posts.users : '',
+            posts.stat_id != undefined ? posts.stat_id : '',
+        ).save().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
+
+exports.updateStats = (req, res, next) => {
+    const stats = JSON.parse(JSON.stringify(req.body))
+    console.log(stats)
+
+    if (stats.id)
+    new Stats().findById(stats.id).then(oldData => {
+        console.log(oldData[0][0])
+        new Stats(
+            stats.id,
+            stats.title ? stats.title : oldData[0][0].title,
+            stats.description ? stats.description : oldData[0][0].description,
+            stats.reverted != undefined ? stats.reverted : oldData[0][0].reverted,
+            stats.active != undefined ? stats.active : oldData[0][0].active,
+            stats.stat_data ? stats.stat_data : oldData[0][0].stat_data,
+            stats.last_day != undefined ? stats.last_day : oldData[0][0].last_day,
+            stats.sort != undefined ? stats.sort : oldData[0][0].sort,
+        ).update().then(result => res.status(201).json(result[0]))
+    })
+    else {
+        new Stats(
+            null,
+            stats.title ? stats.title : null,
+            stats.description ? stats.description : null,
+            stats.reverted != undefined ? stats.reverted : 0,
+            stats.active != undefined ? stats.active : 1,
+            stats.stat_data ? stats.stat_data : null,
+            stats.last_day != undefined ? stats.last_day : 5,
+            stats.sort != undefined ? stats.sort : null,
+            ).save().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
+exports.postSortStats = (req, res) => {
+    const stats = JSON.parse(JSON.stringify(req.body))
+    console.log(stats)
+    stats.id.forEach((el, i) => {
+        new Stats().findById(el).then(oldData => {
+            new Stats(
+                el,
+                oldData[0][0].title,
+                oldData[0][0].description,
+                oldData[0][0].reverted,
+                oldData[0][0].active,
+                oldData[0][0].stat_data,
+                oldData[0][0].last_day,
+                i,
+            ).update().then(result => res.status(201).json(result[0]))
         })
     })
 }
@@ -817,12 +1065,58 @@ exports.getUsersList = (req, res, next) => {
             res.status(201).json(result[0])
         })
         break
+        case 'search': 
+        Users.search(income.fio).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
         default :
         Users.fetchAll().then(result => {
             res.status(201).json(result[0])
         })
     }
 }
+
+exports.getPostsList = (req, res, next) => {
+    const income = JSON.parse(JSON.stringify(req.body))
+    switch (income.find) {
+        case 'byid': 
+        new Posts().findById(income.id).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        case 'search': 
+        Posts.search(income.title).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        default :
+        Posts.fetchAll().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
+exports.getStatsList = (req, res, next) => {
+    const income = JSON.parse(JSON.stringify(req.body))
+    switch (income.find) {
+        case 'byid': 
+        new Stats().findById(income.id).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        case 'search': 
+        Stats.search(income.title).then(result => {
+            res.status(201).json(result[0])
+        })
+        break
+        default :
+        Stats.fetchAll().then(result => {
+            res.status(201).json(result[0])
+        })
+    }
+}
+
 
 exports.getTasksPage = (req, res, next) => {
     if (!req.session.user) res.redirect('/login')

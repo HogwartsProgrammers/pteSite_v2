@@ -1,0 +1,53 @@
+input#access(type="hidden", value= access)
+input#csrfToken(type="hidden", name="_csrf", value= csrfToken)
+.col-12.p-centered.mt-2.lg-grid
+    .d-flex
+        .form-group
+            label#showInactive.form-switch Отобразить неактивных
+                input(type="checkbox")
+                i.form-icon
+        button#addStat.btn.btn-sm Добавить
+    table.table
+        thead
+            tr
+                th 
+                th Название
+                th Описание
+                th Операции
+        tbody
+            - stats.sort((a,b) => a.sort - b.sort)
+            each stat in stats
+                if stat.active
+                    tr(data-sid=JSON.stringify(stat.id), data-data=JSON.stringify(stat.sort))
+                        td.text-center
+                            i.icon.icon-menu.c-hand
+                        td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
+                        td(data-data=JSON.stringify(stat))
+                            button.btn.btn-link.text-gray Открыть описание
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
+                                    i.form-icon
+                else
+                    tr.d-hide(data-sid=JSON.stringify(stat.id), data-data=JSON.stringify(stat.sort))
+                        td.text-center
+                            i.icon.icon-menu.c-hand
+                        td(contenteditable="true", data-data=JSON.stringify(stat))= stat.title
+                        td(data-data=JSON.stringify(stat))
+                            button.btn.btn-link.text-gray Открыть описание
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!stat.active, data-uid= stat.id)
+                                    i.form-icon
+#modalDescription.modal
+  a.modal-overlay
+  .modal-container
+    .modal-header
+      a.btn.btn-clear.float-right.modal-close
+      .modal-title.h5.text-center Описание
+    #codex-editor.modal-body
+    .modal-footer
+        button.btn.btn-primary.modal-close Сохранить
+            

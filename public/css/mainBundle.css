@@ -3811,6 +3811,11 @@ a.text-error:visited {
     transform-origin: 50% 50% 0
 }
 
+.lg-grid {
+    max-width: 976px;
+    margin: 0 auto;
+}
+
 .callback_phone_button:hover {
     opacity: 1
 }

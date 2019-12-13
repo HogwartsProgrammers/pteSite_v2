@@ -1,0 +1,26 @@
+.stats-container
+    h1.text-center ВАША СТАТИСТИКА
+    .d-flex.mb-2
+        .form-group.float-left
+            label.form-switch.text-bold 
+                span Ежедневные
+                input#weekSwitch(type="checkbox")
+                i.form-icon
+        .form-group.float-left
+            label.form-switch.text-bold 
+                span без заголовков
+                input#titleSwitch(type="checkbox")
+                i.form-icon
+    each post in posts
+        section.mt-2.ml-2.mr-2
+            h2.text-center= post.title
+            .columns
+                each sid in post.stat_id.split(',')
+                    if sid
+                        .column.col-2.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2
+                            .card
+                                .card-header(style="height:0px").pt-0
+                                    .card-title.stat-title.text-bold.text-center 
+                                .card-nav 
+                                    .my_dataviz.dragscroll(style="max-width:100%; overflow:auto", data-sid= sid)
+                            

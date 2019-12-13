@@ -1,0 +1,35 @@
+
+input#access(type="hidden", value= access)
+input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+.col-12.p-centered.mt-2.lg-grid
+    .form-group
+        label#showInactive.form-switch Отобразить неактивных
+            input(type="checkbox")
+            i.form-icon
+    table.table
+        thead
+            tr
+                th ФИО
+                th Логин
+                th Операции
+        tbody
+            each user in users
+                if user.active 
+                    tr
+                        td= user.fio 
+                        td= user.login
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!user.active, data-uid= user.id)
+                                    i.form-icon
+                else
+                    tr.d-hide
+                        td= user.fio 
+                        td= user.login
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!user.active, data-uid= user.id)
+                                    i.form-icon
+

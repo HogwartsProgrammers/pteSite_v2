@@ -1,0 +1,93 @@
+
+input#access(type="hidden", value= access)
+input#csrfToken(type="hidden", name="_csrf", value=csrfToken)
+.col-12.p-centered.mt-2.lg-grid
+    .d-flex
+        .form-group
+            label#showInactive.form-switch Отобразить неактивных
+                input(type="checkbox")
+                i.form-icon
+        button#addPost.btn.btn-sm Добавить
+    table.table
+        thead
+            tr
+                th Название
+                th Пользователи
+                th Статистики
+                th Операции
+        tbody
+            each post in posts
+                if post.active 
+                    tr
+                        td(contenteditable="true", data-data=JSON.stringify(post))= post.title
+                        td.users
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.users.length
+                                            each uid in post.users.split(',')
+                                                span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td.stats
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.stat_id.length
+                                            each sid in post.stat_id.split(',')
+                                                span.chip(data-id=sid)= stat_id.find(stat => stat.id == sid).title
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!post.active, data-uid= post.id)
+                                    i.form-icon
+                else
+                    tr.d-hide
+                        td(contenteditable="true", data-data=JSON.stringify(post))= post.title
+                        td.users
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.users.length
+                                            each uid in post.users.split(',')
+                                                span.chip(data-id=uid)= users.find(user => user.id == uid).fio
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td.stats
+                            .form-autocomplete(data-data=JSON.stringify(post))
+                                .form-autocomplete-input
+                                    .chips
+                                        if post.stat_id.length
+                                            each sid in post.stat_id.split(',')
+                                                span.chip(data-id=sid)= stat_id.find(stat => stat.id == sid).title
+                                                    a.btn.btn-clear
+                                    input.form-input(type="text", placeholder="Поиск")
+                                ul.menu
+                        td
+                            .form-group
+                                label.operations.form-switch
+                                    input(type="checkbox", checked=!!post.active, data-uid= post.id)
+                                    i.form-icon
+//- #postCreator.modal.active
+  a.modal-overlay
+  .modal-container
+    .modal-header
+      a.btn.btn-clear.float-right
+      .modal-title.h5.text-center НОВЫЙ ПОСТ
+    .modal-body
+        .form-group
+            label.form-label Название
+            input#postName.form-input(type="text", placeholder="Введите название")
+            label.form-label Пользователи
+            .form-autocomplete
+                .form-autocomplete-input
+                    .chips
+                        input.form-input(type="text", placeholder="Поиск")
+                ul.menu
+    .modal-footer
+        button.btn.btn-primary.float-right Добавить
