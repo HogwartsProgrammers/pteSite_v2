@@ -40,7 +40,7 @@ db.execute('CREATE TABLE IF NOT EXISTS `stats` (`id` INT(10) UNSIGNED NOT NULL A
 console.log('All missing tables have been created!')
 
 db.execute('SELECT * FROM users').then(data => {
-    const jsonData = JSON.stringify({lids:"full",main:"full",pipes:"full",tasks:"full",chanels:"full",privilage:"full"})
+    const jsonData = JSON.stringify({lids:"full",main:"full",pipes:"full",tasks:"full",chanels:"full",privilage:"full",tasks:"full",users:"full",posts:"full",stats:"full"})
 
     if (data[0].length == 0) {
         Promise.all([

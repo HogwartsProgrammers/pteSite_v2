@@ -744,7 +744,6 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
     const setPrivilages = privilage_data => {
         console.log(privilage_data)
         const setAccess = (el, access) => {
-            console.log(access)
             el.querySelector('input[data-access="'+access+'"]').checked = true
         }
 
@@ -775,9 +774,8 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
     const disablePrivilages = privilage_data => {
         privilagesModal.querySelectorAll('input[data-access="full"]').forEach(radio => radio.disabled = true)   
         const disable = (el, access) => {
-            const level = access == 'full' ? 2 : access == 'watch' ? 1 : 0
-            el.querySelector('input[data-access="full"]').disabled = level == 2 ? false : true
-            el.querySelector('input[data-access="watch"]').disabled = level >= 1 ? false : true
+            el.querySelector('input[data-access="full"]').disabled = access == 'full' ? false : true
+            el.querySelector('input[data-access="watch"]').disabled = access == 'full' || access == 'watch' ? false : true
         }
 
         for (let key in privilage_data) {
@@ -792,13 +790,13 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
                 break
                 case 'privilage': disable(privilagesAccess, privilage_data[key])
                 break
-                case 'tasks': disable(privilagesAccess, privilage_data[key])
+                case 'tasks': disable(tasksAccess, privilage_data[key])
                 break
-                case 'users': disable(privilagesAccess, privilage_data[key])
+                case 'users': disable(usersAccess, privilage_data[key])
                 break
-                case 'posts': setAccess(postsAccess, privilage_data[key])
+                case 'posts': disable(postsAccess, privilage_data[key])
                 break
-                case 'stats': setAccess(statsAccess, privilage_data[key])
+                case 'stats': disable(statsAccess, privilage_data[key])
             }
         }
     }
