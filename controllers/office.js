@@ -1020,7 +1020,7 @@ exports.updateStats = (req, res, next) => {
             stats.reverted != undefined ? stats.reverted : 0,
             stats.active != undefined ? stats.active : 1,
             stats.stat_data ? stats.stat_data : null,
-            stats.last_day != undefined ? stats.last_day : 5,
+            stats.last_day != undefined ? stats.last_day : 3,
             stats.sort != undefined ? stats.sort : null,
             ).save().then(result => {
             res.status(201).json(result[0])

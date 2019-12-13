@@ -133,7 +133,7 @@ export function init() {
             reverted: 0,
             active: 1,
             stat_data: null,
-            last_day: 5,
+            last_day: 3,
         })
         const tr = document.createElement('tr')
         tr.innerHTML = `<td class="text-center"><i class="icon icon-menu c-hand"></i></td><td contenteditable="true"></td><td><button class="btn btn-link text-gray">Открыть описание</button></td><td><div class="form-group"><label class="operations form-switch"><input type="checkbox" checked="checked"><i class="form-icon"></i></label></div></td>`
