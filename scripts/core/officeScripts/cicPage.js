@@ -142,6 +142,7 @@ export function init() {
     })
 
     const drawStats = (data,svg) => {
+        if (!data.find(el => el.value != 0)) return
         data = data.map(day => {
             return {
                 date: day.date,

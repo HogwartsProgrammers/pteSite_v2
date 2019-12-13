@@ -357,6 +357,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const postsSelect = document.getElementById('posts')
     
     const selectPost = async () => {
+        if (!postsSelect.querySelector('option')) return
         const posts = await fetch('/office/posts', {
             method: 'POST',
             body: JSON.stringify({
