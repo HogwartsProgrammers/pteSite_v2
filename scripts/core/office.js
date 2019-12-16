@@ -580,6 +580,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }
 
         if (!weekSwitch.checked) {
+            document.getElementById('edit_stats').classList.remove('d-hide')
             if (currentDay)  statInput.classList.remove('d-hide') 
             for (let i = 0; i < 7; i++) {
                 document.getElementById('stats_calendar_weeks').classList.add('d-hide')
@@ -594,40 +595,44 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }
 
         if (weekSwitch.checked) {
+            document.getElementById('edit_stats').classList.add('d-hide')
+            statInput.classList.add('d-hide') 
             currentWeek ? statInput.classList.remove('d-hide') : statInput.classList.add('d-hide')
             document.getElementById('stats_calendar').classList.add('d-hide')
-            document.getElementById('stats_calendar_weeks').classList.remove('d-hide')
+            // document.getElementById('stats_calendar_weeks').classList.remove('d-hide')
             let currentYearDays = stats.stat_data.filter(stat => stat.date.split('.')[2] == new Date().getFullYear())
             currentYearDays.filter(stat => {
                 const day = new Date(stat.date.split('.')[2],stat.date.split('.')[1] - 1,stat.date.split('.')[0]).getDay()
                 return (day || 7) == stats.last_day
             })
 
-            let i = new Date(new Date().getFullYear(),0,1).getDay()
+            
+            let i = new Date(new Date().getFullYear(),0,1)
 
-            i - stats.last_day <= 0 
-            ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
-            : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
-
-            const weeksHolder = document.getElementById('calendar_body')
-
-            let everyLastDayCurrentYear = []
-            let noWeek = 1
-            while (i.getFullYear() == new Date().getFullYear() ) {
-                let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}` 
-                if (weeksHolder.querySelectorAll('.btn-week').length < 52) {
-                    let week = document.createElement('button')
-                    week.classList.add('btn-week', 'btn', 'btn-sm', 'btn-link', 'tooltip')
-                    week.dataset.date = date
-                    week.dataset.tooltip = date
-                    week.innerText = noWeek
-                    weeksHolder.insertAdjacentElement('beforeend', week)
-                }
-                everyLastDayCurrentYear.push(stats.stat_data.find(data => data.date == date) || {date,value:0})
-                i = new Date(i.setDate(i.getDate() + 7))
-                noWeek++
+            // i - stats.last_day <= 0 
+            // ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
+            // : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
+            let day = {
+                date: null,
+                value: 0
             }
-            drawStats(everyLastDayCurrentYear)
+
+            while (i.getFullYear() == new Date().getFullYear()) {
+                let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                if (i.getDay() == stats.last_day) {
+                    day.value += stats.stat_data.find(data => data.date == date) ? Number(stats.stat_data.find(data => data.date == date).value) : 0
+                    day.date = date
+                    currentWeekDays.push(day)
+                    day = {
+                        date: null,
+                        value: 0
+                    }
+                } else {
+                    day.value += stats.stat_data.find(data => data.date == date) ? Number(stats.stat_data.find(data => data.date == date).value) : 0
+                }
+                i = new Date(i.setDate(i.getDate() + 1))
+            }
+            drawStats(currentWeekDays)
         }
         
         dhxCalendar.events.on('Change', () => {

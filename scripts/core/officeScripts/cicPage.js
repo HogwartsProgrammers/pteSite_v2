@@ -123,16 +123,30 @@ export function init() {
             //     return (day || 7) == stats.last_day
             // })
 
-            let i = new Date(new Date().getFullYear(),0,1).getDay()
+            let i = new Date(new Date().getFullYear(),0,1)
 
-            i - stats.last_day <= 0 
-            ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
-            : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
+            // i - stats.last_day <= 0 
+            // ? i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() - (i - stats.last_day)))
+            // : i = new Date(new Date(new Date().getFullYear(),0,1).setDate(new Date(new Date().getFullYear(),0,1).getDate() + (7 - (i -stats.last_day))))
+            let day = {
+                date: null,
+                value: 0
+            }
 
-            while (i.getFullYear() == new Date().getFullYear() ) {
+            while (i.getFullYear() == new Date().getFullYear()) {
                 let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
-                currentDays.push(stats.stat_data.find(data => data.date == date) || {date,value:0})
-                i = new Date(i.setDate(i.getDate() + 7))
+                if (i.getDay() == stats.last_day) {
+                    day.value += stats.stat_data.find(data => data.date == date) ? Number(stats.stat_data.find(data => data.date == date).value) : 0
+                    day.date = date
+                    currentDays.push(day)
+                    day = {
+                        date: null,
+                        value: 0
+                    }
+                } else {
+                    day.value += stats.stat_data.find(data => data.date == date) ? Number(stats.stat_data.find(data => data.date == date).value) : 0
+                }
+                i = new Date(i.setDate(i.getDate() + 1))
             }
         }
 
