@@ -167,7 +167,8 @@ export function init() {
         
         svg.x.domain([1,data.length])
         svg.y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
-        // if (svg)
+        // data.forEach(el => el)
+        console.log(data)
         svg.path.data([data])
             .attr('fill', 'none')
             .attr('stroke', '#000')

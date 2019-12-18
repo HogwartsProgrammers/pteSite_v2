@@ -436,12 +436,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
     const yAxisGroup = graph.append('g')
         .attr('class', 'y-axis')
-        
-    const line = d3.line()
-        .x(function(d,i,a){ return x(i + 1)})
-        .y(function(d){ return y(d.value)})
-
-    const path = graph.append('path')
 
     const dottedLines = graph.append('g')
         .attr('class', 'lines')
@@ -457,6 +451,12 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', 4)
 
+    const dottedValue = graph.append('g')
+        .attr('class', 'value')
+
+    const lines = graph.append('g')
+        .attr('class', 'lines2')
+
     const dateFromString = (date) => new Date(date.split('.')[2],date.split('.')[1] - 1,date.split('.')[0])
 
     const drawStats = (data) => {
@@ -470,11 +470,130 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         x.domain([1,data.length])
         y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
 
-        path.data([data])
-            .attr('fill', 'none')
-            .attr('stroke', '#000')
-            .attr('stroke-width', 2)
-            .attr('d', line)
+        const line2 = lines.selectAll('line')
+            .data(data)
+
+        line2.exit().remove()
+
+        line2
+            .attr('x1', (d,i) => {
+                if (!data[i + 1]) {
+                    return x(0)
+                } else {
+                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
+                    else if (data[i].value == 0) return x(0)
+                    else return x(i + 1)
+                }
+            })
+            .attr('y1', (d,i) => {
+                if (!data[i + 1]) {
+                    return y(0)
+                } else {
+                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
+                    else if (data[i].value == 0) return y(0)
+                    else return y(d.value)
+                }
+            })
+            .attr('x2', (d,i) => {
+                if (!data[i + 1]) {
+                    return x(0)
+                } else
+                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
+                    else if ((data[i + 1] ? data[i + 1].value : 0) == 0 || ((data[i + 1] ? data[i + 1].value : 0) == 0 && (data[i - 1] ? data[i - 1].value : 0) == 0)) return x(i + (data.indexOf(data.find((el, it) => {
+                        console
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) + 1))
+                    else if (data[i].value == 0) return x(0)
+                    else return x(i + 2)
+            })
+            .attr('y2', (d,i,n) => {
+                if (!data[i + 1]) {
+                    return y(0)
+                } else {
+                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
+                    else if ((data[i + 1] ? data[i + 1].value : 0) == 0) return y(data.find((el, it) => {
+                        if (it <= i) return false
+                        else return el.value != 0
+                    }).value)
+                    else if (data[i].value == 0) return y(0)
+                    else return y(data[i + 1] ? data[i + 1].value : 0)
+                }
+            })
+
+        line2.enter()
+            .append('line')
+                .attr('x1', (d,i) => {
+                    if (!data[i + 1]) {
+                        return x(0)
+                    } else {
+                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
+                        else if (data[i].value == 0) return x(0)
+                        else return x(i + 1)
+                    }
+                })
+                .attr('y1', (d,i) => {
+                    if (!data[i + 1]) {
+                        return y(0)
+                    } else {
+                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
+                        else if (data[i].value == 0) return y(0)
+                        else return y(d.value)
+                    }
+                })
+                .attr('x2', (d,i) => {
+                    if (!data[i + 1]) {
+                        return x(0)
+                    } else
+                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
+                        else if ((data[i + 1] ? data[i + 1].value : 0) == 0 || ((data[i + 1] ? data[i + 1].value : 0) == 0 && (data[i - 1] ? data[i - 1].value : 0) == 0)) return x(i + (data.indexOf(data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        })) + 1))
+                        else if (data[i].value == 0) return x(0)
+                        else return x(i + 2)
+                })
+                .attr('y2', (d,i,n) => {
+                    if (!data[i + 1]) {
+                        return y(0)
+                    } else {
+                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
+                        else if ((data[i + 1] ? data[i + 1].value : 0) == 0) return y(data.find((el, it) => {
+                            if (it <= i) return false
+                            else return el.value != 0
+                        }).value)
+                        else if (data[i].value == 0) return y(0)
+                        else return y(data[i + 1] ? data[i + 1].value : 0)
+                    }
+                })
+                .attr('stroke', '#000')
+                .attr('stroke-width', 3)
+
+        const text = dottedValue.selectAll('text')
+            .data(data)
+
+        text.exit().remove()
+        
+        text
+            .attr('x', (d,i) => x(i + 1))
+            .attr('y', d => y(d.value))
+            .text((d) => d.value)
+
+        text.enter()
+            .append('text')
+                .attr('x', (d,i) => x(i + 1))
+                .attr('y', d => y(d.value))
+                .attr('fill', 'currentColor')
+                .style('opacity', '0')
+                .text(d => d.value)
+
+        dottedValue.selectAll('text')
+            .attr('transform', 'rotate(0) translate(0, -13)')
+
 
         const circles = graph.selectAll('circle')
             .data(data)
@@ -487,13 +606,25 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
         circles.enter()
             .append('circle')
-                .attr('r', 4)
+                .attr('r', 0)
                 .attr('cx', (d,i) => x(i + 1))
                 .attr('cy', d => y(d.value))
                 .attr('fill', '#000')
+
+        svg
+            .on('mouseover', () => {
+                svg.selectAll('circle')  
+                    .attr('r', 4)
+            })
+            .on('mouseleave', () => {
+                d3.selectAll('circle')  
+                    .attr('r', 0)
+            })
             
         graph.selectAll('circle')
             .on('mouseover', (d,i,n) => {
+                dottedValue.selectAll('text')._groups[0][i].style.opacity = 1
+
                 d3.select(n[i])
                     .transition().duration(100)
                         .attr('r', 8)
@@ -512,6 +643,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 dottedLines.style('opacity', 1)
             })
             .on('mouseleave', (d,i,n) => {
+                dottedValue.selectAll('text')._groups[0][i].style.opacity = 0
                 d3.select(n[i])
                     .transition().duration(100)
                         .attr('r', 4)
@@ -522,9 +654,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         
         const xAxis = d3.axisBottom(x)
             .ticks(data.length)
+            .tickSize(10)
             .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date)
 
         const yAxis = d3.axisLeft(y)
+            .tickSize(10)
             .ticks(4)
         
         xAxisGroup.call(xAxis)
