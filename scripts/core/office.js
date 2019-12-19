@@ -477,97 +477,138 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
         line2
             .attr('x1', (d,i) => {
-                if (!data[i + 1]) {
+                if (!data[i + 1] || !data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                })) {
                     return x(0)
                 } else {
-                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
-                    else if (data[i].value == 0) return x(0)
+                    if (data[i].value == 0) return x(0)
                     else return x(i + 1)
                 }
             })
             .attr('y1', (d,i) => {
-                if (!data[i + 1]) {
+                if (!data[i + 1] || !data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                })) {
                     return y(0)
                 } else {
-                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
-                    else if (data[i].value == 0) return y(0)
+                    if (data[i].value == 0) return y(0)
                     else return y(d.value)
                 }
             })
             .attr('x2', (d,i) => {
-                if (!data[i + 1]) {
+                if (!data[i + 1] || !data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                })) {
                     return x(0)
                 } else
-                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
-                    else if ((data[i + 1] ? data[i + 1].value : 0) == 0 || ((data[i + 1] ? data[i + 1].value : 0) == 0 && (data[i - 1] ? data[i - 1].value : 0) == 0)) return x(i + (data.indexOf(data.find((el, it) => {
-                        console
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) + 1))
-                    else if (data[i].value == 0) return x(0)
-                    else return x(i + 2)
+                    if (data[i].value == 0) return x(0)
+                    else {
+                        return x((i + 2) + (data.indexOf(data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        })) - (i + 1)))
+                    }
             })
             .attr('y2', (d,i,n) => {
-                if (!data[i + 1]) {
+                if (!data[i + 1] || !data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                })) {
                     return y(0)
                 } else {
-                    if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
-                    else if ((data[i + 1] ? data[i + 1].value : 0) == 0) return y(data.find((el, it) => {
-                        if (it <= i) return false
-                        else return el.value != 0
-                    }).value)
-                    else if (data[i].value == 0) return y(0)
-                    else return y(data[i + 1] ? data[i + 1].value : 0)
+                    if (data[i].value == 0) return y(0)
+                    else {
+                        return y(data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                console.log(el.value != 0)
+                                return el.value != 0
+                            }
+                        }).value)
+                    }
                 }
             })
 
         line2.enter()
             .append('line')
                 .attr('x1', (d,i) => {
-                    if (!data[i + 1]) {
+                    if (!data[i + 1] || !data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) {
                         return x(0)
                     } else {
-                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
-                        else if (data[i].value == 0) return x(0)
+                        if (data[i].value == 0) return x(0)
                         else return x(i + 1)
                     }
                 })
                 .attr('y1', (d,i) => {
-                    if (!data[i + 1]) {
+                    if (!data[i + 1] || !data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) {
                         return y(0)
                     } else {
-                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
-                        else if (data[i].value == 0) return y(0)
+                        if (data[i].value == 0) return y(0)
                         else return y(d.value)
                     }
                 })
                 .attr('x2', (d,i) => {
-                    if (!data[i + 1]) {
+                    if (!data[i + 1] || !data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) {
                         return x(0)
                     } else
-                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return x(0)
-                        else if ((data[i + 1] ? data[i + 1].value : 0) == 0 || ((data[i + 1] ? data[i + 1].value : 0) == 0 && (data[i - 1] ? data[i - 1].value : 0) == 0)) return x(i + (data.indexOf(data.find((el, it) => {
-                            if (it <= i) return false
-                            else {
-                                return el.value != 0
-                            }
-                        })) + 1))
-                        else if (data[i].value == 0) return x(0)
-                        else return x(i + 2)
+                        if (data[i].value == 0) return x(0)
+                        else {
+                            return x((i + 2) + (data.indexOf(data.find((el, it) => {
+                                if (it <= i) return false
+                                else {
+                                    return el.value != 0
+                                }
+                            })) - (i + 1)))
+                        }
                 })
                 .attr('y2', (d,i,n) => {
-                    if (!data[i + 1]) {
+                    if (!data[i + 1] || !data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) {
                         return y(0)
                     } else {
-                        if (d.value == 0 && (data[i + 1] ? data[i + 1].value : 0) == 0) return y(0)
-                        else if ((data[i + 1] ? data[i + 1].value : 0) == 0) return y(data.find((el, it) => {
-                            if (it <= i) return false
-                            else return el.value != 0
-                        }).value)
-                        else if (data[i].value == 0) return y(0)
-                        else return y(data[i + 1] ? data[i + 1].value : 0)
+                        if (data[i].value == 0) return y(0)
+                        else {
+                            return y(data.find((el, it) => {
+                                if (it <= i) return false
+                                else {
+                                    console.log(el.value != 0)
+                                    return el.value != 0
+                                }
+                            }).value)
+                        }
                     }
                 })
                 .attr('stroke', '#000')

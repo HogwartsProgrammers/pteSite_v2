@@ -1,4 +1,4 @@
-import vis from '../../vis.min.js'
+const vis = require('../../vis.min.js')
 
 const access = document.getElementById('access').value
 
