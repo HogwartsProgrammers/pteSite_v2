@@ -457,8 +457,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const lines = graph.append('g')
         .attr('class', 'lines2')
 
-    const dateFromString = (date) => new Date(date.split('.')[2],date.split('.')[1] - 1,date.split('.')[0])
-
     const drawStats = (data) => {
         data = data.map(day => {
             return {
@@ -542,6 +540,21 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                     }
                 }
             })
+            .attr('stroke', (d,i) => {
+                if (!data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                })) return '#000'
+                else return data.find((el, it) => {
+                    if (it <= i) return false
+                    else {
+                        return el.value != 0
+                    }
+                }).value < d.value ? 'red' : '#000'
+
+            })
 
         line2.enter()
             .append('line')
@@ -611,7 +624,21 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                         }
                     }
                 })
-                .attr('stroke', '#000')
+                .attr('stroke', (d,i) => {
+                    if (!data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) return '#000'
+                    else return data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    }).value < d.value ? 'red' : '#000'
+
+                })
                 .attr('stroke-width', 3)
 
         const text = dottedValue.selectAll('text')
@@ -647,7 +674,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
         circles.enter()
             .append('circle')
-                .attr('r', 0)
+                .attr('r', d => d.value == 0 ? 0 : 0)
                 .attr('cx', (d,i) => x(i + 1))
                 .attr('cy', d => y(d.value))
                 .attr('fill', '#000')
@@ -655,7 +682,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         svg
             .on('mouseover', () => {
                 svg.selectAll('circle')  
-                    .attr('r', 4)
+                    .attr('r', d => d.value == 0 ? 0 : 4)
             })
             .on('mouseleave', () => {
                 d3.selectAll('circle')  
