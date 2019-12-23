@@ -3,12 +3,13 @@ import *  as d3 from "d3"
 // params
 // const params = {
 //     statHolder: []
+//     height
 // } 
 
 export function drawStats(data,params) {
     
-    const margin = {top: 40, right: 30, bottom: 50, left: 60}
-    const graphHeight = 250 - margin.top - margin.bottom
+    const margin = {top: 40, right: 30, bottom: 50, left: 70}
+    const graphHeight = params.height - margin.top - margin.bottom
     const graphs = Array.from(params.statHolder).map((stat,i,a) => {
         stat.innerHTML = ''
         const svg = d3.select(stat)
@@ -52,12 +53,12 @@ export function drawStats(data,params) {
             .attr('class', 'lines2')
 
         return {
-            svg,graph,x,y,xAxisGroup,yAxisGroup,dottedLines,xDottedLine,yDottedLine,dottedValue,lines, sid: stat.dataset.sid
+            svg,graph,x,y,xAxisGroup,yAxisGroup,dottedLines,xDottedLine,yDottedLine,dottedValue,lines, stat, sid: stat.dataset.sid
         }
     })
-
     
     const drawStat = (data, svg) => {
+        console.log(data)
         data = data.map(day => {
             return {
                 date: day.date,
@@ -67,8 +68,8 @@ export function drawStats(data,params) {
         
         svg.x.domain([1,data.length])
         svg.y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
-    
-        const line2 = lines.selectAll('line')
+
+        const line2 = svg.lines.selectAll('line')
             .data(data)
     
         line2.exit().remove()
@@ -133,7 +134,6 @@ export function drawStats(data,params) {
                         return svg.y(data.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                console.log(el.value != 0)
                                 return el.value != 0
                             }
                         }).value)
@@ -217,7 +217,6 @@ export function drawStats(data,params) {
                             return svg.y(data.find((el, it) => {
                                 if (it <= i) return false
                                 else {
-                                    console.log(el.value != 0)
                                     return el.value != 0
                                 }
                             }).value)
@@ -323,7 +322,7 @@ export function drawStats(data,params) {
         const xAxis = d3.axisBottom(svg.x)
             .ticks(data.length)
             .tickSize(10)
-            .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date)
+            .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date.substr(0, 5))
     
         const yAxis = d3.axisLeft(svg.y)
             .tickSize(10)
@@ -331,9 +330,8 @@ export function drawStats(data,params) {
         
         svg.xAxisGroup.call(xAxis)
         svg.yAxisGroup.call(yAxis)
-    
         svg.xAxisGroup.selectAll('text')
-            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : '')
+            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : svg.stat.offsetWidth >= 500 ? '':'rotate(-90) translate(-25, -17)')
     }
     graphs.forEach((el, i) => drawStat(data[i], el))
 }

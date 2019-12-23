@@ -1,4 +1,4 @@
-import *  as d3 from "d3"
+import {drawStats} from './drawStats.component'
 
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
@@ -8,9 +8,6 @@ document.querySelectorAll('header a').forEach(a => {
         a.classList.add('btn-error')
     }
 })
-
-
-
 
 const route = location.pathname.toLocaleLowerCase()
 
@@ -414,326 +411,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     const weekSwitch = document.getElementById('weekSwitch')
 
     // Отрисвка статистик d3 js
-    const margin = {top: 40, right: 30, bottom: 50, left: 60}
-    let graphWidth = 1000 - margin.left - margin.right
-    const graphHeight = 400 - margin.top - margin.bottom
-    const svg = d3.select("#my_dataviz")
-        .append("svg")
-        .attr("width", graphWidth + margin.left + margin.right)
-        .attr("height", graphHeight + margin.top + margin.bottom)
-        
-    const graph = svg.append("g")
-        .attr('width', graphWidth)
-        .attr('height', graphHeight)
-        .attr('transform', `translate(${margin.left}, ${margin.top})`)
-
-    const x = d3.scaleLinear().range([0,graphWidth])
-    const y = d3.scaleLinear().range([graphHeight,0])
-    
-    const xAxisGroup = graph.append('g')
-    .attr('class', 'x-axis')
-    .attr('transform', 'translate(0, ' + graphHeight + ')')
-
-    const yAxisGroup = graph.append('g')
-        .attr('class', 'y-axis')
-
-    const dottedLines = graph.append('g')
-        .attr('class', 'lines')
-        .style('opacity', 0)
-
-    const xDottedLine = dottedLines.append('line')
-        .attr('stroke', '#aaa')
-        .attr('stroke-width', 1)
-        .attr('stroke-dasharray', 4)
-
-    const yDottedLine = dottedLines.append('line')
-        .attr('stroke', '#aaa')
-        .attr('stroke-width', 1)
-        .attr('stroke-dasharray', 4)
-
-    const dottedValue = graph.append('g')
-        .attr('class', 'value')
-
-    const lines = graph.append('g')
-        .attr('class', 'lines2')
-
-    const drawStats = (data) => {
-        data = data.map(day => {
-            return {
-                date: day.date,
-                value: Number(day.value)
-            }
-        })
-        
-        x.domain([1,data.length])
-        y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
-
-        const line2 = lines.selectAll('line')
-            .data(data)
-
-        line2.exit().remove()
-
-        line2
-            .attr('x1', (d,i) => {
-                if (!data[i + 1] || !data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) {
-                    return x(0)
-                } else {
-                    if (data[i].value == 0) return x(0)
-                    else return x(i + 1)
-                }
-            })
-            .attr('y1', (d,i) => {
-                if (!data[i + 1] || !data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) {
-                    return y(0)
-                } else {
-                    if (data[i].value == 0) return y(0)
-                    else return y(d.value)
-                }
-            })
-            .attr('x2', (d,i) => {
-                if (!data[i + 1] || !data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) {
-                    return x(0)
-                } else
-                    if (data[i].value == 0) return x(0)
-                    else {
-                        return x((i + 2) + (data.indexOf(data.find((el, it) => {
-                            if (it <= i) return false
-                            else {
-                                return el.value != 0
-                            }
-                        })) - (i + 1)))
-                    }
-            })
-            .attr('y2', (d,i,n) => {
-                if (!data[i + 1] || !data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) {
-                    return y(0)
-                } else {
-                    if (data[i].value == 0) return y(0)
-                    else {
-                        return y(data.find((el, it) => {
-                            if (it <= i) return false
-                            else {
-                                console.log(el.value != 0)
-                                return el.value != 0
-                            }
-                        }).value)
-                    }
-                }
-            })
-            .attr('stroke', (d,i) => {
-                if (!data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) return '#000'
-                else return data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                }).value < d.value ? 'red' : '#000'
-
-            })
-
-        line2.enter()
-            .append('line')
-                .attr('x1', (d,i) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) {
-                        return x(0)
-                    } else {
-                        if (data[i].value == 0) return x(0)
-                        else return x(i + 1)
-                    }
-                })
-                .attr('y1', (d,i) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) {
-                        return y(0)
-                    } else {
-                        if (data[i].value == 0) return y(0)
-                        else return y(d.value)
-                    }
-                })
-                .attr('x2', (d,i) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) {
-                        return x(0)
-                    } else
-                        if (data[i].value == 0) return x(0)
-                        else {
-                            return x((i + 2) + (data.indexOf(data.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != 0
-                                }
-                            })) - (i + 1)))
-                        }
-                })
-                .attr('y2', (d,i,n) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) {
-                        return y(0)
-                    } else {
-                        if (data[i].value == 0) return y(0)
-                        else {
-                            return y(data.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    console.log(el.value != 0)
-                                    return el.value != 0
-                                }
-                            }).value)
-                        }
-                    }
-                })
-                .attr('stroke', (d,i) => {
-                    if (!data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) return '#000'
-                    else return data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    }).value < d.value ? 'red' : '#000'
-
-                })
-                .attr('stroke-width', 3)
-
-        const text = dottedValue.selectAll('text')
-            .data(data)
-
-        text.exit().remove()
-        
-        text
-            .attr('x', (d,i) => x(i + 1))
-            .attr('y', d => y(d.value))
-            .text((d) => d.value)
-
-        text.enter()
-            .append('text')
-                .attr('x', (d,i) => x(i + 1))
-                .attr('y', d => y(d.value))
-                .attr('fill', 'currentColor')
-                .style('opacity', '0')
-                .text(d => d.value)
-
-        dottedValue.selectAll('text')
-            .attr('transform', 'rotate(0) translate(0, -13)')
-
-
-        const circles = graph.selectAll('circle')
-            .data(data)
-
-        circles.exit().remove()
-
-        circles
-            .attr('cx', (d,i) => x(i + 1))
-            .attr('cy', d => y(d.value))
-
-        circles.enter()
-            .append('circle')
-                .attr('r', d => d.value == 0 ? 0 : 0)
-                .attr('cx', (d,i) => x(i + 1))
-                .attr('cy', d => y(d.value))
-                .attr('fill', '#000')
-
-        svg
-            .on('mouseover', () => {
-                svg.selectAll('circle')  
-                    .attr('r', d => d.value == 0 ? 0 : 4)
-            })
-            .on('mouseleave', () => {
-                d3.selectAll('circle')  
-                    .attr('r', 0)
-            })
-            
-        graph.selectAll('circle')
-            .on('mouseover', (d,i,n) => {
-                dottedValue.selectAll('text')._groups[0][i].style.opacity = 1
-
-                d3.select(n[i])
-                    .transition().duration(100)
-                        .attr('r', 8)
-                        .attr('fill', '#000')
-                xDottedLine
-                    .attr('x1', x(i + 1))
-                    .attr('x2', x(i + 1))
-                    .attr('y1', graphHeight)
-                    .attr('y2', y(d.value))
-                yDottedLine
-                    .attr('x1', 0)
-                    .attr('x2', x(i + 1))
-                    .attr('y1', y(d.value))
-                    .attr('y2', y(d.value))
-
-                dottedLines.style('opacity', 1)
-            })
-            .on('mouseleave', (d,i,n) => {
-                dottedValue.selectAll('text')._groups[0][i].style.opacity = 0
-                d3.select(n[i])
-                    .transition().duration(100)
-                        .attr('r', 4)
-                        .attr('fill', '#000')
-
-                dottedLines.style('opacity', 0)
-            })
-        
-        const xAxis = d3.axisBottom(x)
-            .ticks(data.length)
-            .tickSize(10)
-            .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date)
-
-        const yAxis = d3.axisLeft(y)
-            .tickSize(10)
-            .ticks(4)
-        
-        xAxisGroup.call(xAxis)
-        yAxisGroup.call(yAxis)
-
-        xAxisGroup.selectAll('text')
-            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : '')
+    const graphsHolder = document.querySelectorAll('.my_dataviz')
+    console.log(graphsHolder)
+    const params = {
+        statHolder: graphsHolder,
+        height: 350,
     }
 
     // выбор статистики
@@ -774,9 +456,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         : lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (7 - (currentWeekDay - stats.last_day))))
 
         if (!weekSwitch.checked) {
+            graphsHolder[0].style.width = '600px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
             if (currentStatValue) statInput.value = currentStatValue.value
         } else {
+            graphsHolder[0].style.width = window.innerWidth - window.innerWidth * 0.15 + 'px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentWeek)
             if (currentStatValue) statInput.value = currentStatValue.value
         }
@@ -793,7 +477,8 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 currentWeekDays.push(stats.stat_data[lastWeekDayIndex] || {date,value: 0})
             }
             currentWeekDays.reverse()
-            drawStats(currentWeekDays)
+            console.log(currentWeekDays)
+            drawStats([currentWeekDays], params)
         }
 
         if (weekSwitch.checked) {
@@ -834,7 +519,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 }
                 i = new Date(i.setDate(i.getDate() + 1))
             }
-            drawStats(currentWeekDays)
+            drawStats([currentWeekDays], params)
         }
         
         dhxCalendar.events.on('Change', () => {

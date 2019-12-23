@@ -249,6 +249,10 @@
     overflow: -webkit-paged-y;
 }
 
+#stat {
+    width: 600px !important
+}
+
 .steps {
     display: flex;
 }
