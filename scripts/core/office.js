@@ -458,11 +458,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         if (!weekSwitch.checked) {
             graphsHolder[0].style.width = '600px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
-            if (currentStatValue) statInput.value = currentStatValue.value
+            if (currentStatValue) statInput.value = Number(currentStatValue.value)
         } else {
             graphsHolder[0].style.width = window.innerWidth - window.innerWidth * 0.15 + 'px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentWeek)
-            if (currentStatValue) statInput.value = currentStatValue.value
+            if (currentStatValue) statInput.value = Number(currentStatValue.value)
         }
 
         if (!weekSwitch.checked) {
@@ -542,10 +542,10 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
 
         statInput.onblur = async event => {
-            if (!statInput.value) statInput.value = 0
+            if (!Number(statInput.value)) statInput.value = 0
 
             let data 
-            weekSwitch.checked ? data = {date: currentWeek,value: statInput.value}  : data = {date: currentDay,value: statInput.value}
+            weekSwitch.checked ? data = {date: currentWeek,value: +statInput.value}  : data = {date: currentDay,value: +statInput.value}
 
             let currentStat = stats.stat_data.find(sdata => weekSwitch.checked ? sdata.date == currentWeek: sdata.date == currentDay)
             if (currentStat) {

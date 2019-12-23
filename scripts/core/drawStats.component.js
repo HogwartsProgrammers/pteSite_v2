@@ -1,5 +1,6 @@
-// Отрисвка статистик d3 js
 import *  as d3 from "d3"
+
+// Отрисвка статистик d3 js
 // params
 // const params = {
 //     statHolder: []
@@ -58,7 +59,7 @@ export function drawStats(data,params) {
     })
     
     const drawStat = (data, svg) => {
-        console.log(data)
+        if (!data.find(el => el.value != 0)) return
         data = data.map(day => {
             return {
                 date: day.date,
@@ -310,7 +311,7 @@ export function drawStats(data,params) {
                 svg.dottedLines.style('opacity', 1)
             })
             .on('mouseleave', (d,i,n) => {
-                dottedValue.selectAll('text')._groups[0][i].style.opacity = 0
+                svg.dottedValue.selectAll('text')._groups[0][i].style.opacity = 0
                 d3.select(n[i])
                     .transition().duration(100)
                         .attr('r', 4)
