@@ -196,7 +196,6 @@ export function init () {
                     }), 
                     headers:{ "Content-Type": "application/json" }
                 }).then(result => result.json()).then(data => {
-                    console.log(data)
                     fetch('/office/phones/update', {
                         method: 'POST',
                         body: JSON.stringify({

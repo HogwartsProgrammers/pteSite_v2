@@ -344,7 +344,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     }
     const personData = document.getElementById('person')
     const personSwitch = document.getElementById('personSwitch')
-    console.log(personData)
     personSwitch.onchange = () => {
         personSwitch.checked ? personData.classList.remove('d-hide') : personData.classList.add('d-hide')
     }
@@ -649,7 +648,6 @@ if (route === '/office/privilages' || route === '/office/privilages/') {
 
     // Расставить в зависимости от privilage_data
     const setPrivilages = privilage_data => {
-        console.log(privilage_data)
         const setAccess = (el, access) => {
             el.querySelector('input[data-access="'+access+'"]').checked = true
         }
