@@ -342,6 +342,12 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             newPassRepeat.disabled = false
         })
     }
+    const personData = document.getElementById('person')
+    const personSwitch = document.getElementById('personSwitch')
+    console.log(personData)
+    personSwitch.onchange = () => {
+        personSwitch.checked ? personData.classList.remove('d-hide') : personData.classList.add('d-hide')
+    }
     
     // Календарь статистик
     const dhxCalendar = new dhx.Calendar('stats_calendar', {
@@ -412,7 +418,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
     // Отрисвка статистик d3 js
     const graphsHolder = document.querySelectorAll('.my_dataviz')
-    console.log(graphsHolder)
     const params = {
         statHolder: graphsHolder,
         height: 350,
@@ -458,11 +463,11 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         if (!weekSwitch.checked) {
             graphsHolder[0].style.width = '600px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
-            if (currentStatValue) statInput.value = Number(currentStatValue.value)
+            if (currentStatValue) statInput.value = currentStatValue.value
         } else {
             graphsHolder[0].style.width = window.innerWidth - window.innerWidth * 0.15 + 'px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentWeek)
-            if (currentStatValue) statInput.value = Number(currentStatValue.value)
+            if (currentStatValue) statInput.value = currentStatValue.value
         }
 
         if (!weekSwitch.checked) {
@@ -477,7 +482,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 currentWeekDays.push(stats.stat_data[lastWeekDayIndex] || {date,value: 0})
             }
             currentWeekDays.reverse()
-            console.log(currentWeekDays)
             drawStats([currentWeekDays], params)
         }
 
@@ -542,7 +546,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         })
 
         statInput.onblur = async event => {
-            if (!Number(statInput.value)) statInput.value = 0
+            if (!statInput.value) statInput.value = 0
 
             let data 
             weekSwitch.checked ? data = {date: currentWeek,value: +statInput.value}  : data = {date: currentDay,value: +statInput.value}

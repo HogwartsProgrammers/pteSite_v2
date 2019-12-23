@@ -5,10 +5,15 @@ block content
     input#userId(type="hidden", name="userId", value=id)
     input#access(type="hidden", value= access)
     .col-10.col-lg-11.p-centered.mt-2
+        .d-flex.mt-2.float-right
+            .form-group
+                label.form-switch.text-bold 
+                    span Персональные данные
+                    input#personSwitch(type="checkbox")
+                    i.form-icon
         .card-head 
             .h1.text-center Личный кабинет
-        .card-body
-            .columns
+            #person.columns.d-hide
                 .col-4.col-md-12.card
                     .card-body
                         label ФИО
@@ -28,18 +33,7 @@ block content
                         label Аккаунт был создан 
                         br
                         b=  new Date(created).toISOString().split('T')[0].split('-')[2] + '.' + new Date(created).toISOString().split('T')[0].split('-')[1] + '.' + new Date(created).toISOString().split('T')[0].split('-')[0] + ' ' + new Date(created).toISOString().split('T')[1].slice(0,5)
-                        br
-                        label Пост
-                        if posts.filter(post => post.active).length > 1
-                            select#posts.c-hand.form-select.p-centered
-                                each post in posts
-                                    if post.active
-                                        option(value=post.id)= post.title
-                        else 
-                            select(disabled)#posts.c-hand.form-select.p-centered
-                                each post in posts
-                                    if post.active
-                                        option(value=post.id)= post.title
+                        
 
                 .col-4.col-md-12.card
                     .card-body
@@ -52,7 +46,6 @@ block content
                         input#newPassRepeat.form-input(placeholder="••••••••••" type="password")
                     .card-footer
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
-            .h1.text-center Редактирование статистик
             #statsEditing.columns.mt-2
                 .column.col-6.col-md-12
                     .d-flex.mb-2
@@ -63,7 +56,19 @@ block content
                                 i.form-icon
                     .d-flex
                         #edit_stats
+                            label.text-bold Пост
+                            if posts.filter(post => post.active).length > 1
+                                select#posts.c-hand.form-select.p-centered.mb-2
+                                    each post in posts
+                                        if post.active
+                                            option(value=post.id)= post.title
+                            else 
+                                select(disabled)#posts.c-hand.form-select.p-centered.mb-2
+                                    each post in posts
+                                        if post.active
+                                        option(value=post.id)= post.title
                             #select_stats.form-group.p-centered
+                                label.text-bold Статистика
                                 select#stats.form-select
                             #stats_calendar.animated.fadeIn.faster
                             #stats_calendar_weeks.animated.fadeIn.faster.d-hide

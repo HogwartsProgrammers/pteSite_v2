@@ -1042,9 +1042,10 @@ exports.postSortStats = (req, res) => {
                 oldData[0][0].stat_data,
                 oldData[0][0].last_day,
                 i,
-            ).update().then(result => res.status(201).json(result[0]))
+            ).update()
         })
     })
+    res.end()
 }
 
 exports.getUsersList = (req, res, next) => {

@@ -1,12 +1,12 @@
 const path = require('path')
-// const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 module.exports = {
     entry: {
-        'mainBundle': './script.js',
-        'officeBundle': './office-script.js'
+        'officeBundle': './office-script.js',
+        'mainBundle': './script.js'
     },
     output: {
         filename: '[name].js',
@@ -15,7 +15,7 @@ module.exports = {
     optimization: {
         minimizer: [
             new OptimizeCssAssetsPlugin({}),
-            // new UglifyJsPlugin({})
+            new UglifyJsPlugin()
         ]
     },
     plugins: [
@@ -36,7 +36,7 @@ module.exports = {
             { test: /\.js$/, exclude: /node_modules/, loader: 'babel-loader' },
             { test: /\.css$/, use: ExtractTextPlugin.extract({
                 use: 'css-loader'
-            }) }
+            }) },
         ]
     }
 }

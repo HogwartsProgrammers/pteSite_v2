@@ -1013,6 +1013,11 @@ img {
     .col-xxl-3 {
         width: 25%;
     }
+    
+    .stats-container {
+        margin: 0 auto;
+        max-width: 60rem;
+    }
 }
 
 

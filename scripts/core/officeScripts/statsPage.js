@@ -1,11 +1,11 @@
-import EditorJS from '@editorjs/editorjs';
-import Header from '@editorjs/header';
-import List from '@editorjs/list';
+// import EditorJS from '@editorjs/editorjs'
+const Header = require('@editorjs/header')
+const List = require('@editorjs/list')
+const Marker = require('@editorjs/marker')
+const Paragraph = require('@editorjs/paragraph')
+const Checklist = require('@editorjs/checklist')
+const Delimiter = require('@editorjs/delimiter')
 import Sortable from 'sortablejs'
-const Marker = require('@editorjs/marker');
-const Paragraph = require('@editorjs/paragraph');
-const Checklist = require('@editorjs/checklist');
-const Delimiter = require('@editorjs/delimiter');
 
 export function init() {
     // делать активным и неактивным пользователя с помощью switch
@@ -153,7 +153,7 @@ export function init() {
                 _csrf: document.getElementById('csrfToken').value
             }),
             headers:{"Content-Type": "application/json"}
-        }).then(data => data.json()).then(data => data.insertId)
+        })
     }
 
     new Sortable(table, {

@@ -16,12 +16,12 @@ export async function init() {
         weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
         document.querySelectorAll('section .column').forEach(el => {
             el.classList.remove('col-12')
-            el.classList.add('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3','mb-2')
+            el.classList.add('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
         })
     } else {
         weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные'
         document.querySelectorAll('section .column').forEach(el => {
-            el.classList.remove('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3','mb-2')
+            el.classList.remove('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
             el.classList.add('col-12')
         })
     }

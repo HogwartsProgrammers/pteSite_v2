@@ -13,6 +13,8 @@
     "dependencies": {
         "@babel/polyfill": "^7.7.0",
         "@babel/runtime": "^7.7.7",
+        "@editorjs/editorjs": "^2.16.1",
+        "babel-core": "^6.26.3",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "cleave.js": "^1.5.3",
@@ -34,7 +36,6 @@
         "@babel/preset-env": "^7.7.7",
         "@editorjs/checklist": "^1.1.0",
         "@editorjs/delimiter": "^1.1.0",
-        "@editorjs/editorjs": "^2.16.1",
         "@editorjs/header": "^2.3.2",
         "@editorjs/list": "^1.4.0",
         "@editorjs/marker": "^1.2.2",
