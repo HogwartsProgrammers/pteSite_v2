@@ -1005,6 +1005,14 @@ img {
     max-width: 85rem;
 }
 
+.a {
+    font-weight: bold;
+    border-radius: 50%;
+}
+.b {
+    color: red !important
+}
+
 *::-webkit-scrollbar-track {border-radius: 4px;background: transparent}
 *::-webkit-scrollbar {width: 6px;height: 6px;}
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}

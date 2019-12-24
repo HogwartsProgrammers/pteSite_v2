@@ -35,7 +35,7 @@ export async function init() {
 
     const params = {
         statHolder: graphsHolder,
-        height: 250,
+        height: weekSwitch.checked ? 350 : 250,
     }
 
     const promises = []
