@@ -5,6 +5,10 @@
 @import 'spectre-icons.css';
 @import 'spectre-exp.css';
 
+.dhx_calendar-day--weekend {
+    color: rgba(0,0,0,.5) !important
+}
+
 .lg-grid {
     max-width: 976px;
     margin: 0 auto;

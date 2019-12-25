@@ -348,6 +348,12 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         personSwitch.checked ? personData.classList.remove('d-hide') : personData.classList.add('d-hide')
     }
     
+    // Календарь статистик
+    const dhxCalendar = new dhx.Calendar('stats_calendar', {
+        dateFormat:"%d.%m.%Y",
+        value: new Date(),
+        weekStart: "monday",
+    })
     
     // Выбор поста
     const postsSelect = document.getElementById('posts')
@@ -435,17 +441,12 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         if (stats.stat_data == null) stats.stat_data = []
         // document.getElementById('stats_calendar').innerHTML = ''
         
-        // Календарь статистик
-        const dhxCalendar = new dhx.Calendar('stats_calendar', {
-            dateFormat:"%d.%m.%Y",
-            value: new Date(),
-            weekStart: "monday",
-            mark: d => {
-                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay)) return d.getDay() == 3 ? 'a b' : 'a'
-                if (d.getDay() == 3) return 'b'
-                else return ''
-            }
-        })
+        dhxCalendar.config.mark = d => {
+            if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay)) return d.getDay() == 3 ? 'a b' : 'a'
+            if (d.getDay() == 3) return 'b'
+            else return ''
+        }
+        dhxCalendar.paint()
         
         const statInput = document.getElementById('stats_value')
         
@@ -576,10 +577,10 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             selectStat()
         }
         
+    }
     dhxCalendar.events.on('Change', () => {
         selectStat()
     })
-    }
 
     weekSwitch.onclick = (event) => {
         weekSwitch.checked ? weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные' : weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
