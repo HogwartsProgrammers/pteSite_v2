@@ -239,6 +239,7 @@ export function drawStats(data,params) {
                     }).value < d.value ? 'red' : '#000'
     
                 })
+                .attr('stroke-linecap','round')
                 .attr('stroke-width', 3)
     
         const text = svg.dottedValue.selectAll('text')

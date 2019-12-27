@@ -446,7 +446,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             if (d.getDay() == 3) return 'b'
             else return ''
         }
-        dhxCalendar.paint()
         
         const statInput = document.getElementById('stats_value')
         
@@ -531,6 +530,7 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             }
             drawStats([currentWeekDays], params)
         }
+        dhxCalendar.paint()
         
         dhxCalendar.events.on('Change', () => {
             currentDay = dhxCalendar.getValue()
@@ -586,7 +586,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         weekSwitch.checked ? weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные' : weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
         selectStat()
     }
-
 
     statsSelect.onchange = () => {
         selectStat()

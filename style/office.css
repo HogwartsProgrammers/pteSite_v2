@@ -9,6 +9,29 @@
     color: rgba(0,0,0,.5) !important
 }
 
+#weeks_calendar {
+    margin: 0 auto;
+    width: 31rem
+}
+
+#weeks_calendar .week-header {
+    margin-top: 0.3rem;
+}
+
+#weeks_calendar .weeks {
+    width: 27rem;
+    flex-wrap: wrap;
+}
+#weeks_calendar .week-body > button {
+    height: 2rem;
+    width: 2rem;
+    margin: auto 0
+}
+
+#weeks_calendar .weeks button {
+    min-width: 30px;
+}
+
 .lg-grid {
     max-width: 976px;
     margin: 0 auto;
