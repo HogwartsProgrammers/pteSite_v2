@@ -324,7 +324,7 @@ export function drawStats(data,params) {
         const xAxis = d3.axisBottom(svg.x)
             .ticks(data.length)
             .tickSize(10)
-            .tickFormat((d,i) => data.length > 7 ? data[i].date : data[i].date.substr(0, 5))
+            .tickFormat((d,i) => data.length > 7 ? data[i].date.substr(0, 5) : data[i].date.substr(0, 5))
     
         const yAxis = d3.axisLeft(svg.y)
             .tickSize(10)
@@ -333,7 +333,7 @@ export function drawStats(data,params) {
         svg.xAxisGroup.call(xAxis)
         svg.yAxisGroup.call(yAxis)
         svg.xAxisGroup.selectAll('text')
-            .attr('transform', data.length > 7 ? 'rotate(-60) translate(-25, 0)' : svg.stat.offsetWidth >= 500 ? '':'rotate(-90) translate(-25, -17)')
+            .attr('transform', data.length > 7 ? 'rotate(-90) translate(-25, -17)' : svg.stat.offsetWidth >= 500 ? '':'rotate(-90) translate(-25, -17)')
     }
     graphs.forEach((el, i) => drawStat(data[i], el))
 }
