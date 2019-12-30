@@ -9,9 +9,17 @@
     color: rgba(0,0,0,.5) !important
 }
 
+.calendar-fixed {
+    width: 77%;
+}
+
 #weeks_calendar {
     margin: 0 auto;
-    width: 31rem
+    width: 100%;
+    left: 0;
+    background-color: #fff;
+    z-index: 100000;
+    top: 0;
 }
 
 #weeks_calendar .week-header {
@@ -19,7 +27,6 @@
 }
 
 #weeks_calendar .weeks {
-    width: 27rem;
     flex-wrap: wrap;
 }
 #weeks_calendar .week-body > button {
@@ -27,9 +34,13 @@
     width: 2rem;
     margin: auto 0
 }
+#weeks_calendar .week-body {
+    margin: 0 auto;
+}
 
 #weeks_calendar .weeks button {
-    min-width: 30px;
+    min-width: 21px;
+    padding:0;
 }
 
 .lg-grid {
@@ -1044,24 +1055,41 @@ img {
 *::-webkit-scrollbar {width: 6px;height: 6px;}
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}
 
-@media (max-width: 1650px) {
-    .col-xxl-3 {
-        width: 25%;
-    }
-    
-    .stats-container {
-        margin: 0 auto;
-        max-width: 60rem;
-    }
-}
+
 
 
 @media (max-width: 2560px) {
    .card  {
         /* min-height: 15rem; */
-   } 
+   }
+
+   #weeks_calendar .week-body {
+       width: 69%;
+   }
+
+   .calendar-fixed {
+        width: 46% !important;
+    }
 
    .card .card-header {
         /* height: 88px; */
    }
+}
+
+@media (max-width: 1650px) {
+    .col-xxl-3 {
+        width: 25%;
+    }
+    
+   #weeks_calendar .week-body {
+        width: unset;
+    }
+    .stats-container {
+        margin: 0 auto;
+        max-width: 60rem;
+    }
+    
+   .calendar-fixed {
+        width: 77% !important;
+    }
 }

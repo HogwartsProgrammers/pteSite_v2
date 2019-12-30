@@ -2,10 +2,13 @@ import {drawStats} from './drawStats.component'
 
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
-document.querySelectorAll('header a').forEach(a => {
+document.querySelectorAll('header a').forEach((a,i,arr) => {
     if (a.getAttribute('href') == window.location.pathname) {
-        a.classList.remove('btn-link')
-        a.classList.add('btn-error')
+        if (i == 0) a.setAttribute('style', 'color:red !important')
+        else {
+            a.classList.remove('btn-link')
+            a.classList.add('btn-error')
+        }
     }
 })
 

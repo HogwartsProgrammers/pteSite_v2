@@ -1,5 +1,5 @@
 .stats-container
-    #weeks_calendar
+    #weeks_calendar.d-hide
         .week-header.text-center
         .week-body.d-flex
             button#year_left.dhx_calendar-action__prev.dhx_button.dhx_button--view_link.dhx_button--icon.dhx_button--size_medium.dhx_button--color_secondary.dhx_button--icon.dhx_button--circle.dxi.dxi-chevron-left
@@ -9,19 +9,24 @@
             button.dhx_calendar-navigation__button.dhx_calendar-action__next.dhx_button.dhx_button--view_link.dhx_button--icon.dhx_button--size_medium.dhx_button--color_secondary.dhx_button--icon.dhx_button--circle.dxi.dxi-chevron-right#year_right
 
     //- h1.text-center ИЦО
-    .d-flex.mb-2
-        .form-group.float-left
-            label.form-switch.text-bold 
-                span Ежедневные
-                input#weekSwitch(type="checkbox")
-                i.form-icon
-        .form-group.float-left
-            label.form-switch.text-bold 
-                span без заголовков
-                input#titleSwitch(type="checkbox")
-                i.form-icon
     - stats.sort((a,b) => a.sort - b.sort)
     section.mt-2.ml-2.mr-2
+        .d-flex
+            .form-group.float-left
+                label.form-switch.text-bold 
+                    span Ежедневные
+                    input#weekSwitch(type="checkbox")
+                    i.form-icon
+            .form-group.float-left
+                label.form-switch.text-bold 
+                    span без заголовков
+                    input#titleSwitch(type="checkbox")
+                    i.form-icon
+            .form-group.float-left
+                label.form-switch.text-bold 
+                    span выбор недели
+                    input#calendarSwitch(type="checkbox")
+                    i.form-icon
         .columns
             each stat in stats
                 if stat.active

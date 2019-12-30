@@ -2,6 +2,16 @@ import {drawStats} from '../drawStats.component'
 
 export function init() {
 
+    window.onscroll = () => {
+        if (pageYOffset > 70) {
+            document.getElementById('weeks_calendar').style.position = 'fixed'
+            document.querySelector('#weeks_calendar > .week-body').classList.add('calendar-fixed')
+        } else {
+            document.getElementById('weeks_calendar').style.position = 'unset'
+            document.querySelector('#weeks_calendar > .week-body').classList.remove('calendar-fixed')
+        }
+    }
+
     window.onresize = init
 
     const format = data => {
@@ -162,6 +172,11 @@ export function init() {
     s(n,fullYear)
 
     const titleSwitch = document.getElementById('titleSwitch')
+    const calendarSwitch = document.getElementById('calendarSwitch')
+
+    calendarSwitch.onchange = () => {
+        calendarSwitch.checked ? document.getElementById('weeks_calendar').classList.remove('d-hide') : document.getElementById('weeks_calendar').classList.add('d-hide')
+    }
 
     titleSwitch.onchange = () => {
         titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
