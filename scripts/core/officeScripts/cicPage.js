@@ -79,8 +79,8 @@ export function init() {
                 : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - el.last_day))))
             }
 
+            const weeksCalendar = document.getElementById('weeks_calendar')
             if (!weekSwitch.checked) {
-                const weeksCalendar = document.getElementById('weeks_calendar')
                 weeksCalendar.querySelector('.week-header').innerHTML = fullYear
                 if (weeksCalendar.querySelectorAll('.weeks > button').length <= 0) {
                     let i = new Date((new Date().getFullYear() + n),0,1)
@@ -139,13 +139,14 @@ export function init() {
                 }
                 currentDays.reverse()
             } else {
-                let i = new Date(new Date().getFullYear(),0,1)
+                weeksCalendar.querySelector('.week-header').innerHTML = fullYear
+                let i = new Date((new Date().getFullYear() + n),0,1)
                 let day = {
                     date: null,
                     value: 0
                 }
 
-                while (i.getFullYear() == new Date().getFullYear()) {
+                while (i.getFullYear() == fullYear) {
                     let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
                     if (i.getDay() == el.last_day) {
                         day.value += el.stat_data.find(data => data.date == date) ? Number(el.stat_data.find(data => data.date == date).value) : 0

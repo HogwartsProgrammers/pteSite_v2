@@ -30,8 +30,6 @@
     flex-wrap: wrap;
 }
 #weeks_calendar .week-body > button {
-    height: 2rem;
-    width: 2rem;
     margin: auto 0
 }
 #weeks_calendar .week-body {
@@ -1056,8 +1054,15 @@ img {
 *::-webkit-scrollbar-thumb {border-radius: 4px;background: #303742;}
 
 
-
-
+@media (min-width: 2560px) {
+    
+   #weeks_calendar .week-body {
+    width: 69%;
+    }
+    .calendar-fixed {
+        width: 46% !important;
+    }
+}
 @media (max-width: 2560px) {
    .card  {
         /* min-height: 15rem; */

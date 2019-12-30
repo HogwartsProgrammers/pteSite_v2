@@ -275,7 +275,7 @@ export function drawStats(data,params) {
     
         circles.enter()
             .append('circle')
-                .attr('r', d => d.value == 0 ? 0 : 0)
+                .attr('r', d => d.value == 0 ? 0 : 3)
                 .attr('cx', (d,i) => svg.x(i + 1))
                 .attr('cy', d => svg.y(d.value))
                 .attr('fill', '#000')
@@ -287,7 +287,7 @@ export function drawStats(data,params) {
             })
             .on('mouseleave', () => {
                 d3.selectAll('circle')  
-                    .attr('r', 0)
+                    .attr('r', d => d.value == 0 ? 0 : 3)
             })
             
         svg.graph.selectAll('circle')
