@@ -88,6 +88,7 @@ export function init() {
 
                     while (i.getFullYear() == fullYear) {
                         let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                        const d = date.split('.')
                         if (i.getDay() == el.last_day) {
                             const btn = document.createElement('button')
                             btn.dataset.date = date
@@ -95,6 +96,11 @@ export function init() {
                             btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top')
                             btn.dataset.tooltip = 'по ' + date
                             weeksCalendar.querySelector('.weeks').insertAdjacentElement('beforeend', btn)
+                            if (Number(d[2]) == new Date().getFullYear() && Number(d[1]) == Number(format((new Date().getMonth() + 1))) && (Number(d[0]) - Number(format((new Date().getDate()))) >= 0 && Number(d[0]) - Number(format((new Date().getDate()))) < 8)) { 
+                                let currentWeekBtn = (Array.from(weeksCalendar.querySelectorAll('.weeks > button')).find(el => el.dataset.tooltip = date))
+                                currentWeekBtn.classList.remove('btn-link')
+                                currentWeekBtn.classList.add('btn-error')
+                            }
                             j++
                         }
                         i = new Date(i.setDate(i.getDate() + 1))
@@ -105,8 +111,9 @@ export function init() {
 
                     while (i.getFullYear() == fullYear) {
                         let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                        const d = date.split('.')
                         if (i.getDay() == el.last_day) {
-                            if (j > 51 && weeksCalendar.querySelectorAll('.weeks > button').length < 53) {
+                            if (j > 51 && weeksCalendar.querySelectorAll('.weeks > button').length <=52) {
                                 const btn = document.createElement('button')
                                 btn.dataset.date = date
                                 btn.innerText = j + 1
@@ -125,7 +132,15 @@ export function init() {
                     }
                 }
                 
-                weeksCalendar.querySelectorAll('.weeks > button').forEach(el => el.onclick = e => {
+                weeksCalendar.querySelectorAll('.weeks > button').forEach((el, i, arr) => el.onclick = e => {
+                    arr.forEach(btn => {
+                        if (btn.classList.contains('btn-error')) {
+                            btn.classList.remove('btn-error')
+                            btn.classList.add ('btn-link')
+                        }
+                    })
+                    e.target.classList.remove('btn-link')
+                    e.target.classList.add('btn-error')
                     let date = e.target.dataset.date.split('.')
                     lastWeekDay = new Date(date[2],date[1] - 1,date[0],new Date().getHours(),new Date().getMinutes(),new Date().getSeconds())
                     s(n, fullYear, lastWeekDay)
