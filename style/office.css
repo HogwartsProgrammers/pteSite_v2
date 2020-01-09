@@ -1057,7 +1057,7 @@ img {
 @media (min-width: 2560px) {
     
    #weeks_calendar .week-body {
-    width: 69%;
+    width: 70%;
     }
     .calendar-fixed {
         width: 46% !important;
@@ -1069,7 +1069,7 @@ img {
    }
 
    #weeks_calendar .week-body {
-       width: 69%;
+       width: 70%;
    }
 
    .calendar-fixed {

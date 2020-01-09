@@ -33,9 +33,12 @@ export async function init() {
 
     const graphsHolder = document.querySelectorAll('.my_dataviz')
 
+    const reverted = []
+    
     const params = {
         statHolder: graphsHolder,
         height: weekSwitch.checked ? 350 : 250,
+        reverted: reverted,
     }
 
     const promises = []
@@ -55,6 +58,7 @@ export async function init() {
     })
     await Promise.all(promises).then((stats, i) => {
         stats.forEach((el,i) => {
+            reverted.push(el.reverted)
             graphsHolder[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = el.title
 
         if (!el) return

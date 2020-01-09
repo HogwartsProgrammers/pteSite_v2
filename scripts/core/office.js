@@ -420,9 +420,13 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
 
     // Отрисвка статистик d3 js
     const graphsHolder = document.querySelectorAll('.my_dataviz')
+
+    const reverted = []
+
     const params = {
         statHolder: graphsHolder,
         height: 350,
+        reverted: reverted,
     }
 
     // выбор статистики
@@ -449,6 +453,9 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             if (d.getDay() == 3) return 'b'
             else return ''
         }
+        reverted.push(stats.reverted)
+
+        stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
         
         const statInput = document.getElementById('stats_value')
         
@@ -581,6 +588,22 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
         }
         
     }
+    const revertedSwitch = document.getElementById('revertedSwitch')
+
+    revertedSwitch.onchange = () => {
+         fetch('/office/stats/update', {
+            method: 'POST',
+            body: JSON.stringify({
+                id: Number(statsSelect.value),
+                reverted: revertedSwitch.checked ? 1 : 0,
+                _csrf: document.getElementById('csrfToken').value
+            }), 
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result => result.json())
+    }
+
     dhxCalendar.events.on('Change', () => {
         selectStat()
     })

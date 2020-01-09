@@ -5,6 +5,7 @@ import *  as d3 from "d3"
 // const params = {
 //     statHolder: []
 //     height
+//     reverted
 // } 
 
 export function drawStats(data,params) {
@@ -58,7 +59,7 @@ export function drawStats(data,params) {
         }
     })
     
-    const drawStat = (data, svg) => {
+    const drawStat = (data, svg, iteration) => {
         if (!data.find(el => el.value != 0)) return
         data = data.map(day => {
             return {
@@ -68,7 +69,7 @@ export function drawStats(data,params) {
         })
         
         svg.x.domain([1,data.length])
-        svg.y.domain([d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)])
+        svg.y.domain(params.reverted[iteration] == 0 ? [d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)] : [(d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value), d3.min(data, d => d.value) ])
 
         const line2 = svg.lines.selectAll('line')
             .data(data)
@@ -142,19 +143,33 @@ export function drawStats(data,params) {
                 }
             })
             .attr('stroke', (d,i) => {
-                if (!data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                })) return '#000'
-                else return data.find((el, it) => {
-                    if (it <= i) return false
-                    else {
-                        return el.value != 0
-                    }
-                }).value < d.value ? 'red' : '#000'
-    
+                if (params.reverted[iteration] == 0) {
+                    if (!data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) return '#000'
+                    else return data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    }).value < d.value ? 'red' : '#000'
+                } else {
+                    if (!data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) return '#000'
+                    else return data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    }).value < d.value ? '#000' : 'red'
+                }
             })
     
         line2.enter()
@@ -225,19 +240,33 @@ export function drawStats(data,params) {
                     }
                 })
                 .attr('stroke', (d,i) => {
-                    if (!data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) return '#000'
-                    else return data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    }).value < d.value ? 'red' : '#000'
-    
+                    if (params.reverted[iteration] == 0) {
+                        if (!data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        })) return '#000'
+                        else return data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        }).value < d.value ? 'red' : '#000'
+                    } else {
+                        if (!data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        })) return '#000'
+                        else return data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != 0
+                            }
+                        }).value < d.value ? '#000' : 'red'
+                    }
                 })
                 .attr('stroke-linecap','round')
                 .attr('stroke-width', 3)
@@ -335,5 +364,5 @@ export function drawStats(data,params) {
         svg.xAxisGroup.selectAll('text')
             .attr('transform', data.length > 7 ? 'rotate(-90) translate(-25, -17)' : svg.stat.offsetWidth >= 500 ? '':'rotate(-90) translate(-25, -17)')
     }
-    graphs.forEach((el, i) => drawStat(data[i], el))
+    graphs.forEach((el, i) => drawStat(data[i], el, i))
 }
