@@ -269,7 +269,21 @@ export function drawStats(data,params) {
                     }
                 })
                 .attr('stroke-linecap','round')
-                .attr('stroke-width', 3)
+                .attr('stroke-width', (d,i) => {
+                    if (!data[i + 1] || !data.find((el, it) => {
+                        if (it <= i) return false
+                        else {
+                            return el.value != 0
+                        }
+                    })) {
+                        return 0
+                    } else {
+                        if (data[i].value == 0) return 0
+                        else {
+                            return 3
+                        }
+                    }
+                })
     
         const text = svg.dottedValue.selectAll('text')
             .data(data)
