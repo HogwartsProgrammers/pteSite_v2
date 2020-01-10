@@ -9,10 +9,17 @@ import *  as d3 from "d3"
 // } 
 
 export function drawStats(data,params) {
-    
-    const margin = {top: 40, right: 30, bottom: 50, left: 70}
-    const graphHeight = params.height - margin.top - margin.bottom
+    let graphHeight
     const graphs = Array.from(params.statHolder).map((stat,i,a) => {
+        const margin = {top: 40, right: 15, bottom: 50, left: 30}
+        graphHeight = params.height - margin.top - margin.bottom
+        if (Math.ceil(String(d3.max(data[i], d => Number(d.value))).length / 3) > 1) {
+            margin.left = (Math.ceil(String(d3.max(data[i], d => Number(d.value))).length / 3) * 20) + 10
+        } else {
+            if (String(d3.max(data[i], d => Number(d.value))).length > 1) {
+                margin.left = (10 * String(d3.max(data[i], d => Number(d.value))).length) + 10
+            }
+        }
         stat.innerHTML = ''
         const svg = d3.select(stat)
             .append("svg")
@@ -23,8 +30,7 @@ export function drawStats(data,params) {
         .attr('width', stat.offsetWidth - 30)
         .attr('height', graphHeight)
         .attr('transform', `translate(${margin.left}, ${margin.top})`)
-        
-        const x = d3.scaleLinear().range([0,stat.offsetWidth - 130])
+        const x = d3.scaleLinear().range([0,stat.offsetWidth - margin.left - margin.right])
         const y = d3.scaleLinear().range([graphHeight,0])
         
         const xAxisGroup = graph.append('g')
