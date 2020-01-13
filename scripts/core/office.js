@@ -1,4 +1,4 @@
-import {drawStats} from './drawStats.component'
+import DrawStats from './drawStats.component'
 
 document.querySelectorAll('.go-back').forEach(btn => btn.onclick = () => window.history.back())
 
@@ -421,14 +421,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
     // Отрисвка статистик d3 js
     const graphsHolder = document.querySelectorAll('.my_dataviz')
 
-    const reverted = []
-
-    const params = {
-        statHolder: graphsHolder,
-        height: 350,
-        reverted: reverted,
-    }
-
     // выбор статистики
     const statsSelect = document.getElementById('stats')
 
@@ -453,7 +445,6 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
             if (d.getDay() == 3) return 'b'
             else return ''
         }
-        reverted.push(stats.reverted)
 
         stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
         
@@ -497,7 +488,10 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 currentWeekDays.push(stats.stat_data[lastWeekDayIndex] || {date,value: 0})
             }
             currentWeekDays.reverse()
-            drawStats([currentWeekDays], params)
+            new DrawStats(graphsHolder[0], currentWeekDays, {
+                height: 350,
+                reverted: stats.reverted
+            }).drawStat(currentWeekDays)
         }
 
         if (weekSwitch.checked) {
@@ -538,7 +532,10 @@ if (route === '/office/cabinet' || route === '/office/cabinet/') {
                 }
                 i = new Date(i.setDate(i.getDate() + 1))
             }
-            drawStats([currentWeekDays], params)
+            new DrawStats(graphsHolder[0], currentWeekDays, {
+                height: 350,
+                reverted: stats.reverted
+            }).drawStat(currentWeekDays)
         }
         dhxCalendar.paint()
         
