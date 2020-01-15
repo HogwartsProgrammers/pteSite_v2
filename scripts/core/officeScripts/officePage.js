@@ -93,7 +93,7 @@ export async function init() {
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
             }
-            new DrawStats(graphsHolder[it], currentDays, {
+            new DrawStats(graphsHolder[i], currentDays, {
                 height: weekSwitch.checked ? 350 : 250,
                 reverted: el.reverted
             }).drawStat(currentDays)
