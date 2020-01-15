@@ -90,7 +90,8 @@ export function init() {
                                     btn.innerText = j
                                     j > 52 ? btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top', 'delete') : btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top')
                                     weeksCalendar.querySelector('.weeks').insertAdjacentElement('beforeend', btn)
-                                    if (Number(d[2]) == new Date().getFullYear() && Number(d[1]) == Number(format((new Date().getMonth() + 1))) && (Number(d[0]) - Number(format((new Date().getDate()))) >= 0 && Number(d[0]) - Number(format((new Date().getDate()))) < 8)) {
+                                    if (Number(d[2]) == new Date().getFullYear() && Number(d[1]) == Number(format((new Date().getMonth() + 1))) && (Number(d[0]) - Number(format((new Date().getDate()))) >= 0 && Number(d[0]) - Number(format((new Date().getDate()))) < 7)) {
+                                        console.log(Number(d[0]))
                                         let currentWeekBtn = (Array.from(weeksCalendar.querySelectorAll('.weeks > button')).find(el => el.dataset.date == date))
                                         currentWeekBtn.classList.remove('btn-link')
                                         currentWeekBtn.classList.add('btn-error')
