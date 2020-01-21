@@ -73,7 +73,7 @@ export function init() {
             })
         }
         
-        period >= 12 ? params.statHeight = 500 : params.statHeight = 250
+        period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
 
 
         statsHolders.forEach(el => {
