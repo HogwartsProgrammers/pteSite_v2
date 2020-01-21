@@ -1,107 +1,89 @@
 import DrawStats from '../drawStats.component'
 
-export async function init() {
-    if (graphsHolder) return
-
-    window.onresize = init
-
-    const format = data => {
-        data += ''
-        return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
-    }
-
-    const weekSwitch = document.getElementById('weekSwitch')
-
-    if (!weekSwitch.checked) {
-        weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
-        document.querySelectorAll('section .column').forEach(el => {
-            el.classList.remove('col-12')
-            el.classList.add('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
-        })
-    } else {
-        weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные'
-        document.querySelectorAll('section .column').forEach(el => {
-            el.classList.remove('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
-            el.classList.add('col-12')
-        })
-    }
-
-    // Отрисвка статистик d3 js
-    const graphsHolder = document.querySelectorAll('.my_dataviz')
-    const promises = []
-    const graphs = Array.from(graphsHolder)
-
-    graphs.forEach((el,i) => {
-        promises.push(fetch('/office/stats', {
-            method: 'POST',
-            body: JSON.stringify({
-                find: 'byid',
-                id: Number(el.dataset.sid),
-                _csrf: document.getElementById('csrfToken').value
-            }), 
-            headers:{
-                "Content-Type": "application/json"
-            }
-        }).then(result => result.json()).then(result => result[0]))
-    })
-    await Promise.all(promises).then((stats, i) => {
-        stats.forEach((el,i) => {
-            graphsHolder[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = el.title
-
-            if (!el) return
-            if (el.stat_data == null) el.stat_data = []
-
-            let currentWeekDay = new Date().getDay() || 7   
-
-            let lastWeekDay
-
-            let currentDays = []
-            
-            currentWeekDay - el.last_day <= 0 
-            ? lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (-(currentWeekDay - el.last_day))))
-            : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - el.last_day))))
-
-            if (!weekSwitch.checked) {
-                for (let i = 0; i < 7; i++) {
-                    let date = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - i))
-                    date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
-                    let lastWeekDayIndex = el.stat_data.indexOf(el.stat_data.find(stat => stat.date == date))
-                    currentDays.push(el.stat_data[lastWeekDayIndex] || {date,value: 0})
-                }
-                currentDays.reverse()
-            } else {
-
-                let i = new Date(new Date().getFullYear(),0,1)
-                let day = {
-                    date: null,
-                    value: 0
-                }
-
-                while (i.getFullYear() == new Date().getFullYear()) {
-                    let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
-                    if (i.getDay() == el.last_day) {
-                        day.value += el.stat_data.find(data => data.date == date) ? Number(el.stat_data.find(data => data.date == date).value) : 0
-                        day.date = date
-                        currentDays.push(day)
-                        day = {
-                            date: null,
-                            value: 0
-                        }
-                    } else {
-                        day.value += el.stat_data.find(data => data.date == date) ? Number(el.stat_data.find(data => data.date == date).value) : 0
-                    }
-                    i = new Date(i.setDate(i.getDate() + 1))
-                }
-            }
-            new DrawStats(graphsHolder[i], currentDays, {
-                height: weekSwitch.checked ? 350 : 250,
-                reverted: el.reverted
-            }).drawStat(currentDays)
-        })
-    })
+export  function init() {
+    const statsHolders = document.querySelectorAll('.my_dataviz')
+    // if (statsHolders) return
+    
     const titleSwitch = document.getElementById('titleSwitch')
     titleSwitch.onchange = () => {
         titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
     }
-    weekSwitch.onchange = init
+    
+    const periods = document.querySelectorAll('#periods > .chip')
+
+    periods.forEach((el,i,a) => el.onclick = () => {
+        a.forEach(el => el.classList.remove('active'))
+        el.classList.add('active')
+        drawStats()
+    })
+
+    let startY = new Date().getFullYear()
+
+    const params = {
+        statHeight: null
+    }
+
+    const drawStats = async () => {
+        let period
+        const promises = []
+    
+        periods.forEach(el => {
+            if (el.classList.contains('active')) period = el.dataset.name
+        })
+        
+        if (period !== 'Y' && Number(period) < 24) {
+            if (Number(period) < 2) {
+                document.querySelectorAll('section .column').forEach(el => {
+                    el.classList.remove('col-12') || el.classList.remove('col-4')
+                    el.classList.add('col-2', 'col-xxl-3')
+                })
+            } else {
+                document.querySelectorAll('section .column').forEach(el => {
+                    el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3')
+                    el.classList.add('col-4')
+                })
+            }
+        } else {
+            document.querySelectorAll('section .column').forEach(el => {
+                el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-6') || el.classList.remove('col-4')
+                el.classList.add('col-12')
+            })
+        }
+        
+        period >= 12 ? params.statHeight = 500 : params.statHeight = 250
+
+        statsHolders.forEach(el => {
+            promises.push(fetch('/office/stats', {
+                method: 'POST',
+                body: JSON.stringify({
+                    find: 'byid',
+                    id: Number(el.dataset.sid),
+                    _csrf: document.getElementById('csrfToken').value
+                }), 
+                headers:{
+                    "Content-Type": "application/json"
+                }
+            }).then(result => result.json()).then(result => result[0]))
+        })
+        await Promise.all(promises).then(stats => stats.forEach((stat, i) => {
+
+            let currentWeekDay = new Date().getDay() || 7
+
+            let lastWeekDay
+            let firstWeekDay
+            currentWeekDay - stat.last_day <= 0 
+            ? lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (-(currentWeekDay - stat.last_day))))
+            : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - stat.last_day))))
+
+            firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
+            const params = {
+                statHeight: 350
+            }
+            
+            statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
+            new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, firstWeekDay, params).drawStat()
+        }))
+    }
+    drawStats()
+    window.onresize = init
 }

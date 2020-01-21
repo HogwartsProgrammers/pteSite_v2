@@ -3,14 +3,13 @@
     .d-flex.mb-2
         .form-group.float-left
             label.form-switch.text-bold 
-                span Ежедневные
-                input#weekSwitch(type="checkbox")
-                i.form-icon
-        .form-group.float-left
-            label.form-switch.text-bold 
                 span без заголовков
                 input#titleSwitch(type="checkbox")
                 i.form-icon
+        #periods
+            .chip.c-hand.active(data-name="1") День
+            .chip.c-hand(data-name="2") 2 недели
+            .chip.c-hand(data-name="Y") Год
     each post in posts
         section.mt-2.ml-2.mr-2
             h2.text-center= post.title
@@ -22,5 +21,5 @@
                                 .card-header(style="height:0px").pt-0
                                     .card-title.stat-title.text-bold.text-center 
                                 .card-nav 
-                                    .my_dataviz.dragscroll(style="max-width:100%; overflow:auto", data-sid= sid)
+                                    .my_dataviz.dragscroll(style="max-width:100%; overflow:auto", data-sid= sid, id= sid)
                             

@@ -1,41 +1,94 @@
 import *  as d3 from "d3"
 
-// Отрисвка статистик d3 js
-// params
-// const params = {
-//     statHolder: []
-//     height
-//     reverted
-// } 
-
 export default class DrawStats {
-    constructor(stat, data, params  = {
-        height: 500,
-        reverted: 0,
+    constructor(stat, data, reverted, lastDay, startY, statPeriod, firstWeekDay, params = {
+            statHeight: 250
     }) {
-        this.params = params
-        this.stat = stat
+        const format = data => {
+            data += ''
+            return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
+        }
+
+        const period = statPeriod === 'Y' ? 'Y' : Number(statPeriod) * 7
+
+        if (data == null) data = []
+
+        
+        let currentDays = []
+
+        if (period != 'Y' && period <= 28) {
+            for (let i = 0; i < period; i++) {
+                let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + i))
+                date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
+                let lastWeekDayIndex = data.indexOf(data.find(stat => stat.date == date))
+                currentDays.push(data[lastWeekDayIndex] || {date,value: 0})
+            }
+
+        } else {
+            let i = new Date(startY,0,1)
+            let day = {
+                date: null,
+                value: 0
+            }
+            if (period > 28) {
+                for (let j = 0; j < period; j++) {
+                    let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + j))
+                    date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
+                    if (i.getDay() == lastDay) {
+                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        day.date = date
+                        currentDays.push(day)
+                        day = {
+                            date: null,
+                            value: 0
+                        }
+                    } else {
+                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                    }
+                    i = new Date(i.setDate(i.getDate() + 1))
+                }
+            } else
+                while (i.getFullYear() == startY) {
+                    let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                    if (i.getDay() == lastDay) {
+                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        day.date = date
+                        currentDays.push(day)
+                        day = {
+                            date: null,
+                            value: 0
+                        }
+                    } else {
+                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                    }
+                    i = new Date(i.setDate(i.getDate() + 1))
+                }
+        }
+        this.data = currentDays
+
+        this.reverted = reverted
+        this.stat = document.getElementById(stat)
         this.graphHeight
         this.margin = {top: 40, right: 25, bottom: 50, left: 30}
-        this.graphHeight = this.params.height - this.margin.top - this.margin.bottom
-        if (Math.ceil(String(d3.max(data, d => Number(d.value))).length / 3) > 1) {
-            this.margin.left = (Math.ceil(String(d3.max(data, d => Number(d.value))).length / 3) * 20) + 10
+        this.graphHeight = params.statHeight - this.margin.top - this.margin.bottom
+        if (Math.ceil(String(d3.max(this.data, d => Number(d.value))).length / 3) > 1) {
+            this.margin.left = (Math.ceil(String(d3.max(this.data, d => Number(d.value))).length / 3) * 20) + 10
         } else {
-            if (String(d3.max(data, d => Number(d.value))).length > 1) {
-                this.margin.left = (10 * String(d3.max(data, d => Number(d.value))).length) + 10
+            if (String(d3.max(this.data, d => Number(d.value))).length > 1) {
+                this.margin.left = (10 * String(d3.max(this.data, d => Number(d.value))).length) + 10
             }
         }
-        stat.innerHTML = ''
-        this.svg = d3.select(stat)
+        this.stat.innerHTML = ''
+        this.svg = d3.select(this.stat)
             .append("svg")
-            .attr("width", stat.offsetWidth - 10)
+            .attr("width", this.stat.offsetWidth - 10)
             .attr("height", this.graphHeight + this.margin.top + this.margin.bottom)
             
         this.graph = this.svg.append("g")
-            .attr('width', stat.offsetWidth - 30)
+            .attr('width', this.stat.offsetWidth - 30)
             .attr('height', this.graphHeight)
             .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`)
-        this.x = d3.scaleLinear().range([0,stat.offsetWidth - this.margin.left - this.margin.right])
+        this.x = d3.scaleLinear().range([0,this.stat.offsetWidth - this.margin.left - this.margin.right])
         this.y = d3.scaleLinear().range([this.graphHeight,0])
         
         this.xAxisGroup = this.graph.append('g')
@@ -65,9 +118,9 @@ export default class DrawStats {
         this.lines = this.graph.append('g')
             .attr('class', 'lines2')
     }
-    drawStat(data) {
-        if (!data.find(el => el.value != 0)) return
-        data = data.map(day => {
+    drawStat() {
+        if (!this.data.find(el => el.value != 0)) return
+        let data = this.data.map(day => {
             return {
                 date: day.date,
                 value: Number(day.value)
@@ -75,7 +128,7 @@ export default class DrawStats {
         })
         
         this.x.domain([1,data.length])
-        this.y.domain(this.params.reverted == 0 ? [d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)] : [(d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value), d3.min(data, d => d.value) ])
+        this.y.domain(this.reverted == 0 ? [d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)] : [(d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value), d3.min(data, d => d.value) ])
 
         const line2 = this.lines.selectAll('line')
             .data(data)
@@ -149,7 +202,7 @@ export default class DrawStats {
                 }
             })
             .attr('stroke', (d,i) => {
-                if (this.params.reverted == 0) {
+                if (this.reverted == 0) {
                     if (!data.find((el, it) => {
                         if (it <= i) return false
                         else {
@@ -246,7 +299,7 @@ export default class DrawStats {
                     }
                 })
                 .attr('stroke', (d,i) => {
-                    if (this.params.reverted == 0) {
+                    if (this.reverted == 0) {
                         if (!data.find((el, it) => {
                             if (it <= i) return false
                             else {

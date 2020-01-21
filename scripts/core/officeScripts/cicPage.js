@@ -1,6 +1,16 @@
 import DrawStats from '../drawStats.component'
 
 export function init() {
+    // функция по форматированию дат
+    const format = data => {
+        data += ''
+        return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
+    }
+
+    const titleSwitch = document.getElementById('titleSwitch')
+    titleSwitch.onchange = () => {
+        titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
+    }
 
     window.onscroll = () => {
         if (pageYOffset > 70) {
@@ -11,37 +21,62 @@ export function init() {
             document.querySelector('#weeks_calendar > .week-body').classList.remove('calendar-fixed')
         }
     }
+    
+    const periods = document.querySelectorAll('#periods > .chip')
 
-    window.onresize = init
+    periods.forEach((el,i,a) => el.onclick = () => {
+        a.forEach(el => el.classList.remove('active'))
+        el.classList.add('active')
+        drawStats()
+    })
 
-    const format = data => {
-        data += ''
-        return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
+    let startY = new Date().getFullYear()
+    let startW 
+
+    const statsHolders = document.querySelectorAll('.my_dataviz')
+    const weeksCalendar = document.getElementById('weeks_calendar')
+    const params = {
+        statHeight: null
     }
 
-    const weekSwitch = document.getElementById('weekSwitch')
-
-    if (!weekSwitch.checked) {
-        weekSwitch.parentElement.querySelector('span').innerText = 'Ежедневные'
-        document.querySelectorAll('section .column').forEach(el => {
-            el.classList.remove('col-12')
-            el.classList.add('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
-        })
-    } else {
-        weekSwitch.parentElement.querySelector('span').innerText = 'Еженедельные'
-        document.querySelectorAll('section .column').forEach(el => {
-            el.classList.remove('col-2','col-xl-3','col-lg-4','col-md-6','col-sm-12','col-xxl-3')
-            el.classList.add('col-12')
-        })
-    }
-
-    // Отрисвка статистик d3 js
-    const s = async (n, fullYear, lastWeekDay1) => {
-        const graphsHolder = document.querySelectorAll('.my_dataviz')
+    const drawStats = async () => {
+        let period
         const promises = []
-        const graphs = Array.from(graphsHolder)
+    
+        periods.forEach(el => {
+            if (el.classList.contains('active')) period = el.dataset.name
+        })
+        
+        if (period !== 'Y' && Number(period) < 24) {
+            if (Number(period) == 2) {
+                document.querySelectorAll('section .column').forEach(el => {
+                    el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-6')
+                    el.classList.add('col-4')
+                })
+            } else {
+                    if (Number(period) < 12) {
+                        document.querySelectorAll('section .column').forEach(el => {
+                            el.classList.remove('col-12') || el.classList.remove('col-6') || el.classList.remove('col-4')
+                            el.classList.add('col-2', 'col-xxl-3')
+                        })
+                    } else {
+                        document.querySelectorAll('section .column').forEach(el => {
+                            el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-4')
+                            el.classList.add('col-6')
+                        })
+                    }
+            }
+        } else {
+            document.querySelectorAll('section .column').forEach(el => {
+                el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-6') || el.classList.remove('col-4')
+                el.classList.add('col-12')
+            })
+        }
+        
+        period >= 12 ? params.statHeight = 500 : params.statHeight = 250
 
-        graphs.forEach((el,i) => {
+
+        statsHolders.forEach(el => {
             promises.push(fetch('/office/stats', {
                 method: 'POST',
                 body: JSON.stringify({
@@ -54,163 +89,81 @@ export function init() {
                 }
             }).then(result => result.json()).then(result => result[0]))
         })
-        await Promise.all(promises).then((stats) => {
-            stats.forEach((el,it) => {
-                graphsHolder[it].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = el.title
+        await Promise.all(promises).then(stats => stats.forEach((stat, i) => {
+            let lastWeekDay
+            let currentWeekDay = new Date().getDay() || 7
 
-                if (!el) return 
-                if (el.stat_data == null) el.stat_data = []
+            currentWeekDay - stat.last_day <= 0 
+            ? lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (-(currentWeekDay - stat.last_day))))
+            : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - stat.last_day))))
 
-                let currentWeekDay = new Date().getDay() || 7   
+            // календарь недель
+            weeksCalendar.querySelector('.week-header').innerHTML = startY
+            if (weeksCalendar.querySelectorAll('.weeks > button').length <= 0) {
+                let i = new Date(startY,0,1)
+                let j = 1
 
-                let lastWeekDay = lastWeekDay1
-
-                let currentDays = []
-                if (!lastWeekDay) {
-                    currentWeekDay - el.last_day <= 0 
-                    ? lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (-(currentWeekDay - el.last_day))))
-                    : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - el.last_day))))
-                }
-
-                const weeksCalendar = document.getElementById('weeks_calendar')
-                if (!weekSwitch.checked) {
-                    weeksCalendar.querySelector('.week-header').innerHTML = fullYear
-                    if (it < 1) {
-                        if (weeksCalendar.querySelectorAll('.weeks > button').length <= 0) {
-                            let i = new Date((new Date().getFullYear() + n),0,1)
-                            let j = 1
-
-                            while (i.getFullYear() == fullYear) {
-                                let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
-                                const d = date.split('.')
-                                if (i.getDay() == el.last_day) {
-                                    const btn = document.createElement('button')
-                                    btn.dataset.date = date
-                                    btn.dataset.tooltip = 'по ' + date
-                                    btn.innerText = j
-                                    j > 52 ? btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top', 'delete') : btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top')
-                                    weeksCalendar.querySelector('.weeks').insertAdjacentElement('beforeend', btn)
-                                    if (Number(d[2]) == new Date().getFullYear() && Number(d[1]) == Number(format((new Date().getMonth() + 1))) && (Number(d[0]) - Number(format((new Date().getDate()))) >= 0 && Number(d[0]) - Number(format((new Date().getDate()))) < 7)) {
-                                        console.log(Number(d[0]))
-                                        let currentWeekBtn = (Array.from(weeksCalendar.querySelectorAll('.weeks > button')).find(el => el.dataset.date == date))
-                                        currentWeekBtn.classList.remove('btn-link')
-                                        currentWeekBtn.classList.add('btn-error')
-                                }
-                                    j++
-                                }
-                                i = new Date(i.setDate(i.getDate() + 1))
-                            }
-                        } else {
-                            let i = new Date((new Date().getFullYear() + n),0,1)
-                            let j = 0
-
-                            while (i.getFullYear() == fullYear) {
-                                let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
-                                if (i.getDay() == el.last_day) {
-                                        if (j > 51 && weeksCalendar.querySelectorAll('.weeks > button').length <= 52) {
-                                            if (!weeksCalendar.querySelector('.weeks > .delete')) {
-                                                const btn = document.createElement('button')
-                                                btn.dataset.date = date
-                                                btn.innerText = j + 1
-                                                btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top', 'delete')
-                                                btn.dataset.tooltip = 'по ' + date
-                                                weeksCalendar.querySelector('.weeks').insertAdjacentElement('beforeend', btn)
-                                            }
-                                        }
-                                        if (weeksCalendar.querySelector('.weeks > .delete')) {
-                                                if (j < 52) {
-                                                const lastBtn = document.querySelector('#weeks_calendar .weeks > .delete')
-                                                if (lastBtn) lastBtn.parentNode.removeChild(lastBtn)
-                                            }
-                                        }
-                                    weeksCalendar.querySelectorAll('.weeks > button')[j].dataset.date = date
-                                    weeksCalendar.querySelectorAll('.weeks > button')[j].dataset.tooltip = 'по ' +date
-                                    j++
-                                }
-                                i = new Date(i.setDate(i.getDate() + 1))
-                            }
+                while (i.getFullYear() == startY) {
+                    let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                    const d = date.split('.')
+                    let da = new Date(new Date(i).setDate(i.getDate() - 6))
+                    if (i.getDay() == stat.last_day) {
+                        da = `${format(da.getDate())}.${format(da.getMonth() + 1)}.${da.getFullYear()}`
+                        const btn = document.createElement('button')
+                        btn.dataset.date = date
+                        btn.dataset.tooltip = 'с ' + da
+                        btn.innerText = j
+                        btn.classList.add('btn', 'btn-sm', 'btn-link', 'tooltip', 'tooltip-top')
+                        weeksCalendar.querySelector('.weeks').insertAdjacentElement('beforeend', btn)
+                        if (Number(d[2]) == new Date().getFullYear() && Number(d[1]) == Number(format((new Date().getMonth() + 1))) && (Number(d[0]) - Number(format((new Date().getDate()))) >= 0 && Number(d[0]) - Number(format((new Date().getDate()))) < 7)) {
+                            let currentWeekBtn = (Array.from(weeksCalendar.querySelectorAll('.weeks > button')).find(el => el.dataset.date == date))
+                            currentWeekBtn.classList.remove('btn-link')
+                            currentWeekBtn.classList.add('btn-error')
                         }
+                        j++
                     }
-                    
-                    weeksCalendar.querySelectorAll('.weeks > button').forEach((el, i, arr) => el.onclick = e => {
-                        arr.forEach(btn => {
-                            if (btn.classList.contains('btn-error')) {
-                                btn.classList.remove('btn-error')
-                                btn.classList.add ('btn-link')
-                            }
-                        })
-                        e.target.classList.remove('btn-link')
-                        e.target.classList.add('btn-error')
-                        let date = e.target.dataset.date.split('.')
-                        lastWeekDay = new Date(date[2],date[1] - 1,date[0],new Date().getHours(),new Date().getMinutes(),new Date().getSeconds())
-                        s(n, fullYear, lastWeekDay)
-                    })
-
-                    for (let i = 0; i < 7; i++) {
-                        let date = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - i))
-                        date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
-                        let lastWeekDayIndex = el.stat_data.indexOf(el.stat_data.find(stat => stat.date == date))
-                        currentDays.push(el.stat_data[lastWeekDayIndex] || {date,value: 0})
-                    }
-                    currentDays.reverse()
-                } else {
-                    weeksCalendar.querySelector('.week-header').innerHTML = fullYear
-                    let i = new Date((new Date().getFullYear() + n),0,1)
-                    let day = {
-                        date: null,
-                        value: 0
-                    }
-
-                    while (i.getFullYear() == fullYear) {
-                        let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
-                        if (i.getDay() == el.last_day) {
-                            day.value += el.stat_data.find(data => data.date == date) ? Number(el.stat_data.find(data => data.date == date).value) : 0
-                            day.date = date
-                            currentDays.push(day)
-                            day = {
-                                date: null,
-                                value: 0,
-                            }
-                        } else {
-                            day.value += el.stat_data.find(data => data.date == date) ? Number(el.stat_data.find(data => data.date == date).value) : 0
-                        }
-                        i = new Date(i.setDate(i.getDate() + 1))
-                    }
+                    i = new Date(i.setDate(i.getDate() + 1))
                 }
-                new DrawStats(graphsHolder[it], currentDays, {
-                    height: weekSwitch.checked ? 350 : 250,
-                    reverted: el.reverted
-                }).drawStat(currentDays)
+            }
+            weeksCalendar.querySelectorAll('.weeks > button').forEach((el, i, arr) => el.onclick = e => {
+                arr.forEach(btn => {
+                    if (btn.classList.contains('btn-error')) {
+                        btn.classList.remove('btn-error')
+                        btn.classList.add ('btn-link')
+                    }
+                })
+                el.classList.remove('btn-link')
+                el.classList.add('btn-error')
+                let date = el.dataset.date.split('.')
+                lastWeekDay = new Date(date[2],date[1] - 1,date[0],new Date().getHours(),new Date().getMinutes(),new Date().getSeconds())
+                startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
+                drawStats()
             })
-        })
+            if (!startW) startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
+
+            statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
+            new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, startW, params).drawStat()
+        }))
     }
-    let fullYear = new Date().getFullYear()
-    let n = 0
-
-    s(n,fullYear)
-
-    const titleSwitch = document.getElementById('titleSwitch')
+    drawStats()
+    
     const calendarSwitch = document.getElementById('calendarSwitch')
-
+            
     calendarSwitch.onchange = () => {
         calendarSwitch.checked ? document.getElementById('weeks_calendar').classList.remove('d-hide') : document.getElementById('weeks_calendar').classList.add('d-hide')
     }
 
-    titleSwitch.onchange = () => {
-        titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
-    }
-
-
     document.getElementById('year_left').onclick = () => {
-        fullYear--
-        n--
-        s(n,fullYear)
+        weeksCalendar.querySelector('.week-body .weeks').innerHTML = ''
+        startY--
+        drawStats()
     }
 
     document.getElementById('year_right').onclick = () => {
-        fullYear++
-        n++
-        s(n,fullYear)
+        weeksCalendar.querySelector('.week-body .weeks').innerHTML = ''
+        startY++
+        drawStats()
     }
-    weekSwitch.onchange = init
+    
+    window.onresize = drawStats
 }

@@ -51,12 +51,6 @@ block content
                     .d-flex.mb-2
                         .form-group.float-left
                             label.form-switch.text-bold 
-                                span Ежедневные
-                                input#weekSwitch(type="checkbox")
-                                i.form-icon
-                        
-                        .form-group.float-left
-                            label.form-switch.text-bold 
                                 span Перевернутый
                                 input#revertedSwitch(type="checkbox")
                                 i.form-icon
@@ -86,7 +80,7 @@ block content
                                 #calendar_body.d-flex
                             input(type="number")#stats_value.form-input.mt-2
                         #stat
-                            .my_dataviz.dragscroll(style=" overflow:auto")
+                            #editStat.my_dataviz.dragscroll(style=" overflow:auto")
 
                         
 

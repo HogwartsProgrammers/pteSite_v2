@@ -14,11 +14,6 @@
         .d-flex
             .form-group.float-left
                 label.form-switch.text-bold 
-                    span Ежедневные
-                    input#weekSwitch(type="checkbox")
-                    i.form-icon
-            .form-group.float-left
-                label.form-switch.text-bold 
                     span без заголовков
                     input#titleSwitch(type="checkbox")
                     i.form-icon
@@ -27,13 +22,20 @@
                     span выбор недели
                     input#calendarSwitch(type="checkbox")
                     i.form-icon
+            #periods
+                .chip.c-hand.active(data-name="1") День
+                .chip.c-hand(data-name="2") 2 недели
+                .chip.c-hand(data-name="6") 6 недель
+                .chip.c-hand(data-name="12") 12 недель
+                .chip.c-hand(data-name="24") 24 недели
+                .chip.c-hand(data-name="Y") Год
         .columns
             each stat in stats
                 if stat.active
-                    .column.col-2.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2
+                    .column.col-4.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2
                         .card
                             .card-header(style="height:0px").pt-0
                                 .card-title.stat-title.text-bold.text-center 
                             .card-nav
-                                .my_dataviz(data-sid= stat.id)
+                                .my_dataviz(data-sid= stat.id, id= stat.id)
                         
