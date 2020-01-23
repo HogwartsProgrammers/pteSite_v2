@@ -6,7 +6,17 @@ export  function init() {
     
     const titleSwitch = document.getElementById('titleSwitch')
     titleSwitch.onchange = () => {
-        titleSwitch.checked ? document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide')) : document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
+        if (titleSwitch.checked){
+            document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.x-axis').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.y-axis').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.lines').forEach(el => el.classList.add('d-hide'))
+        } else {
+            document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.x-axis').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.y-axis').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.lines').forEach(el => el.classList.remove('d-hide'))
+        }
     }
     
     const periods = document.querySelectorAll('#periods > .chip')
@@ -22,7 +32,7 @@ export  function init() {
     const params = {
         statHeight: null
     }
-
+    
     const drawStats = async () => {
         let period
         const promises = []
@@ -50,7 +60,7 @@ export  function init() {
             })
         }
         
-        period >= 12 ? params.statHeight = 500 : params.statHeight = 250
+        period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
 
         statsHolders.forEach(el => {
             promises.push(fetch('/office/stats', {
@@ -76,13 +86,22 @@ export  function init() {
             : lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (7 - (currentWeekDay - stat.last_day))))
 
             firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
-            const params = {
-                statHeight: 350
-            }
             
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, firstWeekDay, params).drawStat()
         }))
+        
+        if (titleSwitch.checked){
+            document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.x-axis').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.y-axis').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.lines').forEach(el => el.classList.add('d-hide'))
+        } else {
+            document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.x-axis').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.y-axis').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.lines').forEach(el => el.classList.remove('d-hide'))
+        }
     }
     drawStats()
     window.onresize = init

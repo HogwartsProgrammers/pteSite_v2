@@ -121,7 +121,7 @@ export default class DrawStats {
             .attr('class', 'lines2')
     }
     drawStat() {
-        // if (!this.data.find(el => el.value != 0)) return
+        if (!this.data.find(el => el.value != null)) return
         let data = this.data.map(day => {
             return {
                 date: day.date,
