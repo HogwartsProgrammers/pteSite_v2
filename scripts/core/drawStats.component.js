@@ -73,11 +73,12 @@ export default class DrawStats {
         this.graphHeight
         this.margin = {top: 40, right: 25, bottom: 50, left: 30}
         this.graphHeight = params.statHeight - this.margin.top - this.margin.bottom
-        if (Math.ceil(String(d3.max(this.data, d => Number(d.value))).length / 3) > 1) {
-            this.margin.left = (Math.ceil(String(d3.max(this.data, d => Number(d.value))).length / 3) * 20) + 10
+        // console.log(Math.ceil(String(d3.max(this.data, d => Number(d.value))).length)
+        if (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) > 1) {
+            this.margin.left = (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) * 20) + 10
         } else {
-            if (String(d3.max(this.data, d => Number(d.value))).length > 1) {
-                this.margin.left = (10 * String(d3.max(this.data, d => Number(d.value))).length) + 10
+            if (String(Math.round(d3.max(this.data, d => Number(d.value)))).length > 1) {
+                this.margin.left = (10 * String(Math.round(d3.max(this.data, d => Number(d.value)))).length) + 10
             }
         }
         this.stat.innerHTML = ''
