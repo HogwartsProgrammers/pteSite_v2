@@ -416,6 +416,8 @@ export default class DrawStats {
         
         this.xAxisGroup.call(xAxis)
         this.yAxisGroup.call(yAxis)
+        this.yAxisGroup.call(yAxis).selectAll('text')
+            .style('font-family', 'arial condensed', 'important')
         this.xAxisGroup.selectAll('text')
             .attr('transform', data.length > 7 ? 'rotate(-90) translate(-25, -17)' : this.stat.offsetWidth >= 500 ? '':'rotate(-90) translate(-25, -17)')
     }
