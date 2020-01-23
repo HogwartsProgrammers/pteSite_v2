@@ -1028,6 +1028,10 @@ img {
     padding-left: 10px;
 }
 
+#edit_stats {
+    max-width: 12.5rem;
+}
+
 .my_dataviz {
     /* padding-left: 10px */
 }

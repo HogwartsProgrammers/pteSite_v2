@@ -21,45 +21,47 @@ export default class DrawStats {
                 let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + i))
                 date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
                 let lastWeekDayIndex = data.indexOf(data.find(stat => stat.date == date))
-                currentDays.push(data[lastWeekDayIndex] || {date,value: 0})
+                currentDays.push(data[lastWeekDayIndex] || {date,value: null})
             }
 
         } else {
             let i = new Date(startY,0,1)
             let day = {
                 date: null,
-                value: 0
+                value: null
             }
             if (period > 28) {
                 for (let j = 0; j < period; j++) {
                     let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + j))
                     date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
+                    const dataObj = data.find(stat => stat.date == date)
                     if (i.getDay() == lastDay) {
-                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
                         day.date = date
                         currentDays.push(day)
                         day = {
                             date: null,
-                            value: 0
+                            value: null
                         }
                     } else {
-                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
                     }
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
             } else
                 while (i.getFullYear() == startY) {
                     let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+                    const dataObj = data.find(stat => stat.date == date)
                     if (i.getDay() == lastDay) {
-                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
                         day.date = date
                         currentDays.push(day)
                         day = {
                             date: null,
-                            value: 0
+                            value: null
                         }
                     } else {
-                        day.value += data.find(stat => stat.date == date) ? Number(data.find(stat => stat.date == date).value) : 0
+                        if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
                     }
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
@@ -119,16 +121,16 @@ export default class DrawStats {
             .attr('class', 'lines2')
     }
     drawStat() {
-        if (!this.data.find(el => el.value != 0)) return
+        // if (!this.data.find(el => el.value != 0)) return
         let data = this.data.map(day => {
             return {
                 date: day.date,
-                value: Number(day.value)
+                value: day.value == null ? null : Number(day.value)
             }
         })
         
         this.x.domain([1,data.length])
-        this.y.domain(this.reverted == 0 ? [d3.min(data, d => d.value), (d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value)] : [(d3.max(data, d => d.value) / 100 * 20)+d3.max(data, d => d.value), d3.min(data, d => d.value) ])
+        this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
 
         const line2 = this.lines.selectAll('line')
             .data(data)
@@ -140,12 +142,12 @@ export default class DrawStats {
                 if (!data[i + 1] || !data.find((el, it) => {
                     if (it <= i) return false
                     else {
-                        return el.value != 0
+                        return el.value != null
                     }
                 })) {
                     return this.x(0)
                 } else {
-                    if (data[i].value == 0) return this.x(0)
+                    if (data[i].value == null) return this.x(0)
                     else return this.x(i + 1)
                 }
             })
@@ -153,12 +155,12 @@ export default class DrawStats {
                 if (!data[i + 1] || !data.find((el, it) => {
                     if (it <= i) return false
                     else {
-                        return el.value != 0
+                        return el.value != null
                     }
                 })) {
                     return this.y(0)
                 } else {
-                    if (data[i].value == 0) return this.y(0)
+                    if (data[i].value == null) return this.y(0)
                     else return this.y(d.value)
                 }
             })
@@ -166,68 +168,43 @@ export default class DrawStats {
                 if (!data[i + 1] || !data.find((el, it) => {
                     if (it <= i) return false
                     else {
-                        return el.value != 0
+                        return el.value != null
                     }
                 })) {
                     return this.x(0)
                 } else
-                    if (data[i].value == 0) return this.x(0)
+                    if (data[i].value == null) return this.x(0)
                     else {
-                        return this.x((i + 2) + (data.indexOf(data.find((el, it) => {
-                            if (it <= i) return false
-                            else {
-                                return el.value != 0
-                            }
-                        })) - (i + 1)))
+                        if (data[i + 1].value == null) return this.x(i + 1)
+                        else return this.x(i + 2)
+                        // return this.x((i + 2) + (data.indexOf(data.find((el, it) => {
+                        //     if (it <= i) return false
+                        //     else {
+                        //         return el.value != null
+                        //     }
+                        // })) - (i + 1)))
                     }
             })
             .attr('y2', (d,i,n) => {
                 if (!data[i + 1] || !data.find((el, it) => {
                     if (it <= i) return false
                     else {
-                        return el.value != 0
+                        return el.value != null
                     }
                 })) {
                     return this.y(0)
                 } else {
-                    if (data[i].value == 0) return this.y(0)
+                    if (data[i].value == null) return this.y(0)
                     else {
-                        return this.y(data.find((el, it) => {
-                            if (it <= i) return false
-                            else {
-                                return el.value != 0
-                            }
-                        }).value)
+                        if (data[i + 1].value == null) return this.y(d.value)
+                        else return this.y(data[i + 1].value)
+                        // return this.y(data.find((el, it) => {
+                        //     if (it <= i) return false
+                        //     else {
+                        //         return el.value != null
+                        //     }
+                        // }).value)
                     }
-                }
-            })
-            .attr('stroke', (d,i) => {
-                if (this.reverted == 0) {
-                    if (!data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) return '#000'
-                    else return data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    }).value < d.value ? 'red' : '#000'
-                } else {
-                    if (!data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    })) return '#000'
-                    else return data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != 0
-                        }
-                    }).value < d.value ? '#000' : 'red'
                 }
             })
     
@@ -237,12 +214,12 @@ export default class DrawStats {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != 0
+                            return el.value != null
                         }
                     })) {
                         return this.x(0)
                     } else {
-                        if (data[i].value == 0) return this.x(0)
+                        if (data[i].value == null) return this.x(0)
                         else return this.x(i + 1)
                     }
                 })
@@ -250,12 +227,12 @@ export default class DrawStats {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != 0
+                            return el.value != null
                         }
                     })) {
                         return this.y(0)
                     } else {
-                        if (data[i].value == 0) return this.y(0)
+                        if (data[i].value == null) return this.y(0)
                         else return this.y(d.value)
                     }
                 })
@@ -263,38 +240,42 @@ export default class DrawStats {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != 0
+                            return el.value != null
                         }
                     })) {
                         return this.x(0)
                     } else
-                        if (data[i].value == 0) return this.x(0)
+                        if (data[i].value == null) return this.x(0)
                         else {
-                            return this.x((i + 2) + (data.indexOf(data.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != 0
-                                }
-                            })) - (i + 1)))
+                            if (data[i + 1].value == null) return this.x(i + 1)
+                            else return this.x(i + 2)
+                            // return this.x((i + 2) + (data.indexOf(data.find((el, it) => {
+                            //     if (it <= i) return false
+                            //     else {
+                            //         return el.value != null
+                            //     }
+                            // })) - (i + 1)))
                         }
                 })
                 .attr('y2', (d,i,n) => {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != 0
+                            return el.value != null
                         }
                     })) {
                         return this.y(0)
                     } else {
-                        if (data[i].value == 0) return this.y(0)
+                        if (data[i].value == null) return this.y(0)
                         else {
-                            return this.y(data.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != 0
-                                }
-                            }).value)
+                            if (data[i + 1].value == null) return this.y(d.value)
+                            else return this.y(data[i + 1].value)
+                            // return this.y(data.find((el, it) => {
+                            //     if (it <= i) return false
+                            //     else {
+                            //         return el.value != null
+                            //     }
+                            // }).value)
                         }
                     }
                 })
@@ -303,26 +284,26 @@ export default class DrawStats {
                         if (!data.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != 0
+                                return el.value != null
                             }
                         })) return '#000'
                         else return data.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != 0
+                                return el.value != null
                             }
                         }).value < d.value ? 'red' : '#000'
                     } else {
                         if (!data.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != 0
+                                return el.value != null
                             }
                         })) return '#000'
                         else return data.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != 0
+                                return el.value != null
                             }
                         }).value < d.value ? '#000' : 'red'
                     }
@@ -332,12 +313,12 @@ export default class DrawStats {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != 0
+                            return el.value != null
                         }
                     })) {
                         return 0
                     } else {
-                        if (data[i].value == 0) return 0
+                        if (data[i].value == null) return 0
                         else {
                             return 3
                         }
@@ -359,7 +340,6 @@ export default class DrawStats {
                 .attr('x', (d,i) => this.x(i + 1))
                 .attr('y', d => this.y(d.value))
                 .attr('fill', 'currentColor')
-                // .attr('transform', d => !d.value + 1 ? 'translate(0, -300)' : '')    
                 .style('opacity', '0')
                 .text(d => d.value)
     
@@ -378,7 +358,7 @@ export default class DrawStats {
     
         circles.enter()
             .append('circle')
-                .attr('r', d => d.value == 0 ? 0 : 3)
+                .attr('r', d => d.value == null ? 0 : 3)
                 .attr('cx', (d,i) => this.x(i + 1))
                 .attr('cy', d => this.y(d.value))
                 .attr('fill', '#000')
@@ -386,11 +366,11 @@ export default class DrawStats {
         this.svg
             .on('mouseover', () => {
                 this.svg.selectAll('circle')  
-                    .attr('r', d => d.value == 0 ? 0 : 4)
+                    .attr('r', d => d.value == null ? 0 : 4)
             })
             .on('mouseleave', () => {
                 d3.selectAll('circle')  
-                    .attr('r', d => d.value == 0 ? 0 : 3)
+                    .attr('r', d => d.value == null ? 0 : 3)
             })
             
         this.graph.selectAll('circle')

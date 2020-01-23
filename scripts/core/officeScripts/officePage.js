@@ -2,7 +2,7 @@ import DrawStats from '../drawStats.component'
 
 export  function init() {
     const statsHolders = document.querySelectorAll('.my_dataviz')
-    // if (statsHolders) return
+    if (!statsHolders) return
     
     const titleSwitch = document.getElementById('titleSwitch')
     titleSwitch.onchange = () => {

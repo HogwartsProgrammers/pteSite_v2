@@ -96,9 +96,8 @@ export default class EditStats {
             if (stats.stat_data == null) stats.stat_data = []
             // document.getElementById('stats_calendar').innerHTML = ''
             
-            
             dhxCalendar.config.mark = d => {
-                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay)) return d.getDay() == 3 ? 'a b' : 'a'
+                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == 3 ? 'a b' : 'a'
                 if (d.getDay() == 3) return 'b'
                 else return ''
             }
@@ -106,8 +105,10 @@ export default class EditStats {
             stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
             
             const statInput = document.getElementById('stats_value')
+            const statRem = document.getElementById('stats_rem')
             
-            statInput.value = 0
+            statInput.value = null
+            statRem.value = ''
             
             let currentDay = dhxCalendar.getValue()
 
@@ -134,6 +135,7 @@ export default class EditStats {
             graphsHolder[0].style.width = '600px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
             if (currentStatValue) statInput.value = currentStatValue.value
+            if (currentStatValue) statRem.value = currentStatValue.rem || ''
             dhxCalendar.paint()
             
             dhxCalendar.events.on('Change', () => {
@@ -155,9 +157,34 @@ export default class EditStats {
             })
 
             statInput.onblur = async event => {
-                if (!statInput.value) statInput.value = 0
+                if (!statInput.value) statInput.value = null
 
-                let data = {date: currentDay,value: +statInput.value}
+                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value}
+
+                let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
+                if (currentStat) {
+                    let statIndex = stats.stat_data.indexOf(currentStat)
+                    stats.stat_data[statIndex] = data
+                } else stats.stat_data.push(data)
+
+                await fetch('/office/stats/update', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: Number(statsSelect.value),
+                        stat_data: stats.stat_data,
+                        _csrf: document.getElementById('csrfToken').value
+                    }), 
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                }).then(result => result.json())
+                selectStat()
+            }
+
+            statRem.onblur = async event => {
+                if (!statInput.value) statInput.value = null
+
+                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim()}
 
                 let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
                 if (currentStat) {
