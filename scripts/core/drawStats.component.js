@@ -8,7 +8,7 @@ export default class DrawStats {
             data += ''
             return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
         }
-
+        
         const period = statPeriod === 'Y' ? 'Y' : Number(statPeriod) * 7
 
         if (data == null) data = []
@@ -31,6 +31,7 @@ export default class DrawStats {
                 value: null
             }
             if (period > 28) {
+                i = firstWeekDay
                 for (let j = 0; j < period; j++) {
                     let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + j))
                     date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
@@ -73,7 +74,6 @@ export default class DrawStats {
         this.graphHeight
         this.margin = {top: 40, right: 25, bottom: 50, left: 30}
         this.graphHeight = params.statHeight - this.margin.top - this.margin.bottom
-        // console.log(Math.ceil(String(d3.max(this.data, d => Number(d.value))).length)
         if (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) > 1) {
             this.margin.left = (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) * 20) + 10
         } else {
@@ -129,6 +129,7 @@ export default class DrawStats {
                 value: day.value == null ? null : Number(day.value)
             }
         })
+
         
         this.x.domain([1,data.length])
         this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
@@ -334,7 +335,7 @@ export default class DrawStats {
         text
             .attr('x', (d,i) => this.x(i + 1))
             .attr('y', d => this.y(d.value))
-            .text((d) => d.value)
+            .text((d) => Math.round(d.value))
     
         text.enter()
             .append('text')
@@ -342,7 +343,7 @@ export default class DrawStats {
                 .attr('y', d => this.y(d.value))
                 .attr('fill', 'currentColor')
                 .style('opacity', '0')
-                .text(d => d.value)
+                .text(d => Math.round(d.value))
     
         this.dottedValue.selectAll('text')
             .attr('transform', (d, i) => !data[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
