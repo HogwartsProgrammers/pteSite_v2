@@ -272,12 +272,6 @@ export default class DrawStats {
                         else {
                             if (data[i + 1].value == null) return this.y(d.value)
                             else return this.y(data[i + 1].value)
-                            // return this.y(data.find((el, it) => {
-                            //     if (it <= i) return false
-                            //     else {
-                            //         return el.value != null
-                            //     }
-                            // }).value)
                         }
                     }
                 })
@@ -335,6 +329,7 @@ export default class DrawStats {
         text
             .attr('x', (d,i) => this.x(i + 1))
             .attr('y', d => this.y(d.value))
+            .style('font-family', 'arial condensed', 'important')
             .text((d) => Math.round(d.value))
     
         text.enter()
@@ -343,6 +338,7 @@ export default class DrawStats {
                 .attr('y', d => this.y(d.value))
                 .attr('fill', 'currentColor')
                 .style('opacity', '0')
+                .style('font-family', 'arial condensed', 'important')
                 .text(d => Math.round(d.value))
     
         this.dottedValue.selectAll('text')
