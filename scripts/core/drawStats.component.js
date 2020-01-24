@@ -1,8 +1,10 @@
 import *  as d3 from "d3"
 
+const formatNumber = num => new Intl.NumberFormat('ru-RU').format(num)
+
 export default class DrawStats {
     constructor(stat, data, reverted, lastDay, startY, statPeriod, firstWeekDay, params = {
-            statHeight: 250
+        statHeight: 250,
     }) {
         const format = data => {
             data += ''
@@ -272,6 +274,12 @@ export default class DrawStats {
                         else {
                             if (data[i + 1].value == null) return this.y(d.value)
                             else return this.y(data[i + 1].value)
+                            // return this.y(data.find((el, it) => {
+                            //     if (it <= i) return false
+                            //     else {
+                            //         return el.value != null
+                            //     }
+                            // }).value)
                         }
                     }
                 })
@@ -329,8 +337,8 @@ export default class DrawStats {
         text
             .attr('x', (d,i) => this.x(i + 1))
             .attr('y', d => this.y(d.value))
+            .text((d) => formatNumber(Math.round(d.value)))
             .style('font-family', 'arial condensed', 'important')
-            .text((d) => Math.round(d.value))
     
         text.enter()
             .append('text')
@@ -338,8 +346,8 @@ export default class DrawStats {
                 .attr('y', d => this.y(d.value))
                 .attr('fill', 'currentColor')
                 .style('opacity', '0')
+                .text(d => formatNumber(Math.round(d.value)))
                 .style('font-family', 'arial condensed', 'important')
-                .text(d => Math.round(d.value))
     
         this.dottedValue.selectAll('text')
             .attr('transform', (d, i) => !data[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
