@@ -54,6 +54,12 @@ block content
                                 span Перевернутый
                                 input#revertedSwitch(type="checkbox")
                                 i.form-icon
+                        
+                        .form-group.float-left
+                            label.form-switch.text-bold 
+                                span 7R
+                                input#sevenrSwitch(type="checkbox")
+                                i.form-icon
                     
                     .d-flex
                         #edit_stats
@@ -74,6 +80,7 @@ block content
                             #stats_calendar.animated.fadeIn.faster
                                 #calendar_body.d-flex
                             input(type="number", placeholder="введите значение")#stats_value.form-input.mt-2
+                            input(type="number", placeholder="введите квоту")#stats_quota.form-input.mt-2
                             textarea(placeholder="Комментарий")#stats_rem.form-input.mt-2
                         #stat
                             #editStat.my_dataviz.dragscroll(style=" overflow:auto")

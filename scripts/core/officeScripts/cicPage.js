@@ -1,6 +1,6 @@
 import DrawStats from '../drawStats.component'
 
-export function init() {
+export async function init() {
     // функция по форматированию дат
     const format = data => {
         data += ''
@@ -48,10 +48,25 @@ export function init() {
     const params = {
         statHeight: 100
     }
-
-    const drawStats = async () => {
+    
+    const promises = []
+    statsHolders.forEach(el => {
+        promises.push(fetch('/office/stats', {
+            method: 'POST',
+            body: JSON.stringify({
+                find: 'byid',
+                id: Number(el.dataset.sid),
+                _csrf: document.getElementById('csrfToken').value
+            }),
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result => result.json()).then(result => result[0]))
+    })
+    const stats = await Promise.all(promises).then(result => result)
+    console.log(stats)
+    const drawStats = () => {
         let period
-        const promises = []
     
         periods.forEach(el => {
             if (el.classList.contains('active')) period = el.dataset.name
@@ -85,23 +100,9 @@ export function init() {
         
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
 
-
-        statsHolders.forEach(el => {
-            promises.push(fetch('/office/stats', {
-                method: 'POST',
-                body: JSON.stringify({
-                    find: 'byid',
-                    id: Number(el.dataset.sid),
-                    _csrf: document.getElementById('csrfToken').value
-                }), 
-                headers:{
-                    "Content-Type": "application/json"
-                }
-            }).then(result => result.json()).then(result => result[0]))
-        })
-        await Promise.all(promises).then(stats => stats.forEach((stat, i) => {
-            let lastWeekDay
-            let currentWeekDay = new Date().getDay() || 7
+        let lastWeekDay
+        let currentWeekDay = new Date().getDay() || 7
+        stats.forEach((stat, i) => {
 
             currentWeekDay - stat.last_day <= 0 
             ? lastWeekDay = new Date(new Date().setDate(new Date().getDate() + (-(currentWeekDay - stat.last_day))))
@@ -150,10 +151,10 @@ export function init() {
                 drawStats()
             })
             if (!startW) startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
-
+            console.log(startW)
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, startW, params).drawStat()
-        }))
+        })
         
         if (titleSwitch.checked){
             document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))

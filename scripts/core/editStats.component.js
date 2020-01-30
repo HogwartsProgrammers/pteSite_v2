@@ -80,6 +80,8 @@ export default class EditStats {
         // выбор статистики
         const statsSelect = document.getElementById('stats')
 
+        const statInput = document.getElementById('stats_value')
+        const quotaInput = document.getElementById('stats_quota')
         const selectStat = async (dateWeek) => {
             let stats = await fetch('/office/stats', {
                 method: 'POST',
@@ -97,18 +99,18 @@ export default class EditStats {
             // document.getElementById('stats_calendar').innerHTML = ''
             
             dhxCalendar.config.mark = d => {
-                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == 3 ? 'a b' : 'a'
-                if (d.getDay() == 3) return 'b'
+                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == stats.last_day == 7 ? 0 : stats.last_day ? 'a b' : 'a'
+                if (d.getDay() == stats.last_day == 7 ? 0 : stats.last_day) return 'b'
                 else return ''
             }
 
             stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
             
-            const statInput = document.getElementById('stats_value')
             const statRem = document.getElementById('stats_rem')
             
             statInput.value = null
             statRem.value = ''
+            quotaInput.value = null
             
             let currentDay = dhxCalendar.getValue()
 
@@ -127,7 +129,8 @@ export default class EditStats {
 
             firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
             const params = {
-                statHeight: 350
+                statHeight: 350,
+                quota: sevenrSwitch.checked ? 1 : 0
             }
             
             new DrawStats('editStat', stats.stat_data, stats.reverted, stats.last_day, new Date().getFullYear(), 1,firstWeekDay, params).drawStat()
@@ -136,6 +139,7 @@ export default class EditStats {
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
             if (currentStatValue) statInput.value = currentStatValue.value
             if (currentStatValue) statRem.value = currentStatValue.rem || ''
+            if (currentStatValue) quotaInput.value = currentStatValue.quota
             dhxCalendar.paint()
             
             dhxCalendar.events.on('Change', () => {
@@ -159,7 +163,7 @@ export default class EditStats {
             statInput.onblur = async event => {
                 if (!statInput.value) statInput.value = null
 
-                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value}
+                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim(), quota: quotaInput.value === '' || quotaInput.value === null ? null : +quotaInput.value}
 
                 let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
                 if (currentStat) {
@@ -184,7 +188,32 @@ export default class EditStats {
             statRem.onblur = async event => {
                 if (!statInput.value) statInput.value = null
 
-                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim()}
+                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim(), quota: quotaInput.value === '' || quotaInput.value === null ? null : +quotaInput.value}
+
+                let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
+                if (currentStat) {
+                    let statIndex = stats.stat_data.indexOf(currentStat)
+                    stats.stat_data[statIndex] = data
+                } else stats.stat_data.push(data)
+
+                await fetch('/office/stats/update', {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        id: Number(statsSelect.value),
+                        stat_data: stats.stat_data,
+                        _csrf: document.getElementById('csrfToken').value
+                    }), 
+                    headers:{
+                        "Content-Type": "application/json"
+                    }
+                }).then(result => result.json())
+                selectStat()
+            }
+
+            quotaInput.onblur = async event => {
+                if (!statInput.value) statInput.value = null
+
+                let data = {date: currentDay,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim(), quota: quotaInput.value === '' || quotaInput.value === null ? null : +quotaInput.value}
 
                 let currentStat = stats.stat_data.find(sdata => sdata.date == currentDay)
                 if (currentStat) {
@@ -206,6 +235,12 @@ export default class EditStats {
                 selectStat()
             }
         }
+        const sevenrSwitch = document.getElementById('sevenrSwitch')
+
+        sevenrSwitch.onchange = () => {
+            selectStat()
+        }
+
         const revertedSwitch = document.getElementById('revertedSwitch')
 
         revertedSwitch.onchange = () => {
@@ -224,6 +259,7 @@ export default class EditStats {
 
         dhxCalendar.events.on('Change', () => {
             selectStat()
+            statInput.focus()
         })
 
         statsSelect.onchange = () => {
