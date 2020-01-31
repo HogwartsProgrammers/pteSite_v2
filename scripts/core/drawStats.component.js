@@ -88,8 +88,6 @@ export default class DrawStats {
             }
         })
 
-        console.log(this.dataQuota)
-
         this.quota = params.quota
         this.reverted = reverted
         this.stat = document.getElementById(stat)
@@ -124,7 +122,7 @@ export default class DrawStats {
             .attr('class', 'y-axis')
         
         this.dottedLines = this.graph.append('g')
-            .attr('class', 'lines')
+            .attr('class', 'linesDot')
             .style('opacity', 0)
         
         this.xDottedLine = this.dottedLines.append('line')
@@ -139,9 +137,24 @@ export default class DrawStats {
         
         this.dottedValue = this.graph.append('g')
             .attr('class', 'value')
+
+        this.dottedValue2 = this.graph.append('g')
+            .attr('class', 'valueAcc')
+
+        this.dottedValue3 = this.graph.append('g')
+            .attr('class', 'valueQuota')
+
+        this.dots = this.graph.append('g')
+            .attr('class', 'dots')
+
+        this.dotsAcc = this.graph.append('g')
+            .attr('class', 'dotsAcc')
+
+        this.dotsQuota = this.graph.append('g')
+            .attr('class', 'dotsQuota')
         
         this.lines = this.graph.append('g')
-            .attr('class', 'lines2')
+            .attr('class', 'lines')
         
         this.lines2 = this.graph.append('g')
             .attr('class', 'linesAcc')
@@ -159,9 +172,27 @@ export default class DrawStats {
             }
         })
 
+
         this.x.domain([1,data.length])
-        this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
-        // Линии обычного графика
+        
+        if (this.quota) {
+            if (d3.max(data, d => Number(d.value)) > d3.max(this.dataQuota, d => Number(d.quota)) && d3.max(data, d => Number(d.value)) > d3.max(this.dataAcc, d => Number(d.value))) {
+                console.log('a')
+                this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
+            }
+            if (d3.max(this.dataAcc, d => Number(d.value)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataAcc, d => Number(d.value)) > d3.max(this.dataQuota, d => Number(d.quota))) {
+                console.log('b')
+                this.y.domain([d3.min(this.dataAcc, d => Number(d.value)), (d3.max(this.dataAcc, d => Number(d.value)) / 100 * 20)+d3.max(this.dataAcc, d => Number(d.value))])
+            }
+            if (d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(this.dataAcc, d => Number(d.value))) {
+                console.log('c')
+                this.y.domain([d3.min(this.dataQuota, d => Number(d.quota)), (d3.max(this.dataQuota, d => Number(d.quota)) / 100 * 20)+d3.max(this.dataQuota, d => Number(d.quota))])
+            }
+        } else {
+            this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
+        }
+
+        // Линия обычного графика
         const line2 = this.lines.selectAll('line')
             .data(data)
     
@@ -500,8 +531,7 @@ export default class DrawStats {
                             }
                         }
                     })
-        // Накопительная линия
-        
+        // Линия квоты
             const lineQuota = this.lines3.selectAll('line')
                 .data(this.dataQuota)
 
@@ -512,56 +542,64 @@ export default class DrawStats {
                     if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != null
+                            return el.quota != null
                         }
                     })) {
                         return this.x(0)
                     } else {
-                        if (this.dataQuota[i].value == null) return this.x(0)
-                        else return this.x(i + 1)
+                        if (this.dataQuota[i].quota == null) return this.x(0)
+                        else return x(i + 1)
                     }
                 })
                 .attr('y1', (d,i) => {
                     if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != null
+                            return el.quota != null
                         }
                     })) {
                         return this.y(0)
                     } else {
-                        if (this.dataQuota[i].value == null) return this.y(0)
-                        else return this.y(d.value)
+                        if (this.dataQuota[i].quota == null) return this.y(0)
+                        else return this.y(d.quota)
                     }
                 })
                 .attr('x2', (d,i) => {
                     if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != null
+                            return el.quota != null
                         }
                     })) {
                         return this.x(0)
                     } else
-                        if (this.dataQuota[i].value == null) return this.x(0)
+                        if (this.dataQuota[i].quota == null) return this.x(0)
                         else {
-                            if (this.dataQuota[i + 1].value == null) return this.x(i + 1)
-                            else return this.x(i + 2)
+                            return this.x((i + 2) + (this.dataQuota.indexOf(this.dataQuota.find((el, it) => {
+                                if (it <= i) return false
+                                else {
+                                    return el.quota != null
+                                }
+                            })) - (i + 1)))
                         }
                 })
                 .attr('y2', (d,i,n) => {
                     if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                         if (it <= i) return false
                         else {
-                            return el.value != null
+                            return el.quota != null
                         }
                     })) {
                         return this.y(0)
                     } else {
-                        if (this.dataQuota[i].value == null) return this.y(0)
+                        if (this.dataQuota[i].quota == null) return this.y(0)
                         else {
-                            if (this.dataQuota[i + 1].value == null) return this.y(d.value)
-                            else return this.y(this.dataQuota[i + 1].value)
+                            return this.y(this.dataQuota.find((el, it) => {
+                                if (it <= i) return false
+                                else {
+                                    return el.quota != null
+                                }
+                            }).quota)
                         }
                     }
                 })
@@ -572,12 +610,12 @@ export default class DrawStats {
                         if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != null
+                                return el.quota != null
                             }
                         })) {
                             return this.x(0)
                         } else {
-                            if (this.dataQuota[i].value == null) return this.x(0)
+                            if (this.dataQuota[i].quota == null) return this.x(0)
                             else return this.x(i + 1)
                         }
                     })
@@ -585,43 +623,51 @@ export default class DrawStats {
                         if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != null
+                                return el.quota != null
                             }
                         })) {
                             return this.y(0)
                         } else {
-                            if (this.dataQuota[i].value == null) return this.y(0)
-                            else return this.y(d.value)
+                            if (this.dataQuota[i].quota == null) return this.y(0)
+                            else return this.y(d.quota)
                         }
                     })
                     .attr('x2', (d,i) => {
                         if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != null
+                                return el.quota != null
                             }
                         })) {
                             return this.x(0)
                         } else
-                            if (this.dataQuota[i].value == null) return this.x(0)
+                            if (this.dataQuota[i].quota == null) return this.x(0)
                             else {
-                                if (this.dataQuota[i + 1].value == null) return this.x(i + 1)
-                                else return this.x(i + 2)
+                                return this.x((i + 2) + (this.dataQuota.indexOf(this.dataQuota.find((el, it) => {
+                                    if (it <= i) return false
+                                    else {
+                                        return el.quota != null
+                                    }
+                                })) - (i + 1)))
                             }
                     })
                     .attr('y2', (d,i,n) => {
                         if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != null
+                                return el.quota != null
                             }
                         })) {
                             return this.y(0)
                         } else {
-                            if (this.dataQuota[i].value == null) return this.y(0)
+                            if (this.dataQuota[i].quota == null) return this.y(0)
                             else {
-                                if (this.dataQuota[i + 1].value == null) return this.y(d.value)
-                                else return this.y(this.dataQuota[i + 1].value)
+                                return this.y(this.dataQuota.find((el, it) => {
+                                    if (it <= i) return false
+                                    else {
+                                        return el.quota != null
+                                    }
+                                }).quota)
                             }
                         }
                     })
@@ -630,46 +676,171 @@ export default class DrawStats {
                             if (!this.dataQuota.find((el, it) => {
                                 if (it <= i) return false
                                 else {
-                                    return el.value != null
+                                    return el.quota != null
                                 }
-                            })) return 'green'
-                            else return this.dataQuota.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != null
-                                }
-                            }).value < d.value ? 'red' : 'green'
-                        } else {
-                            if (!this.dataQuota.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != null
-                                }
-                            })) return 'green'
-                            else return this.dataQuota.find((el, it) => {
-                                if (it <= i) return false
-                                else {
-                                    return el.value != null
-                                }
-                            }).value < d.value ? 'green' : 'red'
+                            })) return 'gray'
+                            else return 'gray'
                         }
                     })
                     .attr('stroke-linecap','round')
+                    .attr('stroke-dasharray', 11)
                     .attr('stroke-width', (d,i) => {
                         if (!this.dataQuota[i + 1] || !this.dataQuota.find((el, it) => {
                             if (it <= i) return false
                             else {
-                                return el.value != null
+                                return el.quota != null
                             }
                         })) {
                             return 0
                         } else {
-                            if (this.dataQuota[i].value == null) return 0
+                            if (this.dataQuota[i].quota == null) return 0
                             else {
-                                return 3
+                                return 2
                             }
                         }
                     })
+            
+            const text2 = this.dottedValue2.selectAll('text')
+                .data(this.dataAcc)
+        
+            text2.exit().remove()
+            
+            text2
+                .attr('x', (d,i) => this.x(i + 1))
+                .attr('y', d => this.y(d.value))
+                .text((d) => formatNumber(Math.round(d.value)))
+                .style('font-family', 'arial condensed', 'important')
+        
+            text2.enter()
+                .append('text')
+                    .attr('x', (d,i) => this.x(i + 1))
+                    .attr('y', d => this.y(d.value))
+                    .attr('fill', 'currentColor')
+                    .style('opacity', '0')
+                    .text(d => formatNumber(Math.round(d.value)))
+                    .style('font-family', 'arial condensed', 'important')
+        
+            this.dottedValue2.selectAll('text')
+                .attr('transform', (d, i) => !this.dataAcc[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
+            
+            
+            const text3 = this.dottedValue3.selectAll('text')
+                .data(this.dataQuota)
+        
+            text3.exit().remove()
+            
+            text3
+                .attr('x', (d,i) => this.x(i + 1))
+                .attr('y', d => this.y(d.quota))
+                .text((d) => formatNumber(Math.round(d.quota)))
+                .style('font-family', 'arial condensed', 'important')
+        
+            text3.enter()
+                .append('text')
+                    .attr('x', (d,i) => this.x(i + 1))
+                    .attr('y', d => this.y(d.quota))
+                    .attr('fill', 'currentColor')
+                    .style('opacity', '0')
+                    .text(d => formatNumber(Math.round(d.quota)))
+                    .style('font-family', 'arial condensed', 'important')
+        
+            this.dottedValue3.selectAll('text')
+                .attr('transform', (d, i) => !this.dataQuota[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
+
+            
+            const circlesAcc = this.dotsAcc.selectAll('circle')
+                .data(this.dataAcc)
+        
+            circlesAcc.exit().remove()
+        
+            circlesAcc
+                .attr('cx', (d,i) => this.x(i + 1))
+                .attr('cy', d => this.y(d.value))
+        
+            circlesAcc.enter()
+                .append('circle')
+                    .attr('r', d => d.value == null ? 0 : 3)
+                    .attr('cx', (d,i) => this.x(i + 1))
+                    .attr('cy', d => this.y(d.value))
+                    .attr('fill', '#000')
+                
+            this.dotsAcc.selectAll('circle')
+                .on('mouseover', (d,i,n) => {
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.opacity = 1
+        
+                    d3.select(n[i])
+                        .transition().duration(100)
+                            .attr('r', 8)
+                            .attr('fill', '#000')
+                    this.xDottedLine
+                        .attr('x1', this.x(i + 1))
+                        .attr('x2', this.x(i + 1))
+                        .attr('y1', this.graphHeight)
+                        .attr('y2', this.y(d.value))
+                    this.yDottedLine
+                        .attr('x1', 0)
+                        .attr('x2', this.x(i + 1))
+                        .attr('y1', this.y(d.value))
+                        .attr('y2', this.y(d.value))
+        
+                    this.dottedLines.style('opacity', 1)
+                })
+                .on('mouseleave', (d,i,n) => {
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.opacity = 0
+                    d3.select(n[i])
+                        .transition().duration(100)
+                            .attr('r', 4)
+                            .attr('fill', '#000')
+        
+                    this.dottedLines.style('opacity', 0)
+                })
+                
+            const circlesQuota = this.dotsQuota.selectAll('circle')
+                .data(this.dataQuota)
+        
+            circlesQuota.exit().remove()
+        
+            circlesQuota
+                .attr('cx', (d,i) => this.x(i + 1))
+                .attr('cy', d => this.y(d.quota))
+        
+            circlesQuota.enter()
+                .append('circle')
+                    .attr('r', d => d.quota == null ? 0 : 3)
+                    .attr('cx', (d,i) => this.x(i + 1))
+                    .attr('cy', d => this.y(d.quota))
+                    .attr('fill', '#000')
+                
+            this.dotsQuota.selectAll('circle')
+                .on('mouseover', (d,i,n) => {
+                    this.dottedValue3.selectAll('text')._groups[0][i].style.opacity = 1
+        
+                    d3.select(n[i])
+                        .transition().duration(100)
+                            .attr('r', 8)
+                            .attr('fill', '#000')
+                    this.xDottedLine
+                        .attr('x1', this.x(i + 1))
+                        .attr('x2', this.x(i + 1))
+                        .attr('y1', this.graphHeight)
+                        .attr('y2', this.y(d.quota))
+                    this.yDottedLine
+                        .attr('x1', 0)
+                        .attr('x2', this.x(i + 1))
+                        .attr('y1', this.y(d.quota))
+                        .attr('y2', this.y(d.quota))
+        
+                    this.dottedLines.style('opacity', 1)
+                })
+                .on('mouseleave', (d,i,n) => {
+                    this.dottedValue3.selectAll('text')._groups[0][i].style.opacity = 0
+                    d3.select(n[i])
+                        .transition().duration(100)
+                            .attr('r', 4)
+                            .attr('fill', '#000')
+        
+                    this.dottedLines.style('opacity', 0)
+                })
         }
 
     // значения при наведении на точку
@@ -697,7 +868,7 @@ export default class DrawStats {
             .attr('transform', (d, i) => !data[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
     
     // точки обычного графика
-        const circles = this.graph.selectAll('circle')
+        const circles = this.dots.selectAll('circle')
             .data(data)
     
         circles.exit().remove()
@@ -719,11 +890,11 @@ export default class DrawStats {
                     .attr('r', d => d.value == null ? 0 : 4)
             })
             .on('mouseleave', () => {
-                d3.selectAll('circle')  
+                this.svg.selectAll('circle')  
                     .attr('r', d => d.value == null ? 0 : 3)
             })
             
-        this.graph.selectAll('circle')
+        this.dots.selectAll('circle')
             .on('mouseover', (d,i,n) => {
                 this.dottedValue.selectAll('text')._groups[0][i].style.opacity = 1
     

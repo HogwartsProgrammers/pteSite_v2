@@ -139,7 +139,7 @@ export default class EditStats {
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
             if (currentStatValue) statInput.value = currentStatValue.value
             if (currentStatValue) statRem.value = currentStatValue.rem || ''
-            if (currentStatValue) quotaInput.value = currentStatValue.quota
+            if (currentStatValue) quotaInput.value = currentStatValue.quota || ''
             dhxCalendar.paint()
             
             dhxCalendar.events.on('Change', () => {

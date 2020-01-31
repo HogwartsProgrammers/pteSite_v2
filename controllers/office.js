@@ -939,7 +939,6 @@ exports.updatePosts = (req, res, next) => {
             if (posts.users != undefined) {
                 const postUsers = posts.users.split(',')
                 const users = (await Users.fetchAll())[0]
-                console.log(users)
                 users.forEach(user => {
                     if (postUsers.find(uid => uid == user.id) && !user.posts.split(',').find(pid => pid == posts.id)) {
                         Users.findById(user.id).then(oldData => {
@@ -974,7 +973,6 @@ exports.updatePosts = (req, res, next) => {
                     }
                 })
             }
-            console.log(result)
             res.status(201).json(result[0])
         })
     })
@@ -996,11 +994,9 @@ exports.updatePosts = (req, res, next) => {
 
 exports.updateStats = (req, res, next) => {
     const stats = JSON.parse(JSON.stringify(req.body))
-    console.log(stats)
 
     if (stats.id)
     new Stats().findById(stats.id).then(oldData => {
-        console.log(oldData[0][0])
         new Stats(
             stats.id,
             stats.title ? stats.title : oldData[0][0].title,
@@ -1030,7 +1026,6 @@ exports.updateStats = (req, res, next) => {
 
 exports.postSortStats = (req, res) => {
     const stats = JSON.parse(JSON.stringify(req.body))
-    console.log(stats)
     stats.id.forEach((el, i) => {
         new Stats().findById(el).then(oldData => {
             new Stats(
