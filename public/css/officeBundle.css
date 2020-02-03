@@ -3650,6 +3650,13 @@ a.text-error:visited {
 .calendar-fixed {
     width: 77%;
 }
+#days_quota {
+    width: 3rem
+}
+
+#period_quota_input {
+    width: 7rem
+}
 
 #weeks_calendar {
     margin: 0 auto;

@@ -82,6 +82,9 @@ export default class EditStats {
 
         const statInput = document.getElementById('stats_value')
         const quotaInput = document.getElementById('stats_quota')
+        const quotaPeriodInput = document.getElementById('period_quota_input')
+        const quotaDaysInput = document.getElementById('days_quota')
+        const quotaBtn = document.getElementById('quota_btn')
         const selectStat = async (dateWeek) => {
             let stats = await fetch('/office/stats', {
                 method: 'POST',
@@ -96,11 +99,10 @@ export default class EditStats {
             }).then(result => result.json()).then(result => result[0])
             if (!stats) return
             if (stats.stat_data == null) stats.stat_data = []
-            // document.getElementById('stats_calendar').innerHTML = ''
             
             dhxCalendar.config.mark = d => {
-                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == stats.last_day == 7 ? 0 : stats.last_day ? 'a b' : 'a'
-                if (d.getDay() == stats.last_day == 7 ? 0 : stats.last_day) return 'b'
+                if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == 3 ? 'a b' : 'a'
+                if (d.getDay() == 3) return 'b'
                 else return ''
             }
 
@@ -152,13 +154,12 @@ export default class EditStats {
                     statInput.blur()
                 }
             }
-
-            document.querySelectorAll('#calendar_body .btn-week').forEach(el => {
-                el.onclick = (event) => {
-                    let date = event.target.dataset.date
-                    selectStat(date)
+            quotaInput.onkeydown = event => {
+                if (event.code == 'Enter') {
+                    event.preventDefault()
+                    quotaInput.blur()
                 }
-            })
+            }
 
             statInput.onblur = async event => {
                 if (!statInput.value) statInput.value = null
@@ -234,17 +235,74 @@ export default class EditStats {
                 }).then(result => result.json())
                 selectStat()
             }
+            
+            quotaBtn.onclick = () => {
+                if (Number(quotaPeriodInput.value) && Number(quotaDaysInput.value)) {
+                    const q = Math.floor(Number(quotaPeriodInput.value) / Number(quotaDaysInput.value))
+                    const quotaFetch = []
+                    for (let i = 0; i <= Number(quotaDaysInput.value); i++) {
+                        let date = dhxCalendar.getValue(true)
+                        let data
+                        if (i == 0) {
+                            if (!statInput.value) statInput.value = null
+                            data = {date: `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim(), quota: q}
+                        } else {
+                            data = {date: `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`,value: null, rem: '', quota: i != Number(quotaDaysInput.value) ? q : Number(quotaPeriodInput.value)}
+                        }
+            
+                        let currentStat = stats.stat_data.find(sdata => sdata.date == `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`)
+                        if (currentStat) {
+                            let statIndex = stats.stat_data.indexOf(currentStat)
+                            if (i == 0) {
+                                stats.stat_data[statIndex] = data
+                            } else {
+                                stats.stat_data[statIndex].quota = i != Number(quotaDaysInput.value) ? q : Number(quotaPeriodInput.value)
+                            }
+                        } else stats.stat_data.push(data)
+                        
+                        quotaFetch.push(fetch('/office/stats/update', {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                id: Number(statsSelect.value),
+                                stat_data: stats.stat_data,
+                                _csrf: document.getElementById('csrfToken').value
+                            }), 
+                            headers:{
+                                "Content-Type": "application/json"
+                            }
+                        }).then(result => result.json()))
+                        
+                        date = new Date(new Date().setDate(date.getDate() + i))
+                    }
+                    Promise.all(quotaFetch).then(selectStat())
+                }
+            }
         }
+        const quotaSwitch = document.getElementById('quotaSwitch')
+        const periodQuota = document.getElementById('period_quota')
+
+        quotaSwitch.onchange = () => {
+            quotaSwitch.checked ? periodQuota.classList.remove('d-hide') : periodQuota.classList.add('d-hide')
+        }
+
         const sevenrSwitch = document.getElementById('sevenrSwitch')
 
         sevenrSwitch.onchange = () => {
+            if (sevenrSwitch.checked) {
+                sevenrSwitch.disabled = false
+                revertedSwitch.disabled = true
+            } else revertedSwitch.disabled = false
             selectStat()
         }
 
         const revertedSwitch = document.getElementById('revertedSwitch')
 
-        revertedSwitch.onchange = () => {
-            fetch('/office/stats/update', {
+        revertedSwitch.onchange = async () => {
+            if (revertedSwitch.checked) {
+                revertedSwitch.disabled = false
+                sevenrSwitch.disabled = true
+            } else sevenrSwitch.disabled = false
+            await fetch('/office/stats/update', {
                 method: 'POST',
                 body: JSON.stringify({
                     id: Number(statsSelect.value),
@@ -255,6 +313,7 @@ export default class EditStats {
                     "Content-Type": "application/json"
                 }
             }).then(result => result.json())
+            selectStat()
         }
 
         dhxCalendar.events.on('Change', () => {

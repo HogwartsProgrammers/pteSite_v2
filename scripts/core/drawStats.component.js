@@ -7,6 +7,7 @@ export default class DrawStats {
         statHeight: 250,
         quota: 0
     }) {
+        console.log('started')
         firstWeekDay = new Date(firstWeekDay)
         const format = data => {
             data += ''
@@ -182,11 +183,11 @@ export default class DrawStats {
             }
             if (d3.max(this.dataAcc, d => Number(d.value)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataAcc, d => Number(d.value)) > d3.max(this.dataQuota, d => Number(d.quota))) {
                 console.log('b')
-                this.y.domain([d3.min(this.dataAcc, d => Number(d.value)), (d3.max(this.dataAcc, d => Number(d.value)) / 100 * 20)+d3.max(this.dataAcc, d => Number(d.value))])
+                this.y.domain([d3.min(data, d => Number(d.value)), (d3.max(this.dataAcc, d => Number(d.value)) / 100 * 20)+d3.max(this.dataAcc, d => Number(d.value))])
             }
             if (d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(this.dataAcc, d => Number(d.value))) {
                 console.log('c')
-                this.y.domain([d3.min(this.dataQuota, d => Number(d.quota)), (d3.max(this.dataQuota, d => Number(d.quota)) / 100 * 20)+d3.max(this.dataQuota, d => Number(d.quota))])
+                this.y.domain([d3.min(data, d => Number(d.value)), (d3.max(this.dataQuota, d => Number(d.quota)) / 100 * 20)+d3.max(this.dataQuota, d => Number(d.quota))])
             }
         } else {
             this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
@@ -870,7 +871,7 @@ export default class DrawStats {
     // точки обычного графика
         const circles = this.dots.selectAll('circle')
             .data(data)
-    
+        // console.log(data)
         circles.exit().remove()
     
         circles
@@ -887,11 +888,17 @@ export default class DrawStats {
         this.svg
             .on('mouseover', () => {
                 this.svg.selectAll('circle')  
-                    .attr('r', d => d.value == null ? 0 : 4)
+                    .attr('r', d => {
+                        if (!d.quota) return d.value == null ? 0 : 4
+                        else return d.quota == null ? 0 : 4
+                    })
             })
             .on('mouseleave', () => {
                 this.svg.selectAll('circle')  
-                    .attr('r', d => d.value == null ? 0 : 3)
+                    .attr('r', d => {
+                        if (!d.quota) return d.value == null ? 0 : 3
+                        else return d.quota == null ? 0 : 3
+                    })
             })
             
         this.dots.selectAll('circle')

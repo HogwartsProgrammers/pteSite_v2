@@ -48,7 +48,7 @@ block content
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
             #statsEditing.columns.mt-2
                 .column.col-6.col-md-12
-                    .d-flex.mb-2
+                    .d-flex
                         .form-group.float-left
                             label.form-switch.text-bold 
                                 span Перевернутый
@@ -60,6 +60,15 @@ block content
                                 span 7R
                                 input#sevenrSwitch(type="checkbox")
                                 i.form-icon
+                    
+                    label.form-switch.text-bold.mb-2
+                        span Квота на период
+                        input#quotaSwitch(type="checkbox")
+                        i.form-icon
+                    #period_quota.d-flex.d-hide
+                        input(type="number", placeholder="введите квоту")#period_quota_input.form-input.mt-2
+                        input(type="number", placeholder="дни")#days_quota.form-input.mt-2
+                        button#quota_btn.btn отправить
                     
                     .d-flex
                         #edit_stats
