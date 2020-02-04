@@ -63,8 +63,9 @@ export async function init() {
             }
         }).then(result => result.json()).then(result => result[0]))
     })
+    
     const stats = await Promise.all(promises).then(result => result)
-    console.log(stats)
+
     const drawStats = () => {
         let period
     
@@ -151,7 +152,6 @@ export async function init() {
                 drawStats()
             })
             if (!startW) startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
-            console.log(startW)
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, startW, params).drawStat()
         })

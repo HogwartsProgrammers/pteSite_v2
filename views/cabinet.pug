@@ -47,7 +47,7 @@ block content
                     .card-footer
                         button#change.btn.btn-primary.d-block.mla(disabled) Сменить
             #statsEditing.columns.mt-2
-                .column.col-6.col-md-12
+                .column.col-12.col-md-12
                     .d-flex
                         .form-group.float-left
                             label.form-switch.text-bold 
@@ -66,9 +66,11 @@ block content
                         input#quotaSwitch(type="checkbox")
                         i.form-icon
                     #period_quota.d-flex.d-hide
-                        input(type="number", placeholder="введите квоту")#period_quota_input.form-input.mt-2
-                        input(type="number", placeholder="дни")#days_quota.form-input.mt-2
-                        button#quota_btn.btn отправить
+                        .input-group
+                            input(type="number", placeholder="введите квоту")#period_quota_input.form-input.mt-2
+                            input(type="number", placeholder="дни")#days_quota.form-input.mt-2
+                            button#quota_btn.btn.mt-2.input-group-btn
+                                i.icon.icon-check
                     
                     .d-flex
                         #edit_stats
@@ -91,8 +93,16 @@ block content
                             input(type="number", placeholder="введите значение")#stats_value.form-input.mt-2
                             input(type="number", placeholder="введите квоту")#stats_quota.form-input.mt-2
                             textarea(placeholder="Комментарий")#stats_rem.form-input.mt-2
-                        #stat
-                            #editStat.my_dataviz.dragscroll(style=" overflow:auto")
+                        #stat.column.col-6.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2.dragscroll(style="overflow:auto")
+                            #editStat.my_dataviz
+                    
+                    #periods.mt-2.text-center
+                        .chip.c-hand.active(data-name="1") День
+                        .chip.c-hand(data-name="2") 2 недели
+                        .chip.c-hand(data-name="6") 6 недель
+                        .chip.c-hand(data-name="12") 12 недель
+                        .chip.c-hand(data-name="24") 24 недели
+                        .chip.c-hand(data-name="Y") Год
 
                         
 

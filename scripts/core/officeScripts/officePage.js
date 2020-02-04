@@ -1,6 +1,6 @@
 import DrawStats from '../drawStats.component'
 
-export  function init() {
+export async function init() {
     const statsHolders = document.querySelectorAll('.my_dataviz')
     if (!statsHolders) return
     
@@ -30,28 +30,59 @@ export  function init() {
     let startY = new Date().getFullYear()
 
     const params = {
-        statHeight: null
+        statHeight: null,
+        quota: 0
     }
     
-    const drawStats = async () => {
+    const sevenrSwitch = document.getElementById('sevenrSwitch')
+
+    sevenrSwitch.onchange = () => {
+        drawStats()
+    }
+    
+    const promises = []
+    statsHolders.forEach(el => {
+        promises.push(fetch('/office/stats', {
+            method: 'POST',
+            body: JSON.stringify({
+                find: 'byid',
+                id: Number(el.dataset.sid),
+                _csrf: document.getElementById('csrfToken').value
+            }), 
+            headers:{
+                "Content-Type": "application/json"
+            }
+        }).then(result => result.json()).then(result => result[0]))
+    })
+
+    const stats = await Promise.all(promises).then(result => result)
+    
+    const drawStats = () => {
         let period
-        const promises = []
     
         periods.forEach(el => {
             if (el.classList.contains('active')) period = el.dataset.name
         })
         
+    
         if (period !== 'Y' && Number(period) < 24) {
-            if (Number(period) < 2) {
+            if (Number(period) == 2) {
                 document.querySelectorAll('section .column').forEach(el => {
-                    el.classList.remove('col-12') || el.classList.remove('col-4')
-                    el.classList.add('col-2', 'col-xxl-3')
-                })
-            } else {
-                document.querySelectorAll('section .column').forEach(el => {
-                    el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3')
+                    el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-6')
                     el.classList.add('col-4')
                 })
+            } else {
+                    if (Number(period) < 12) {
+                        document.querySelectorAll('section .column').forEach(el => {
+                            el.classList.remove('col-12') || el.classList.remove('col-6') || el.classList.remove('col-4')
+                            el.classList.add('col-2', 'col-xxl-3')
+                        })
+                    } else {
+                        document.querySelectorAll('section .column').forEach(el => {
+                            el.classList.remove('col-12') || el.classList.remove('col-2', 'col-xxl-3') || el.classList.remove('col-4')
+                            el.classList.add('col-6')
+                        })
+                    }
             }
         } else {
             document.querySelectorAll('section .column').forEach(el => {
@@ -61,21 +92,9 @@ export  function init() {
         }
         
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
+        params.quota = sevenrSwitch.checked ? 1 : 0
 
-        statsHolders.forEach(el => {
-            promises.push(fetch('/office/stats', {
-                method: 'POST',
-                body: JSON.stringify({
-                    find: 'byid',
-                    id: Number(el.dataset.sid),
-                    _csrf: document.getElementById('csrfToken').value
-                }), 
-                headers:{
-                    "Content-Type": "application/json"
-                }
-            }).then(result => result.json()).then(result => result[0]))
-        })
-        await Promise.all(promises).then(stats => stats.forEach((stat, i) => {
+        stats.forEach((stat, i) => {
 
             let currentWeekDay = new Date().getDay() || 7
 
@@ -89,7 +108,7 @@ export  function init() {
             
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, firstWeekDay, params).drawStat()
-        }))
+        })
         
         if (titleSwitch.checked){
             document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))

@@ -20,6 +20,10 @@
     width: 7rem
 }
 
+#statsEditing #periods {
+    width: 12.5rem
+}
+
 #weeks_calendar {
     margin: 0 auto;
     width: 100%;
@@ -293,7 +297,7 @@
 }
 
 #stat {
-    width: 600px !important
+    /* width: 600px !important */
 }
 
 .steps {

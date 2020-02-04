@@ -80,11 +80,26 @@ export default class EditStats {
         // выбор статистики
         const statsSelect = document.getElementById('stats')
 
+        
+        const periods = document.querySelectorAll('#periods > .chip')
+
+        periods.forEach((el,i,a) => el.onclick = () => {
+            a.forEach(el => el.classList.remove('active'))
+            el.classList.add('active')
+            selectStat()
+        })
+
         const statInput = document.getElementById('stats_value')
         const quotaInput = document.getElementById('stats_quota')
         const quotaPeriodInput = document.getElementById('period_quota_input')
         const quotaDaysInput = document.getElementById('days_quota')
         const quotaBtn = document.getElementById('quota_btn')
+        
+        const params = {
+            statHeight: 350,
+            quota: 0
+        }
+
         const selectStat = async (dateWeek) => {
             let stats = await fetch('/office/stats', {
                 method: 'POST',
@@ -99,12 +114,46 @@ export default class EditStats {
             }).then(result => result.json()).then(result => result[0])
             if (!stats) return
             if (stats.stat_data == null) stats.stat_data = []
-            
+
             dhxCalendar.config.mark = d => {
                 if (stats.stat_data.find(el => el.date == `${format(d.getDate())}.${format(d.getMonth() + 1)}.${d.getFullYear()}` && el.date != currentDay && el.value != null)) return d.getDay() == 3 ? 'a b' : 'a'
                 if (d.getDay() == 3) return 'b'
                 else return ''
             }
+            let period
+
+            periods.forEach(el => {
+                if (el.classList.contains('active')) period = el.dataset.name
+            })
+            
+            if (period !== 'Y' && Number(period) < 24) {
+                if (Number(period) == 2) {
+                    document.querySelectorAll('#stat').forEach(el => {
+                        el.classList.remove('col-10') || el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-8')
+                        el.classList.add('col-6')
+                    })
+                } else {
+                        if (Number(period) < 12) {
+                            document.querySelectorAll('#stat').forEach(el => {
+                                el.classList.remove('col-10') || el.classList.remove('col-8') || el.classList.remove('col-6')
+                                el.classList.add('col-4', 'col-xxl-3')
+                            })
+                        } else {
+                            document.querySelectorAll('#stat').forEach(el => {
+                                el.classList.remove('col-10') || el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-6')
+                                el.classList.add('col-8')
+                            })
+                        }
+                }
+            } else {
+                document.querySelectorAll('#stat').forEach(el => {
+                    el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-8') || el.classList.remove('col-6')
+                    el.classList.add('col-10')
+                })
+            }
+            
+            period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 400
+            params.quota = sevenrSwitch.checked ? 1 : 0
 
             stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
             
@@ -130,14 +179,10 @@ export default class EditStats {
             : lastWeekDay = new Date(new Date(dhxCalendar.getValue(true)).setDate(dhxCalendar.getValue(true).getDate() + (7 - (currentWeekDay - stats.last_day))))
 
             firstWeekDay = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
-            const params = {
-                statHeight: 350,
-                quota: sevenrSwitch.checked ? 1 : 0
-            }
             
-            new DrawStats('editStat', stats.stat_data, stats.reverted, stats.last_day, new Date().getFullYear(), 1,firstWeekDay, params).drawStat()
+            new DrawStats('editStat', stats.stat_data, stats.reverted, stats.last_day, new Date().getFullYear(), period, firstWeekDay, params).drawStat()
 
-            graphsHolder[0].style.width = '600px'
+            // graphsHolder[0].style.width = '600px'
             const currentStatValue = stats.stat_data.find(sdata => sdata.date == currentDay)
             if (currentStatValue) statInput.value = currentStatValue.value
             if (currentStatValue) statRem.value = currentStatValue.rem || ''
@@ -238,16 +283,16 @@ export default class EditStats {
             
             quotaBtn.onclick = () => {
                 if (Number(quotaPeriodInput.value) && Number(quotaDaysInput.value)) {
-                    const q = Math.floor(Number(quotaPeriodInput.value) / Number(quotaDaysInput.value))
+                    const q = Number(quotaPeriodInput.value) / Number(quotaDaysInput.value)
                     const quotaFetch = []
+                    let date = dhxCalendar.getValue(true)
                     for (let i = 0; i <= Number(quotaDaysInput.value); i++) {
-                        let date = dhxCalendar.getValue(true)
                         let data
                         if (i == 0) {
                             if (!statInput.value) statInput.value = null
                             data = {date: `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`,value: statInput.value === '' || statInput.value === null ? null : +statInput.value, rem: statRem.value.trim(), quota: q}
                         } else {
-                            data = {date: `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`,value: null, rem: '', quota: i != Number(quotaDaysInput.value) ? q : Number(quotaPeriodInput.value)}
+                            data = {date: `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`,value: null, rem: '', quota: q}
                         }
             
                         let currentStat = stats.stat_data.find(sdata => sdata.date == `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`)
@@ -256,7 +301,7 @@ export default class EditStats {
                             if (i == 0) {
                                 stats.stat_data[statIndex] = data
                             } else {
-                                stats.stat_data[statIndex].quota = i != Number(quotaDaysInput.value) ? q : Number(quotaPeriodInput.value)
+                                stats.stat_data[statIndex].quota = q 
                             }
                         } else stats.stat_data.push(data)
                         
@@ -272,7 +317,8 @@ export default class EditStats {
                             }
                         }).then(result => result.json()))
                         
-                        date = new Date(new Date().setDate(date.getDate() + i))
+                        date = new Date(date.setDate(date.getDate() + 1))
+                        
                     }
                     Promise.all(quotaFetch).then(selectStat())
                 }
@@ -325,5 +371,6 @@ export default class EditStats {
             selectStat()
         }
         require('../dragscroll').reset()
+        window.onresize = selectStat
     }
 }

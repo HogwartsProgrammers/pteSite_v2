@@ -7,7 +7,6 @@ export default class DrawStats {
         statHeight: 250,
         quota: 0
     }) {
-        console.log('started')
         firstWeekDay = new Date(firstWeekDay)
         const format = data => {
             data += ''
@@ -26,31 +25,35 @@ export default class DrawStats {
                 let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + i))
                 date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
                 let lastWeekDayIndex = data.indexOf(data.find(stat => stat.date == date))
-                currentDays.push(data[lastWeekDayIndex] || {date,value: null})
+                currentDays.push(data[lastWeekDayIndex] || {date,value: null, quota: null})
             }
 
         } else {
             let i = new Date(startY,0,1)
             let day = {
                 date: null,
-                value: null
+                value: null,
+                quota: null
             }
             if (period > 28) {
-                i = firstWeekDay
+                i = new Date(firstWeekDay)
                 for (let j = 0; j < period; j++) {
                     let date = new Date(new Date(firstWeekDay).setDate(firstWeekDay.getDate() + j))
                     date = `${format(date.getDate())}.${format(date.getMonth() + 1)}.${date.getFullYear()}`
                     const dataObj = data.find(stat => stat.date == date)
                     if (i.getDay() == lastDay) {
                         if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
+                        if (dataObj && dataObj.quota != null) day.quota += Number(dataObj.quota)
                         day.date = date
                         currentDays.push(day)
                         day = {
                             date: null,
-                            value: null
+                            value: null,
+                            quota: null
                         }
                     } else {
                         if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
+                        if (dataObj && dataObj.quota != null) day.quota += Number(dataObj.quota)
                     }
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
@@ -60,32 +63,36 @@ export default class DrawStats {
                     const dataObj = data.find(stat => stat.date == date)
                     if (i.getDay() == lastDay) {
                         if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
+                        if (dataObj && dataObj.quota != null) day.quota += Number(dataObj.quota)
                         day.date = date
                         currentDays.push(day)
                         day = {
                             date: null,
-                            value: null
+                            value: null,
+                            quota: null
                         }
                     } else {
                         if (dataObj && dataObj.value != null) day.value += Number(dataObj.value)
+                        if (dataObj && dataObj.quota != null) day.quota += Number(dataObj.quota)
                     }
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
         }
         this.data = currentDays
 
+
         let v = 0
         this.dataAcc = currentDays.map(el => {
             return {
                 date: el.date,
-                value: Math.round(v += el.value)
+                value: el.value != null ? v += el.value : null
             }
         })
-
+        let q = 0
         this.dataQuota = currentDays.map(el => {
             return {
-                date:el.date,
-                quota: el.quota || null,
+                date: el.date,
+                quota: el.quota != null ? q += el.quota : null
             }
         })
 
@@ -135,14 +142,16 @@ export default class DrawStats {
             .attr('stroke', '#aaa')
             .attr('stroke-width', 1)
             .attr('stroke-dasharray', 4)
+
+        this.lines = this.graph.append('g')
+            .attr('class', 'lines')
         
-        this.dottedValue = this.graph.append('g')
-            .attr('class', 'value')
-
-        this.dottedValue2 = this.graph.append('g')
-            .attr('class', 'valueAcc')
-
-        this.dottedValue3 = this.graph.append('g')
+        this.lines2 = this.graph.append('g')
+            .attr('class', 'linesAcc')
+            
+        this.lines3 = this.graph.append('g')
+            .attr('class', 'linesQuota')
+        
             .attr('class', 'valueQuota')
 
         this.dots = this.graph.append('g')
@@ -153,15 +162,15 @@ export default class DrawStats {
 
         this.dotsQuota = this.graph.append('g')
             .attr('class', 'dotsQuota')
+
+        this.dottedValue = this.graph.append('g')
+            .attr('class', 'value')
+
+        this.dottedValue2 = this.graph.append('g')
+            .attr('class', 'valueAcc')
+
+        this.dottedValue3 = this.graph.append('g')
         
-        this.lines = this.graph.append('g')
-            .attr('class', 'lines')
-        
-        this.lines2 = this.graph.append('g')
-            .attr('class', 'linesAcc')
-            
-        this.lines3 = this.graph.append('g')
-            .attr('class', 'linesQuota')
     }
     drawStat() {
         if (!this.data.find(el => el.value != null)) return
@@ -169,24 +178,19 @@ export default class DrawStats {
             return {
                 date: day.date,
                 value: day.value == null ? null : Number(day.value),
-                quota: day.quota == null ? null : Number(day.quota)
+                // quota: day.quota == null ? null : Number(day.quota)
             }
         })
-
-
         this.x.domain([1,data.length])
         
         if (this.quota) {
-            if (d3.max(data, d => Number(d.value)) > d3.max(this.dataQuota, d => Number(d.quota)) && d3.max(data, d => Number(d.value)) > d3.max(this.dataAcc, d => Number(d.value))) {
-                console.log('a')
+            if (d3.max(data, d => Number(d.value)) >= d3.max(this.dataQuota, d => Number(d.quota)) && d3.max(data, d => Number(d.value)) >= d3.max(this.dataAcc, d => Number(d.value))) {
                 this.y.domain(this.reverted == 0 ? [d3.min(data, d => Number(d.value)), (d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value))] : [(d3.max(data, d => Number(d.value)) / 100 * 20)+d3.max(data, d => Number(d.value)), d3.min(data, d => Number(d.value))])
             }
-            if (d3.max(this.dataAcc, d => Number(d.value)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataAcc, d => Number(d.value)) > d3.max(this.dataQuota, d => Number(d.quota))) {
-                console.log('b')
+            if (d3.max(this.dataAcc, d => Number(d.value)) >= d3.max(data, d => Number(d.value)) && d3.max(this.dataAcc, d => Number(d.value)) >= d3.max(this.dataQuota, d => Number(d.quota))) {
                 this.y.domain([d3.min(data, d => Number(d.value)), (d3.max(this.dataAcc, d => Number(d.value)) / 100 * 20)+d3.max(this.dataAcc, d => Number(d.value))])
             }
-            if (d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(data, d => Number(d.value)) && d3.max(this.dataQuota, d => Number(d.quota)) > d3.max(this.dataAcc, d => Number(d.value))) {
-                console.log('c')
+            if (d3.max(this.dataQuota, d => Number(d.quota)) >= d3.max(data, d => Number(d.value)) && d3.max(this.dataQuota, d => Number(d.quota)) >= d3.max(this.dataAcc, d => Number(d.value))) {
                 this.y.domain([d3.min(data, d => Number(d.value)), (d3.max(this.dataQuota, d => Number(d.quota)) / 100 * 20)+d3.max(this.dataQuota, d => Number(d.quota))])
             }
         } else {
@@ -194,6 +198,7 @@ export default class DrawStats {
         }
 
         // Линия обычного графика
+        
         const line2 = this.lines.selectAll('line')
             .data(data)
     
@@ -362,8 +367,8 @@ export default class DrawStats {
                         }
                     }
                 })
-        // Накопительная линия
         if (this.quota) {
+        // Накопительная линия
             const lineAcc = this.lines2.selectAll('line')
                 .data(this.dataAcc)
         
@@ -532,7 +537,7 @@ export default class DrawStats {
                             }
                         }
                     })
-        // Линия квоты
+
             const lineQuota = this.lines3.selectAll('line')
                 .data(this.dataQuota)
 
@@ -700,7 +705,7 @@ export default class DrawStats {
                             }
                         }
                     })
-            
+                    
             const text2 = this.dottedValue2.selectAll('text')
                 .data(this.dataAcc)
         
@@ -723,8 +728,7 @@ export default class DrawStats {
         
             this.dottedValue2.selectAll('text')
                 .attr('transform', (d, i) => !this.dataAcc[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
-            
-            
+                
             const text3 = this.dottedValue3.selectAll('text')
                 .data(this.dataQuota)
         
@@ -746,9 +750,8 @@ export default class DrawStats {
                     .style('font-family', 'arial condensed', 'important')
         
             this.dottedValue3.selectAll('text')
-                .attr('transform', (d, i) => !this.dataQuota[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
-
-            
+                .attr('transform', (d, i) => !this.dataQuota[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(-40, -13)' )
+                
             const circlesAcc = this.dotsAcc.selectAll('circle')
                 .data(this.dataAcc)
         
@@ -795,7 +798,7 @@ export default class DrawStats {
         
                     this.dottedLines.style('opacity', 0)
                 })
-                
+
             const circlesQuota = this.dotsQuota.selectAll('circle')
                 .data(this.dataQuota)
         
@@ -843,7 +846,6 @@ export default class DrawStats {
                     this.dottedLines.style('opacity', 0)
                 })
         }
-
     // значения при наведении на точку
         const text = this.dottedValue.selectAll('text')
             .data(data)
@@ -867,11 +869,9 @@ export default class DrawStats {
     
         this.dottedValue.selectAll('text')
             .attr('transform', (d, i) => !data[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
-    
     // точки обычного графика
         const circles = this.dots.selectAll('circle')
             .data(data)
-        // console.log(data)
         circles.exit().remove()
     
         circles
@@ -889,15 +889,13 @@ export default class DrawStats {
             .on('mouseover', () => {
                 this.svg.selectAll('circle')  
                     .attr('r', d => {
-                        if (!d.quota) return d.value == null ? 0 : 4
-                        else return d.quota == null ? 0 : 4
+                         return d.value == null && d.quota == null ? 0 : 4
                     })
             })
             .on('mouseleave', () => {
                 this.svg.selectAll('circle')  
                     .attr('r', d => {
-                        if (!d.quota) return d.value == null ? 0 : 3
-                        else return d.quota == null ? 0 : 3
+                         return d.value == null && d.quota == null ? 0 : 3
                     })
             })
             
@@ -931,7 +929,7 @@ export default class DrawStats {
     
                 this.dottedLines.style('opacity', 0)
             })
-        
+
         const xAxis = d3.axisBottom(this.x)
             .ticks(data.length)
             .tickSize(10)
