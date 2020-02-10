@@ -13,12 +13,12 @@ export async function init() {
             document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))
             document.querySelectorAll('.x-axis').forEach(el => el.classList.add('d-hide'))
             document.querySelectorAll('.y-axis').forEach(el => el.classList.add('d-hide'))
-            document.querySelectorAll('.lines').forEach(el => el.classList.add('d-hide'))
+            document.querySelectorAll('.linesDot').forEach(el => el.classList.add('d-hide'))
         } else {
             document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
             document.querySelectorAll('.x-axis').forEach(el => el.classList.remove('d-hide'))
             document.querySelectorAll('.y-axis').forEach(el => el.classList.remove('d-hide'))
-            document.querySelectorAll('.lines').forEach(el => el.classList.remove('d-hide'))
+            document.querySelectorAll('.linesDot').forEach(el => el.classList.remove('d-hide'))
         }
     }
 
@@ -155,18 +155,6 @@ export async function init() {
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, startW, params).drawStat()
         })
-        
-        if (titleSwitch.checked){
-            document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))
-            document.querySelectorAll('.x-axis').forEach(el => el.classList.add('d-hide'))
-            document.querySelectorAll('.y-axis').forEach(el => el.classList.add('d-hide'))
-            document.querySelectorAll('.lines').forEach(el => el.classList.add('d-hide'))
-        } else {
-            document.querySelectorAll('.stat-title').forEach(el => el.classList.remove('d-hide'))
-            document.querySelectorAll('.x-axis').forEach(el => el.classList.remove('d-hide'))
-            document.querySelectorAll('.y-axis').forEach(el => el.classList.remove('d-hide'))
-            document.querySelectorAll('.lines').forEach(el => el.classList.remove('d-hide'))
-        }
     }
     drawStats()
     

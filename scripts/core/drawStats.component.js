@@ -4,6 +4,7 @@ const formatNumber = num => new Intl.NumberFormat('ru-RU').format(num)
 
 export default class DrawStats {
     constructor(stat, data, reverted, lastDay, startY, statPeriod, firstWeekDay, params = {
+        accColor: 'green',
         statHeight: 250,
         quota: 0
     }) {
@@ -96,6 +97,8 @@ export default class DrawStats {
             }
         })
 
+        this.params = params
+        console.log(this.params)
         this.quota = params.quota
         this.reverted = reverted
         this.stat = document.getElementById(stat)
@@ -432,7 +435,6 @@ export default class DrawStats {
                         }
                     }
                 })
-        
             lineAcc.enter()
                 .append('line')
                     .attr('x1', (d,i) => {
@@ -499,26 +501,26 @@ export default class DrawStats {
                                 else {
                                     return el.value != null
                                 }
-                            })) return 'green'
+                            })) return 
                             else return this.dataAcc.find((el, it) => {
                                 if (it <= i) return false
                                 else {
                                     return el.value != null
                                 }
-                            }).value < d.value ? 'red' : 'green'
+                            }).value < d.value ? 'red' : this.params.accColor || 'green'
                         } else {
                             if (!this.dataAcc.find((el, it) => {
                                 if (it <= i) return false
                                 else {
                                     return el.value != null
                                 }
-                            })) return 'green'
+                            })) return this.params.accColor || 'green'
                             else return this.dataAcc.find((el, it) => {
                                 if (it <= i) return false
                                 else {
                                     return el.value != null
                                 }
-                            }).value < d.value ? 'green' : 'red'
+                            }).value < d.value ? this.params.accColor || 'green' : 'red' 
                         }
                     })
                     .attr('stroke-linecap','round')
