@@ -98,7 +98,6 @@ export default class DrawStats {
         })
 
         this.params = params
-        console.log(this.params)
         this.quota = params.quota
         this.reverted = reverted
         this.stat = document.getElementById(stat)
