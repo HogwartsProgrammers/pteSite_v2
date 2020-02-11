@@ -280,19 +280,7 @@ export default class DrawStats {
                         else return this.x(i + 1)
                     }
                 })
-                .attr('y1', (d,i) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != null
-                        }
-                    })) {
-                        return this.y(0)
-                    } else {
-                        if (data[i].value == null) return this.y(0)
-                        else return this.y(d.value)
-                    }
-                })
+                .attr('y1', (d,i) => this.y(0))
                 .attr('x2', (d,i) => {
                     if (!data[i + 1] || !data.find((el, it) => {
                         if (it <= i) return false
@@ -308,22 +296,7 @@ export default class DrawStats {
                             else return this.x(i + 2)
                         }
                 })
-                .attr('y2', (d,i,n) => {
-                    if (!data[i + 1] || !data.find((el, it) => {
-                        if (it <= i) return false
-                        else {
-                            return el.value != null
-                        }
-                    })) {
-                        return this.y(0)
-                    } else {
-                        if (data[i].value == null) return this.y(0)
-                        else {
-                            if (data[i + 1].value == null) return this.y(d.value)
-                            else return this.y(data[i + 1].value)
-                        }
-                    }
-                })
+                .attr('y2', (d,i,n) => this.y(0))
                 .attr('stroke', (d,i) => {
                     if (this.reverted == 0) {
                         if (!data.find((el, it) => {
@@ -369,6 +342,36 @@ export default class DrawStats {
                         }
                     }
                 })
+                .transition().duration(500)
+                    .attr('y1', (d,i) => {
+                        if (!data[i + 1] || !data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != null
+                            }
+                        })) {
+                            return this.y(0)
+                        } else {
+                            if (data[i].value == null) return this.y(0)
+                            else return this.y(d.value)
+                        }
+                    })
+                    .attr('y2', (d,i,n) => {
+                        if (!data[i + 1] || !data.find((el, it) => {
+                            if (it <= i) return false
+                            else {
+                                return el.value != null
+                            }
+                        })) {
+                            return this.y(0)
+                        } else {
+                            if (data[i].value == null) return this.y(0)
+                            else {
+                                if (data[i + 1].value == null) return this.y(d.value)
+                                else return this.y(data[i + 1].value)
+                            }
+                        }
+                    })
         if (this.quota) {
         // Накопительная линия
             const lineAcc = this.lines2.selectAll('line')
@@ -883,8 +886,10 @@ export default class DrawStats {
             .append('circle')
                 .attr('r', d => d.value == null ? 0 : 3)
                 .attr('cx', (d,i) => this.x(i + 1))
-                .attr('cy', d => this.y(d.value))
+                .attr('cy', d => this.y(0))
                 .attr('fill', '#000')
+                .transition().duration(500)
+                    .attr('cy', d => this.y(d.value))
     
         this.svg
             .on('mouseover', () => {
