@@ -8,8 +8,9 @@ export async function init() {
     }
 
     const titleSwitch = document.getElementById('titleSwitch')
+
     titleSwitch.onchange = () => {
-        if (titleSwitch.checked){
+        if (titleSwitch.checked) {
             document.querySelectorAll('.stat-title').forEach(el => el.classList.add('d-hide'))
             document.querySelectorAll('.x-axis').forEach(el => el.classList.add('d-hide'))
             document.querySelectorAll('.y-axis').forEach(el => el.classList.add('d-hide'))
@@ -21,6 +22,10 @@ export async function init() {
             document.querySelectorAll('.linesDot').forEach(el => el.classList.remove('d-hide'))
         }
     }
+    
+    const spacesSwitch = document.getElementById('spacesSwitch')
+
+    spacesSwitch.onchange = () => drawStats()
 
     window.onscroll = () => {
         if (pageYOffset > 70) {
@@ -100,6 +105,8 @@ export async function init() {
         }
         
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
+
+        spacesSwitch.checked ? params.spaces = true : params.spaces = false
 
         let lastWeekDay
         let currentWeekDay = new Date().getDay() || 7

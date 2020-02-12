@@ -12,14 +12,19 @@
                 span 7R
                 input#sevenrSwitch(type="checkbox")
                 i.form-icon
+        .form-group.float-left
+                label.form-switch.text-bold 
+                    span Пропуски в графике
+                    input#spacesSwitch(type="checkbox", checked)
+                    i.form-icon
         
-            #periods.mt-2.text-center
-                .chip.c-hand.active(data-name="1") День
-                .chip.c-hand(data-name="2") 2 недели
-                .chip.c-hand(data-name="6") 6 недель
-                .chip.c-hand(data-name="12") 12 недель
-                .chip.c-hand(data-name="24") 24 недели
-                .chip.c-hand(data-name="Y") Год
+        #periods.text-center
+            .chip.c-hand.active(data-name="1") День
+            .chip.c-hand(data-name="2") 2 недели
+            .chip.c-hand(data-name="6") 6 недель
+            .chip.c-hand(data-name="12") 12 недель
+            .chip.c-hand(data-name="24") 24 недели
+            .chip.c-hand(data-name="Y") Год
     each post in posts
         section.mt-2.ml-2.mr-2
             h2.text-center= post.title

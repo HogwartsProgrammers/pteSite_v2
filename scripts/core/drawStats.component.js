@@ -1,23 +1,35 @@
 import *  as d3 from "d3"
-
+// форматирование чисел
 const formatNumber = num => new Intl.NumberFormat('ru-RU').format(num)
 
 export default class DrawStats {
-    constructor(stat, data, reverted, lastDay, startY, statPeriod, firstWeekDay, params = {
-        accColor: 'green',
-        statHeight: 250,
-        quota: 0
-    }) {
-        firstWeekDay = new Date(firstWeekDay)
+
+    // передаваемые парамертры в конструктор(id - блока, data - {date,value,rem,quota}, reverted - перевертывание статистики, lastDay - день конца недели, startY - год за который отображаются данные, statPeriod - сколько недель отображать на графике, firstWeekDay - день начала недели, params - различные параметры)
+    constructor(stat, data, reverted, lastDay, startY, statPeriod, firstWeekDay, params) {
+
+        params = {
+            // цвет накопительного графика
+            accColor: 'green',
+            // высота графика
+            statHeight: 250,
+            // график квот активен или нет
+            quota: 0,
+            // пропуски графиков заполнять не заполнять
+            spaces: true,
+            ...params
+        }
+
+        // форматирование дат
         const format = data => {
             data += ''
             return data.length < 2 ? data.length < 1 ? '00' : '0' + data : data  
         }
-        
+        // подготовка полученных данных 
+        firstWeekDay = new Date(firstWeekDay)
+
         const period = statPeriod === 'Y' ? 'Y' : Number(statPeriod) * 7
 
         if (data == null) data = []
-
         
         let currentDays = []
 
@@ -28,7 +40,6 @@ export default class DrawStats {
                 let lastWeekDayIndex = data.indexOf(data.find(stat => stat.date == date))
                 currentDays.push(data[lastWeekDayIndex] || {date,value: null, quota: null})
             }
-
         } else {
             let i = new Date(startY,0,1)
             let day = {
@@ -79,17 +90,20 @@ export default class DrawStats {
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
         }
+        
         this.data = currentDays
 
-
         let v = 0
+
         this.dataAcc = currentDays.map(el => {
             return {
                 date: el.date,
                 value: el.value != null ? v += el.value : null
             }
         })
+
         let q = 0
+
         this.dataQuota = currentDays.map(el => {
             return {
                 date: el.date,
@@ -104,6 +118,7 @@ export default class DrawStats {
         this.graphHeight
         this.margin = {top: 40, right: 25, bottom: 50, left: 30}
         this.graphHeight = params.statHeight - this.margin.top - this.margin.bottom
+
         if (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) > 1) {
             this.margin.left = (Math.ceil(String(Math.round(d3.max(this.data, d => Number(d.value)))).length / 3) * 20) + 10
         } else {
@@ -111,6 +126,7 @@ export default class DrawStats {
                 this.margin.left = (10 * String(Math.round(d3.max(this.data, d => Number(d.value)))).length) + 10
             }
         }
+
         this.stat.innerHTML = ''
         this.svg = d3.select(this.stat)
             .append("svg")
@@ -172,15 +188,15 @@ export default class DrawStats {
             .attr('class', 'valueAcc')
 
         this.dottedValue3 = this.graph.append('g')
-        
+            .attr('class', 'valueQuota')
     }
+    // отрисовка графиков
     drawStat() {
         if (!this.data.find(el => el.value != null)) return
         let data = this.data.map(day => {
             return {
                 date: day.date,
-                value: day.value == null ? null : Number(day.value),
-                // quota: day.quota == null ? null : Number(day.quota)
+                value: day.value == null ? this.params.spaces ? null : 0 : Number(day.value)
             }
         })
         this.x.domain([1,data.length])
@@ -200,7 +216,6 @@ export default class DrawStats {
         }
 
         // Линия обычного графика
-        
         const line2 = this.lines.selectAll('line')
             .data(data)
     

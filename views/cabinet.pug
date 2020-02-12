@@ -33,8 +33,6 @@ block content
                         label Аккаунт был создан 
                         br
                         b=  new Date(created).toISOString().split('T')[0].split('-')[2] + '.' + new Date(created).toISOString().split('T')[0].split('-')[1] + '.' + new Date(created).toISOString().split('T')[0].split('-')[0] + ' ' + new Date(created).toISOString().split('T')[1].slice(0,5)
-                        
-
                 .col-4.col-md-12.card
                     .card-body
                         .h4.text-center Смена пароля
@@ -54,13 +52,11 @@ block content
                                 span Перевернутый
                                 input#revertedSwitch(type="checkbox")
                                 i.form-icon
-                        
                         .form-group.float-left
                             label.form-switch.text-bold 
                                 span 7R
                                 input#sevenrSwitch(type="checkbox")
                                 i.form-icon
-                    
                     label.form-switch.text-bold.mb-2
                         span Квота на период
                         input#quotaSwitch(type="checkbox")
@@ -71,7 +67,6 @@ block content
                             input(type="number", placeholder="дни", min="1")#days_quota.form-input.mt-2
                             button#quota_btn.btn.mt-2.input-group-btn
                                 i.icon.icon-check
-                    
                     .d-flex
                         #edit_stats
                             label.text-bold Пост
@@ -95,7 +90,6 @@ block content
                             textarea(placeholder="Комментарий")#stats_rem.form-input.mt-2
                         #stat.column.col-6.col-xl-3.col-lg-4.col-md-6.col-sm-12.col-xxl-3.mb-2.dragscroll(style="overflow:auto")
                             #editStat.my_dataviz
-                    
                     #periods.mt-2.text-center
                         .chip.c-hand.active(data-name="1") День
                         .chip.c-hand(data-name="2") 2 недели

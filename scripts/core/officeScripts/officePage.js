@@ -18,6 +18,10 @@ export async function init() {
             document.querySelectorAll('.linesDot').forEach(el => el.classList.remove('d-hide'))
         }
     }
+
+    const spacesSwitch = document.getElementById('spacesSwitch')
+
+    spacesSwitch.onchange = () => drawStats()
     
     const periods = document.querySelectorAll('#periods > .chip')
 
@@ -92,6 +96,9 @@ export async function init() {
         }
         
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
+
+        spacesSwitch.checked ? params.spaces = true : params.spaces = false
+
         params.quota = sevenrSwitch.checked ? 1 : 0
 
         stats.forEach((stat, i) => {
