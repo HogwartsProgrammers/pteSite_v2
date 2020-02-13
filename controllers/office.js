@@ -371,8 +371,17 @@ exports.getStatsPage = (req, res, next) => {
                     })
                 })
             })
+            else  
+            res.render('noAccess', {
+                pageTitle: 'Панель администрирования',
+                year: cfg.year,
+                path: cfg.path()
+            })
+        } else {
+            res.redirect('/login')
         }
     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
 }
 
 exports.getPostsPage = (req, res, next) => {
@@ -398,8 +407,17 @@ exports.getPostsPage = (req, res, next) => {
                     })
                 })
             })
+            else  
+            res.render('noAccess', {
+                pageTitle: 'Панель администрирования',
+                year: cfg.year,
+                path: cfg.path()
+            })
+        } else {
+            res.redirect('/login')
         }
     })
+    else res.render('noProfile', {pageTitle: 'Панель администрирования', year: cfg.year, path: cfg.path()})
 }
 
 // Создание нового pipe
