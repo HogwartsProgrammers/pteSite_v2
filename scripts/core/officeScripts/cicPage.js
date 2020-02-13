@@ -124,8 +124,11 @@ export async function init() {
 
                 while (i.getFullYear() == startY) {
                     let date = `${format(i.getDate())}.${format(i.getMonth() + 1)}.${i.getFullYear()}`
+
                     const d = date.split('.')
+
                     let da = new Date(new Date(i).setDate(i.getDate() - 6))
+
                     if (i.getDay() == stat.last_day) {
                         da = `${format(da.getDate())}.${format(da.getMonth() + 1)}.${da.getFullYear()}`
                         const btn = document.createElement('button')
@@ -144,6 +147,7 @@ export async function init() {
                     i = new Date(i.setDate(i.getDate() + 1))
                 }
             }
+
             weeksCalendar.querySelectorAll('.weeks > button').forEach((el, i, arr) => el.onclick = e => {
                 arr.forEach(btn => {
                     if (btn.classList.contains('btn-error')) {
@@ -151,6 +155,7 @@ export async function init() {
                         btn.classList.add ('btn-link')
                     }
                 })
+
                 el.classList.remove('btn-link')
                 el.classList.add('btn-error')
                 let date = el.dataset.date.split('.')
@@ -158,8 +163,11 @@ export async function init() {
                 startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
                 drawStats()
             })
-            if (!startW) startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 6))
+
+            if (!startW) startW = new Date(new Date(lastWeekDay).setDate(lastWeekDay.getDate() - 13))
+
             statsHolders[i].parentElement.parentElement.querySelector('.card-header > .card-title').innerText = stat.title
+            
             new DrawStats(statsHolders[i].id, stat.stat_data, stat.reverted, stat.last_day, startY, period, startW, params).drawStat()
         })
     }
