@@ -808,7 +808,7 @@ export default class DrawStats {
             this.dotsAcc.selectAll('circle')
                 .on('mouseover', (d,i,n) => {
                     if (!this.params.numShow) this.dottedValue2.selectAll('text')._groups[0][i].removeAttribute('hidden')
-                    this.dottedValue2.selectAll('text')._groups[0][i].classList.add('text-bold')
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.stroke = 'orange'
 
                     d3.select(n[i])
                         .transition().duration(100)
@@ -829,7 +829,7 @@ export default class DrawStats {
                 })
                 .on('mouseleave', (d,i,n) => {
                     if (!this.params.numShow) this.dottedValue2.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
-                    this.dottedValue2.selectAll('text')._groups[0][i].classList.remove('text-bold')
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.stroke = 'unset'
                     d3.select(n[i])
                         .transition().duration(100)
                             .attr('r', 4)
@@ -857,7 +857,7 @@ export default class DrawStats {
             this.dotsQuota.selectAll('circle')
                 .on('mouseover', (d,i,n) => {
                     if (!this.params.numShow) this.dottedValue3.selectAll('text')._groups[0][i].removeAttribute('hidden')
-                    this.dottedValue3.selectAll('text')._groups[0][i].classList.add('text-bold')
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.stroke = 'orange'
         
                     d3.select(n[i])
                         .transition().duration(100)
@@ -878,7 +878,7 @@ export default class DrawStats {
                 })
                 .on('mouseleave', (d,i,n) => {
                     if (!this.params.numShow) this.dottedValue3.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
-                    this.dottedValue3.selectAll('text')._groups[0][i].classList.remove('text-bold')
+                    this.dottedValue2.selectAll('text')._groups[0][i].style.stroke = 'unset'
                     d3.select(n[i])
                         .transition().duration(100)
                             .attr('r', 4)
@@ -953,7 +953,7 @@ export default class DrawStats {
         this.dots.selectAll('circle')
             .on('mouseover', (d,i,n) => {
                 if (!this.params.numShow) this.dottedValue.selectAll('text')._groups[0][i].removeAttribute('hidden')
-                this.dottedValue.selectAll('text')._groups[0][i].classList.add('text-bold')
+                this.dottedValue.selectAll('text')._groups[0][i].style.stroke = 'orange'
     
                 d3.select(n[i])
                     .transition().duration(100)
@@ -974,7 +974,7 @@ export default class DrawStats {
             })
             .on('mouseleave', (d,i,n) => {
                 if (!this.params.numShow) this.dottedValue.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
-                this.dottedValue.selectAll('text')._groups[0][i].classList.remove('text-bold')
+                this.dottedValue.selectAll('text')._groups[0][i].style.stroke = 'unset'
                 d3.select(n[i])
                     .transition().duration(100)
                         .attr('r', 4)
