@@ -29,9 +29,12 @@ export async function init() {
     
     const sevenrSwitch = document.getElementById('sevenrSwitch')
 
-    sevenrSwitch.onchange = () => {
-        drawStats()
-    }
+    sevenrSwitch.onchange = () => drawStats()
+
+    
+    const numShowSwitch = document.getElementById('numShowSwitch')
+
+    numShowSwitch.onchange = () => drawStats()
 
     window.onscroll = () => {
         if (pageYOffset > 70) {
@@ -113,6 +116,8 @@ export async function init() {
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
 
         spacesSwitch.checked ? params.spaces = true : params.spaces = false
+        
+        numShowSwitch.checked ? params.numShow = true : params.numShow = false
 
         params.quota = sevenrSwitch.checked ? 1 : 0
 

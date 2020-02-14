@@ -16,6 +16,8 @@ export default class DrawStats {
             quota: 0,
             // пропуски графиков заполнять не заполнять
             spaces: true,
+            // показ цифр на графике по умолчанию
+            numShow: false,
             ...params
         }
 
@@ -733,20 +735,28 @@ export default class DrawStats {
             text2
                 .attr('x', (d,i) => this.x(i + 1))
                 .attr('y', d => this.y(d.value))
-                .text((d) => formatNumber(Math.round(d.value)))
+                .text((d) => d.value == null ? '' : formatNumber(Math.round(d.value)))
                 .style('font-family', 'arial condensed', 'important')
         
-            text2.enter()
-                .append('text')
-                    .attr('x', (d,i) => this.x(i + 1))
+            let txt2 = text2.enter().append('text')
+    
+            txt2
+                .attr('x', (d,i) => this.x(i + 1))
+                .attr('y', d => this.y(0))
+                .attr('fill', 'currentColor')
+                .text((d) => d.value == null ? '' : formatNumber(Math.round(d.value)))
+                .style('font-family', 'arial condensed', 'important')
+                .style('font-size', '10px', 'important')
+                .transition().duration(500)
                     .attr('y', d => this.y(d.value))
-                    .attr('fill', 'currentColor')
-                    .style('opacity', '0')
-                    .text(d => formatNumber(Math.round(d.value)))
-                    .style('font-family', 'arial condensed', 'important')
+                    
+            if (!this.params.numShow) {
+                txt2
+                    .attr('hidden', 'true')
+            }
         
             this.dottedValue2.selectAll('text')
-                .attr('transform', (d, i) => !this.dataAcc[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
+            .attr('transform', (d, i) => !data[i + 1] ? 'translate(-20, -15)' : 'rotate(0) translate(0, -13)' )
                 
             const text3 = this.dottedValue3.selectAll('text')
                 .data(this.dataQuota)
@@ -756,20 +766,28 @@ export default class DrawStats {
             text3
                 .attr('x', (d,i) => this.x(i + 1))
                 .attr('y', d => this.y(d.quota))
-                .text((d) => formatNumber(Math.round(d.quota)))
+                .text((d) => d.quota == null ? '' : formatNumber(Math.round(d.quota)))
                 .style('font-family', 'arial condensed', 'important')
         
-            text3.enter()
-                .append('text')
-                    .attr('x', (d,i) => this.x(i + 1))
+            let txt3 = text3.enter().append('text')
+    
+            txt3
+                .attr('x', (d,i) => this.x(i + 1))
+                .attr('y', d => this.y(0))
+                .attr('fill', 'currentColor')
+                .text((d) => d.quota == null ? '' : formatNumber(Math.round(d.quota)))
+                .style('font-family', 'arial condensed', 'important')
+                .style('font-size', '10px', 'important')
+                .transition().duration(500)
                     .attr('y', d => this.y(d.quota))
-                    .attr('fill', 'currentColor')
-                    .style('opacity', '0')
-                    .text(d => formatNumber(Math.round(d.quota)))
-                    .style('font-family', 'arial condensed', 'important')
+                    
+            if (!this.params.numShow) {
+                txt3
+                    .attr('hidden', 'true')
+            }
         
             this.dottedValue3.selectAll('text')
-                .attr('transform', (d, i) => !this.dataQuota[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(-40, -13)' )
+            .attr('transform', (d, i) => !data[i + 1] ? 'translate(-20, -15)' : 'rotate(0) translate(0, -13)' )
                 
             const circlesAcc = this.dotsAcc.selectAll('circle')
                 .data(this.dataAcc)
@@ -789,8 +807,9 @@ export default class DrawStats {
                 
             this.dotsAcc.selectAll('circle')
                 .on('mouseover', (d,i,n) => {
-                    this.dottedValue2.selectAll('text')._groups[0][i].style.opacity = 1
-        
+                    if (!this.params.numShow) this.dottedValue2.selectAll('text')._groups[0][i].removeAttribute('hidden')
+                    this.dottedValue2.selectAll('text')._groups[0][i].classList.add('text-bold')
+
                     d3.select(n[i])
                         .transition().duration(100)
                             .attr('r', 8)
@@ -809,7 +828,8 @@ export default class DrawStats {
                     this.dottedLines.style('opacity', 1)
                 })
                 .on('mouseleave', (d,i,n) => {
-                    this.dottedValue2.selectAll('text')._groups[0][i].style.opacity = 0
+                    if (!this.params.numShow) this.dottedValue2.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
+                    this.dottedValue2.selectAll('text')._groups[0][i].classList.remove('text-bold')
                     d3.select(n[i])
                         .transition().duration(100)
                             .attr('r', 4)
@@ -836,7 +856,8 @@ export default class DrawStats {
                 
             this.dotsQuota.selectAll('circle')
                 .on('mouseover', (d,i,n) => {
-                    this.dottedValue3.selectAll('text')._groups[0][i].style.opacity = 1
+                    if (!this.params.numShow) this.dottedValue3.selectAll('text')._groups[0][i].removeAttribute('hidden')
+                    this.dottedValue3.selectAll('text')._groups[0][i].classList.add('text-bold')
         
                     d3.select(n[i])
                         .transition().duration(100)
@@ -856,7 +877,8 @@ export default class DrawStats {
                     this.dottedLines.style('opacity', 1)
                 })
                 .on('mouseleave', (d,i,n) => {
-                    this.dottedValue3.selectAll('text')._groups[0][i].style.opacity = 0
+                    if (!this.params.numShow) this.dottedValue3.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
+                    this.dottedValue3.selectAll('text')._groups[0][i].classList.remove('text-bold')
                     d3.select(n[i])
                         .transition().duration(100)
                             .attr('r', 4)
@@ -874,20 +896,28 @@ export default class DrawStats {
         text
             .attr('x', (d,i) => this.x(i + 1))
             .attr('y', d => this.y(d.value))
-            .text((d) => formatNumber(Math.round(d.value)))
+            .text((d) => d.value == null ? '' : formatNumber(Math.round(d.value)))
             .style('font-family', 'arial condensed', 'important')
-    
-        text.enter()
-            .append('text')
-                .attr('x', (d,i) => this.x(i + 1))
+        
+        let txt = text.enter().append('text')
+        
+        txt
+            .attr('x', (d,i) => this.x(i + 1))
+            .attr('y', d => this.y(0))
+            .attr('fill', 'currentColor')
+            .text(d => d.value == null ? '' : formatNumber(Math.round(d.value)))
+            .style('font-family', 'arial condensed', 'important')
+            .style('font-size', '10px', 'important')
+            .transition().duration(500)
                 .attr('y', d => this.y(d.value))
-                .attr('fill', 'currentColor')
-                .style('opacity', '0')
-                .text(d => formatNumber(Math.round(d.value)))
-                .style('font-family', 'arial condensed', 'important')
+
+        if (!this.params.numShow) {
+            txt
+                .attr('hidden', 'true')
+        }
     
         this.dottedValue.selectAll('text')
-            .attr('transform', (d, i) => !data[i + 1] ? 'translate(-70, -13)' : 'rotate(0) translate(0, -13)' )
+            .attr('transform', (d, i) => !data[i + 1] ? 'translate(-20, -15)' : 'rotate(0) translate(0, -13)' )
     // точки обычного графика
         const circles = this.dots.selectAll('circle')
             .data(data)
@@ -922,7 +952,8 @@ export default class DrawStats {
             
         this.dots.selectAll('circle')
             .on('mouseover', (d,i,n) => {
-                this.dottedValue.selectAll('text')._groups[0][i].style.opacity = 1
+                if (!this.params.numShow) this.dottedValue.selectAll('text')._groups[0][i].removeAttribute('hidden')
+                this.dottedValue.selectAll('text')._groups[0][i].classList.add('text-bold')
     
                 d3.select(n[i])
                     .transition().duration(100)
@@ -942,7 +973,8 @@ export default class DrawStats {
                 this.dottedLines.style('opacity', 1)
             })
             .on('mouseleave', (d,i,n) => {
-                this.dottedValue.selectAll('text')._groups[0][i].style.opacity = 0
+                if (!this.params.numShow) this.dottedValue.selectAll('text')._groups[0][i].setAttribute('hidden', 'true')
+                this.dottedValue.selectAll('text')._groups[0][i].classList.remove('text-bold')
                 d3.select(n[i])
                     .transition().duration(100)
                         .attr('r', 4)

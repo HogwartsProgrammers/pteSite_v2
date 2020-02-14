@@ -1,6 +1,7 @@
 import DrawStats from '../drawStats.component'
 
 export async function init() {
+
     // функция по форматированию дат
     const format = data => {
         data += ''
@@ -26,6 +27,10 @@ export async function init() {
     const spacesSwitch = document.getElementById('spacesSwitch')
 
     spacesSwitch.onchange = () => drawStats()
+
+    const numShowSwitch = document.getElementById('numShowSwitch')
+
+    numShowSwitch.onchange = () => drawStats()
 
     window.onscroll = () => {
         if (pageYOffset > 70) {
@@ -107,6 +112,8 @@ export async function init() {
         period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 250
 
         spacesSwitch.checked ? params.spaces = true : params.spaces = false
+
+        numShowSwitch.checked ? params.numShow = true : params.numShow = false
 
         let lastWeekDay
         let currentWeekDay = new Date().getDay() || 7
