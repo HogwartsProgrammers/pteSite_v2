@@ -129,25 +129,25 @@ export default class EditStats {
             if (period !== 'Y' && Number(period) < 24) {
                 if (Number(period) == 2) {
                     document.querySelectorAll('#stat').forEach(el => {
-                        el.classList.remove('col-10') || el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-8')
+                        el.classList.remove('col-10') || el.classList.remove('col-6') || el.classList.remove('col-8')
                         el.classList.add('col-6')
                     })
                 } else {
                         if (Number(period) < 12) {
                             document.querySelectorAll('#stat').forEach(el => {
                                 el.classList.remove('col-10') || el.classList.remove('col-8') || el.classList.remove('col-6')
-                                el.classList.add('col-4', 'col-xxl-3')
+                                el.classList.add('col-6')
                             })
                         } else {
                             document.querySelectorAll('#stat').forEach(el => {
-                                el.classList.remove('col-10') || el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-6')
+                                el.classList.remove('col-10') || el.classList.remove('col-6') || el.classList.remove('col-6')
                                 el.classList.add('col-8')
                             })
                         }
                 }
             } else {
                 document.querySelectorAll('#stat').forEach(el => {
-                    el.classList.remove('col-4', 'col-xxl-3') || el.classList.remove('col-8') || el.classList.remove('col-6')
+                    el.classList.remove('col-6') || el.classList.remove('col-8') || el.classList.remove('col-6')
                     el.classList.add('col-10')
                 })
             }
