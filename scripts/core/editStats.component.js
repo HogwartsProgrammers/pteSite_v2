@@ -152,7 +152,7 @@ export default class EditStats {
                 })
             }
             
-            period >= 12 || period === 'Y' ? params.statHeight = 500 : params.statHeight = 500
+            period >= 12 || period === 'Y' ? params.statHeight = 600 : params.statHeight = 600
             params.quota = sevenrSwitch.checked ? 1 : 0
 
             stats.reverted == 0 ? revertedSwitch.checked = false : revertedSwitch.checked = true 
