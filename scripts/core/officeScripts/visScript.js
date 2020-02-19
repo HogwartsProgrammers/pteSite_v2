@@ -1,4 +1,4 @@
-const vis = require('../../vis.min.js')
+const vis = require('vis-network')
 
 const access = document.getElementById('access').value
 
