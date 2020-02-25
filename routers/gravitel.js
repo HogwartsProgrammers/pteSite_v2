@@ -33,7 +33,7 @@ router.post('/gravitel', (req, res, next) => {
     )
 
     if (gd.cmd == 'history') call.save().then(() => {
-        fetch(encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.`), {
+        fetch(encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.\n${decode('\xF0\x9F\x8F\xB7')} ${gd.status}`), {
             method: 'GET',
             headers:{ "Content-Type": "application/json" }
         })
