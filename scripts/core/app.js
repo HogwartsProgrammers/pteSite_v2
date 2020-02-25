@@ -874,17 +874,14 @@ const notificationBot = () => {
     let browser = navigator.userAgent   
 
     document.querySelectorAll('.goal_item').forEach(btn => btn.onclick = () => {
-        console.log(btn)
         const goal = btn.dataset.goal
 
         ym(yaMetricId, 'reachGoal', goal)
 
-        fetch('http://alarmerbot.ru/', {
+        const url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=Клиент достиг цель метрики: \n\n--> yaClientID:${yaID},\n--> Цель: ${goal}\n--> Браузер: ${browser},\n--> Страница: ${window.location.href}`)
+
+        fetch(url, {
             method: 'GET',
-            data: JSON.stringify({
-                key: "94f657-6a1d61-7a5381",
-                message: "Клиент достиг цель метрики: \n\n"+"--> yaClientID:"+yaID+",\n--> Цель: "+goal+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
-            }), 
             headers:{ "Content-Type": "application/json" }
         })
     })
