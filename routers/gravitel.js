@@ -32,7 +32,7 @@ router.post('/gravitel', (req, res, next) => {
         gd.callData       ? gd.callData                 : null
     )
     
-    fetch(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link}`, {
+    fetch(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xF0\x9F\x86\x94')} ${gd.callid}\n${decode('\xE2\x98\x8E')} ${gd.diversion}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}`, {
         method: 'GET',
         headers:{ "Content-Type": "application/json" }
     })
