@@ -6,7 +6,11 @@ const Steps = require('../models/steps')
 const Phones = require('../models/phones')
 const Contacts = require('../models/contacts')
 
+const fetch = require('node-fetch')
+
 const router = express.Router()
+
+const decode = s => decodeURIComponent(escape(s))
 
 router.post('/gravitel', (req, res, next) => {
     let gd = JSON.parse(JSON.stringify(req.body))
@@ -29,6 +33,11 @@ router.post('/gravitel', (req, res, next) => {
     )
 
     if (gd.cmd == 'history') call.save().then(() => {
+        fetch(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xF0\x9F\x93\xA7')} ${inpMailFetch}\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link}`, {
+            method: 'GET',
+            headers:{ "Content-Type": "application/json" }
+        })
+
         new Phones().findByPhone(gd.phone.substring(1)).then(phone => {
             const contact = {data: {}}
             if (!phone[0][0]) {

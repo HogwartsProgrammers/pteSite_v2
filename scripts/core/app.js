@@ -4,6 +4,8 @@ const inView = require('in-view')
 //функционал верхних стадий
 if (location.pathname.toLocaleLowerCase() == '/') require ('../svg.js').svgjsMain()
 
+const decode = s => decodeURIComponent(escape(s))
+
 const headerIcons = () => {
     let Istages = 1
         let stop = false
@@ -454,6 +456,8 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
     }
     
     const stepFour = (event) => {
+        const browser = navigator.userAgent   
+
         event.preventDefault()
         if (!stepThreeBtnsContains()) {
             inputVolume.focus()
@@ -472,7 +476,8 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
                 else {
                     saveParams()
                     lid_data.comment = `${inputVolumeFetch}, ${stepTwoBtnsFetch}, ${stepThreeBtnsFetch}, ${inpMailFetch}`
-                     fetch('/lids', {
+
+                    fetch('/lids', {
                         method: 'POST',
                         body: JSON.stringify({
                             phoneRaw: stepFourPhoneCleave.getRawValue().substring(2),
@@ -483,6 +488,17 @@ if (location.pathname.toLocaleLowerCase() === '/poly') {
                             "Content-Type": "application/json"
                         }
                     }).catch(error => console.error(error))
+
+                    const url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид с калькулятора:\n\n ${decode('\xF0\x9F\x93\xA7')} ${inpMailFetch}\n ${decode('\xE2\x98\x8E')} ${stepFourPhoneCleave.getFormattedValue()}\n ${decode('\xE2\x9C\x8D\xEF\xB8\x8F')} Площадь помещения (м2): ${inputVolumeFetch}\n ${decode('\xE2\x9C\x8D\xEF\xB8\x8F')} Основание: ${stepTwoBtnsFetch}\n ${decode('\xE2\x9C\x8D\xEF\xB8\x8F')} Нагрузка на пол: ${stepThreeBtnsFetch}\n ${decode('\xF0\x9F\x86\x94')} ${yaID}\n ${decode('\xF0\x9F\x96\xA5')} ${browser}\n ${decode('\xF0\x9F\x93\x84')} ${window.location.href}`)
+
+                    fetch(url, {
+                        method: 'GET',
+                        headers:{ "Content-Type": "application/json" }
+                    })
+                    
+                    phoneCleave.setRawValue('')
+                    document.getElementById('inpCallback').value = ''
+
                     stepFive(event)
                 }
             }
@@ -800,6 +816,8 @@ function callbackFormReady() {
 }
 
 callbackBtn.addEventListener('click', event => {
+    const browser = navigator.userAgent   
+
     callbackInput.value = ''
     if (document.getElementById('inpCallback').value.length === 0) callbackBtn.disabled = true
     const lid_data = {}
@@ -808,6 +826,8 @@ callbackBtn.addEventListener('click', event => {
         const vals = utm.split('=')
         if (vals[0].substring(0, 3) === 'utm') lid_data[vals[0].substring(4)] = vals[1]
     })
+
+    let url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид с cta:\n\n ${decode('\xE2\x98\x8E')} ${inpHiddenRaw.value}\n ${decode('\xF0\x9F\x86\x94')} ${yaID}\n ${decode('\xF0\x9F\x96\xA5')} ${browser}\n ${decode('\xF0\x9F\x93\x84')} ${window.location.href}`)
     
     const floorParams = []
     if (location.pathname.toLocaleLowerCase() === '/poly') {
@@ -816,6 +836,10 @@ callbackBtn.addEventListener('click', event => {
         floorBtns.forEach(el => {
             if(el.classList.contains('active')) floorParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
         })
+
+        url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид с cta:\n\n ${decode('\xE2\x98\x8E')} ${inpHiddenRaw.value}\n ${decode('\xE2\x9C\x8D\xEF\xB8\x8F')} Площадь помещения (м2): ${document.querySelector('.survey-value').value  || 'Не выбрано*'}\n ${decode('\xE2\x9D\x97\xEF\xB8\x8F')} ${[...floorBtns].filter(el => el.classList.contains('active')).map(el => {
+            if(el.classList.contains('active')) return el.parentElement.parentElement.querySelector('.tile-title').innerText
+        }).join(', ') || 'Не выбрано*'}\n ${decode('\xF0\x9F\x86\x94')} ${yaID}\n ${decode('\xF0\x9F\x96\xA5')} ${browser}\n ${decode('\xF0\x9F\x93\x84')} ${window.location.href}`)
     }
     lid_data.comment = floorParams.join(', ')
 
@@ -826,6 +850,10 @@ callbackBtn.addEventListener('click', event => {
         storageBtns.forEach(el => {
             if(el.classList.contains('active')) storageParams.push(el.parentElement.parentElement.querySelector('.tile-title').innerText)
         })
+
+        url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид с cta:\n\n ${decode('\xE2\x98\x8E')} ${inpHiddenRaw.value}\n ${decode('\xE2\x9C\x8D\xEF\xB8\x8F')} Требуется площадь склада (м²): ${document.querySelector('.survey-value').value  || 'Не выбрано*'}\n ${decode('\xE2\x9D\x97\xEF\xB8\x8F')} ${[...storageBtns].filter(el => el.classList.contains('active')).map(el => {
+            if(el.classList.contains('active')) return el.parentElement.parentElement.querySelector('.tile-title').innerText
+        }).join(', ') || 'Не выбрано*'}\n ${decode('\xF0\x9F\x86\x94')} ${yaID}\n ${decode('\xF0\x9F\x96\xA5')} ${browser}\n ${decode('\xF0\x9F\x93\x84')} ${window.location.href}`)
     }
     lid_data.comment = storageParams.join(', ')
 
@@ -845,9 +873,10 @@ callbackBtn.addEventListener('click', event => {
     })
     .catch(error => console.error(error))
 
-    // console.log(callbackInput.value)
-    // phoneCleave.setRawValue('')
-    // document.getElementById('inpCallback').value = ''
+    fetch(url, {
+        method: 'GET',
+        headers:{ "Content-Type": "application/json" }
+    })
 })
 
 window.addEventListener('resize', event => {
@@ -870,20 +899,20 @@ ym(yaMetricId, 'getClientID', clientID => {
 })
 
 const notificationBot = () => {
-    let browser = navigator.userAgent   
+    const browser = navigator.userAgent   
 
-    document.querySelectorAll('.goal_item').forEach(btn => btn.onclick = () => {
+    document.querySelectorAll('.goal_item').forEach(btn => btn.addEventListener('click', () => {
         const goal = btn.dataset.goal
 
         ym(yaMetricId, 'reachGoal', goal)
 
-        const url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=Клиент достиг цель метрики: \n\n--> yaClientID:${yaID},\n--> Цель: ${goal}\n--> Браузер: ${browser},\n--> Страница: ${window.location.href}`)
+        const url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x8E\xAF')} Клиент достиг цель метрики: \n\n${decode('\xF0\x9F\x86\x94')} ${yaID}\n${decode('\xE2\x9A\xAA\xEF\xB8\x8F')} ${goal}\n${decode('\xF0\x9F\x96\xA5')} ${browser}\n${decode('\xF0\x9F\x93\x84')} ${window.location.href}`)
 
         fetch(url, {
             method: 'GET',
             headers:{ "Content-Type": "application/json" }
         })
-    })
+    }))
 }
 notificationBot()
 
@@ -895,7 +924,7 @@ notificationBot()
 //           url: "https://alarmerbot.ru/",
 //           data: {
 //               key: "94f657-6a1d61-7a5381",
-//               message: "Клиент достиг цель метрики: \n\n"+"--> yaClientID:"+yaID+",\n--> Цель: "+goal+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
+//               message: "Клиент достиг цель метрики: \n\n"+"- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  yaClientID:"+yaID+",\n- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  Цель: "+goal+"\n- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  Браузер: "+browser+",\n- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  Страница: "+window.location.href
 //           }
 //         });
 //     });
@@ -909,7 +938,7 @@ notificationBot()
 //               url: "https://alarmerbot.ru/",
 //               data: {
 //                   key: "94f657-6a1d61-7a5381",
-//                   message: "Клиент зашёл на страницу с КП: \n\n"+"--> yaClientID:"+yaID+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
+//                   message: "Клиент зашёл на страницу с КП: \n\n"+"- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  yaClientID:"+yaID+"\n- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  Браузер: "+browser+",\n- ${decode('\xE2\x9A\xAA\xEF\xB8\x8F')}  Страница: "+window.location.href
 //               }
 //             });
 //         }
