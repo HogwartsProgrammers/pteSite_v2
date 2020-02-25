@@ -870,7 +870,6 @@ ym(yaMetricId, 'getClientID', clientID => {
 })
 
 const notificationBot = () => {
-    console.log(document.querySelectorAll('.goal_item'))
     let browser = navigator.userAgent   
 
     document.querySelectorAll('.goal_item').forEach(btn => btn.onclick = () => {
