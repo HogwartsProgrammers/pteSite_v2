@@ -81,7 +81,7 @@ router.post('/gravitel', (req, res, next) => {
             } else if (gd.type == 'out') {
                 url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x93\xB1')} Исходящий звонок:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.\n${decode('\xF0\x9F\x8F\xB7')} ${gd.status}`)
             } else if (gd.type == 'missed') {
-                url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x9A\xAB')} Пропущенный звонок:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.\n${decode('\xF0\x9F\x8F\xB7')} ${gd.status}`)
+                url = encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x9A\xAB')}${decode('\xF0\x9F\x93\xB1')} Пропущенный звонок:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.\n${decode('\xF0\x9F\x8F\xB7')} ${gd.status}`)
             }
 
             if (url && !phone[0][0]) url += `\n\n${decode('\xF0\x9F\x94\xB0')} Новый номер!`
