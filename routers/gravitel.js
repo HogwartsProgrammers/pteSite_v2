@@ -31,13 +31,13 @@ router.post('/gravitel', (req, res, next) => {
         gd.created        ? gd.created                  : null,
         gd.callData       ? gd.callData                 : null
     )
-    
-    fetch(encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.`), {
-        method: 'GET',
-        headers:{ "Content-Type": "application/json" }
-    })
 
     if (gd.cmd == 'history') call.save().then(() => {
+        fetch(encodeURI(`https://alarmerbot.ru/?key=94f657-6a1d61-7a5381&message=${decode('\xF0\x9F\x92\xB0')} Лид по звонку:\n\n${decode('\xE2\x98\x8E')} ${gd.phone}\n${decode('\xF0\x9F\x93\xBC')} ${gd.link || 'Записи нет*'}\n${decode('\xF0\x9F\x95\x93')} ${gd.duration} сек.`), {
+            method: 'GET',
+            headers:{ "Content-Type": "application/json" }
+        })
+
         new Phones().findByPhone(gd.phone.substring(1)).then(phone => {
             const contact = {data: {}}
             if (!phone[0][0]) {
