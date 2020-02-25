@@ -879,7 +879,7 @@ const notificationBot = () => {
 
         ym(yaMetricId, 'reachGoal', goal)
 
-        fetch('https://alarmerbot.ru/', {
+        fetch('http://alarmerbot.ru/', {
             method: 'GET',
             data: JSON.stringify({
                 key: "94f657-6a1d61-7a5381",
