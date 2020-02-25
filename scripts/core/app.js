@@ -861,6 +861,64 @@ window.addEventListener('resize', event => {
         sidebar.classList.remove('d-hide')
     }
 })
+
+const yaMetricId = 55196683
+let yaID = 0
+
+ym(yaMetricId, 'getClientID', clientID => {
+  yaID = clientID
+})
+
+const notificationBot = () => {
+    console.log(document.querySelectorAll('.goal_item'))
+    let browser = navigator.userAgent   
+
+    document.querySelectorAll('.goal_item').forEach(btn => btn.onclick = () => {
+        console.log(btn)
+        const goal = btn.dataset.goal
+
+        ym(yaMetricId, 'reachGoal', goal)
+
+        fetch('https://alarmerbot.ru/', {
+            method: 'GET',
+            data: JSON.stringify({
+                key: "94f657-6a1d61-7a5381",
+                message: "Клиент достиг цель метрики: \n\n"+"--> yaClientID:"+yaID+",\n--> Цель: "+goal+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
+            }), 
+            headers:{ "Content-Type": "application/json" }
+        })
+    })
+}
+notificationBot()
+
+// $(document).ready(function(){
+//     $('.goal_item').on('click',function(){
+//         var goal=$(this).attr('data-goal');
+//         $.ajax({
+//           method: "GET",
+//           url: "https://alarmerbot.ru/",
+//           data: {
+//               key: "94f657-6a1d61-7a5381",
+//               message: "Клиент достиг цель метрики: \n\n"+"--> yaClientID:"+yaID+",\n--> Цель: "+goal+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
+//           }
+//         });
+//     });
+//     // Notification of Commertial Offer
+//     if(+[1581664640626960170,1579346143130349358,1582389401509112116].indexOf(+yaID)===-1) {
+//         let path=window.location.pathname;
+//         let url=path.split('/');
+//         if(!!url[1] && url[1]=='offers' && !!url[2]) {
+//             $.ajax({
+//               method: "GET",
+//               url: "https://alarmerbot.ru/",
+//               data: {
+//                   key: "94f657-6a1d61-7a5381",
+//                   message: "Клиент зашёл на страницу с КП: \n\n"+"--> yaClientID:"+yaID+"\n--> Браузер: "+browser+",\n--> Страница: "+window.location.href
+//               }
+//             });
+//         }
+//     }
+// });
     
 // //Показываем body после всего script
 // document.querySelector('body').classList.add('fadeIn')
