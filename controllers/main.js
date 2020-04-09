@@ -8,30 +8,31 @@ const Phones = require('../models/phones')
 const Contacts = require('../models/contacts')
 
 exports.getFirstPage = (req, res, next) => {
-    res.render('main', {
-        pageTitle: 'Инжиниринговая компания полного цикла ProfTechEngineering',
-        pageDescription: 'Мы реализуем любые проекты с момента зарождения вашей идеи через все стадии от проектирования до сдачи объекта под ключ',
-        pageKeywords: 'Инжиниринговая компания, проектирование',
-        cta: {
-            discription1: {
-                content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
-                btn: 'ПОЛУЧИТЬ',
-                btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
-            },
-            discription2: {
-                content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
-                btn: 'ПОЛУЧИТЬ',
-                btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
-            },
-            discription3: {
-                content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
-                btn: 'ПОЛУЧИТЬ',
-                btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
-            }
-        },
-        year: cfg.year,
-        path: cfg.path()
-    })
+    res.redirect('/login')
+    // res.render('main', {
+    //     pageTitle: 'Инжиниринговая компания полного цикла ProfTechEngineering',
+    //     pageDescription: 'Мы реализуем любые проекты с момента зарождения вашей идеи через все стадии от проектирования до сдачи объекта под ключ',
+    //     pageKeywords: 'Инжиниринговая компания, проектирование',
+    //     cta: {
+    //         discription1: {
+    //             content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
+    //             btn: 'ПОЛУЧИТЬ',
+    //             btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
+    //         },
+    //         discription2: {
+    //             content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
+    //             btn: 'ПОЛУЧИТЬ',
+    //             btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
+    //         },
+    //         discription3: {
+    //             content: 'ПОЛУЧИТЕ НАИЛУЧШЕЕ ПРЕДЛОЖЕНИЕ ОТ НАШИХ СПЕЦИАЛИСТОВ',
+    //             btn: 'ПОЛУЧИТЬ',
+    //             btnTitle: 'ОБРАТНЫЙ ЗВОНОК'
+    //         }
+    //     },
+    //     year: cfg.year,
+    //     path: cfg.path()
+    // })
 }
 
 exports.getThanksPage = (req, res, next) => {
