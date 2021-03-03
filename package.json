@@ -27,7 +27,7 @@
         "in-view": "^0.6.1",
         "mysql2": "^1.7.0",
         "node-fetch": "^2.6.0",
-        "pug": "^2.0.4",
+        "pug": "^3.0.1",
         "sortablejs": "^1.10.1",
         "vis-network": "^7.3.5"
     },
